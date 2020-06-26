@@ -35,7 +35,7 @@
                 @endif
               <div class="card-body">
               <input type="text" id="myInput" placeholder="Tìm theo tên">
-                <table id="example2" class="table table-bordered table-hover myTable">
+                <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
                     <th>Tên Loại Bài Tập</th>
@@ -43,7 +43,7 @@
                     <th>Huấn Luyện Viên</th>
                     <th>Video</th>
                     <th>Mô tả</th>
-                    <th>Sửa|Xóa</th>
+                    <th>Thao tác</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -54,21 +54,11 @@
                     <td>{{$exercise->trainer->full_name}}</td>
                     <td><video src="upload/exercise/video/{{$exercise->video}}" controls style="width:150px;height:100px"></video></td>
                     <td>{!!$exercise->description!!}</td>
-                    <td><i class="ion-paintbrush" ></i> &nbsp;<a href="{{ route('admin-edit-exercise',['id'=>$exercise->id])}}">Sửa</a></br>
-                    <i class="ion-ios-trash"></i> &nbsp;<a href="{{ route('admin-delete-exercise',['id'=>$exercise->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$exercise->exercise_name}}" class="delete">Xóa</a></td>
+                    <td class="text-center"><a href="{{ route('admin-edit-exercise',['id'=>$exercise->id])}}"><i class="ion-paintbrush" ></i></a>
+                    <a href="{{ route('admin-delete-exercise',['id'=>$exercise->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$exercise->exercise_name}}" class="delete ml-2"><i class="ion-ios-trash"></i> </a></td>
                   </tr>
                 @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                    <th>Tên Loại Bài Tập</th>
-                    <th>Tên Bài Tập</th>
-                    <th>Huấn Luyện Viên</th>
-                    <th>Video</th>
-                    <th>Mô tả</th>
-                    <th>Sửa|Xóa</th>
-                  </tr>
-                  </tfoot>
                 </table>
               </div>
           </div>
@@ -96,7 +86,7 @@
       event.preventDefault();
       /* Act on the event */
       var tukhoa = $(this).val().toLowerCase();
-      $('.myTable tr').filter(function() {
+      $('tbody tr').filter(function() {
          $(this).toggle($(this).text().toLowerCase().indexOf(tukhoa)>-1);
       });
     });

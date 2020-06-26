@@ -55,7 +55,7 @@
                 <div class="card-body">
                   <div class="form-group">
                     <label>Tên Loại Khóa Tập</label>
-                    <input type="text" name="course_type_name" class="form-control" id="full_name" placeholder="Nhập họ và tên">
+                    <input type="text" name="course_type_name" class="form-control" id="full_name" placeholder="Nhập tên loại khóa tập">
                   </div>
                   <div class="form-group">
                   <Label>Mô tả</Label>

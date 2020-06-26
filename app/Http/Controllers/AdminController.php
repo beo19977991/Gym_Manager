@@ -43,7 +43,7 @@ class AdminController extends Controller
             'email' => $request['email'],
             'password' => $request['password'],
         ];
-        if(Auth::guard('staff')->attempt($credentials))
+        if(Auth::guard('staff')->attempt($credentials) && (Auth::guard('staff')->user()->role == 0))
         {
             $request->session()->put('admin','login_success');
             return redirect()->route('admin-home');
@@ -188,7 +188,7 @@ class AdminController extends Controller
         $user->active = 1;
         $user->status = 0;
         $user->save();
-        return redirect()->route('admin-list-user')->with('message','Thêm Khách Hàng thành công');
+        return redirect()->route('admin-list-user')->with('message','Sửa Khách Hàng thành công');
     }
     public function getDeleteUser($id)
     {
@@ -196,9 +196,135 @@ class AdminController extends Controller
         $user->delete();
         return redirect()->route('admin-list-user')->with('message','Xóa Khách Hàng Thành Công');
     }
-
     // End Manager User
+    // Start manager Trainer
+    public function getListTrainer()
+    {
+        $trainers = Trainer::orderBy('created_at','DESC')->get();
+        return view('admin.trainers.list',['trainers'=>$trainers]);
+    }
 
+    public function getAddTrainer()
+    {
+        $course_types = CourseType::all();
+        return view('admin.trainers.add',['course_types'=>$course_types]);
+    }
+
+    public function postAddTrainer(Request $request)
+    {
+        $this->validate($request,[
+            'full_name' => 'required',
+            'email' => 'required|email|unique:trainers,email',
+            'password' => 'required|min:8|max:16',
+            'age' => 'required|integer',
+            'address' => 'required',
+        ],[
+            'full_name.required' => 'Bạn chưa nhập họ tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'email bạn nhập chưa đúng',
+            'email.unique' => 'email đã được sử dụng',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải nhiều hơn 8 ký tự',
+            'password.max' => 'Mật khẩu phải ít hơn 16 ký tự',
+            'age.required' => 'Bạn chưa nhập tuổi',
+            'age.integer' => 'Tuổi nhập vào phải là số',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+        ]);
+        $trainer = new Trainer;
+        $trainer->course_type_id = $request->course_type;
+        $trainer->full_name = $request->full_name;
+        $trainer->email = $request->email;
+        $trainer->password = bcrypt($request->password);
+        $trainer->age = $request->age;
+        $trainer->address = $request->address;
+        $trainer->gender = $request->gender;
+        if($request->hasFile('photo'))
+        {
+            $file=$request->file('photo');
+            $extension= $file->getClientOriginalExtension();
+            if($extension != 'jpg' && $extension != 'png' && $extension != 'jepg')
+            {
+                return redirect()->route('admin-add-trainer')->with('error','Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4)."_".$name;
+            while(file_exists("upload/trainer/photo".$photo))
+            {
+                $photo = Str::random(4)."_".$name;
+            }
+            $file->move("upload/trainer/photo",$photo);
+            $trainer->photo = $photo;
+        }
+        else
+        {
+            $trainer->photo="default.png";
+        }
+        $trainer->save();
+        return redirect()->route('admin-list-trainer')->with('message','Thêm huấn luyện viên thành công');
+    }
+
+    public function getEditTrainer($id)
+    {
+        $course_types = CourseType::all();
+        $trainer = Trainer::find($id);
+        return view('admin.trainers.edit',['trainer'=>$trainer,'course_types'=>$course_types]);
+    }
+    public function postEditTrainer($id, Request $request)
+    {
+        $this->validate($request,[
+            'full_name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'repeat_password' => 'required|same:password',
+            'age' => 'required|integer',
+            'address' => 'required',
+        ],[
+            'full_name.required' => 'Bạn chưa nhập họ tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'email bạn nhập chưa đúng',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'repeat_password.required' => 'Bạn chưa nhập lại mật khẩu',
+            'repeat_password.same' => 'Nhập lại mật khẩu không đúng',
+            'age.required' => 'Bạn chưa nhập tuổi',
+            'age.integer' => 'Tuổi nhập vào phải là số',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+        ]);
+        $trainer = Trainer::find($id);
+        $trainer->course_type_id = $request->course_type;
+        $trainer->full_name = $request->full_name;
+        $trainer->email = $request->email;
+        $trainer->password = bcrypt($request->password);
+        $trainer->age = $request->age;
+        $trainer->address = $request->address;
+        $trainer->gender = $request->gender;
+        if($request->hasFile('photo'))
+        {
+            $file=$request->file('photo');
+            $extension= $file->getClientOriginalExtension();
+            if($extension != 'jpg' && $extension != 'png' && $extension != 'jepg')
+            {
+                return redirect()->route('admin-edit-trainer')->with('error','Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4)."_".$name;
+            while(file_exists("upload/trainer/photo".$photo))
+            {
+                $photo = Str::random(4)."_".$name;
+            }
+            $file->move("upload/trainer/photo",$photo);
+            unlink("upload/trainer/photo".$trainer->photo);
+            $trainer->photo = $photo;
+        }
+        $trainer->save();
+        return redirect()->route('admin-list-trainer')->with('message','Sửa huấn luyện viên thành công');
+    }
+    public function getDeleteTrainer($id)
+    {
+        $trainer = Trainer::destroy($id);
+        return redirect()->route('admin-list-trainer')->with('message','Xóa huấn luyện viên thành công');
+    }
+    // ======================================================================
+    // End manager Trainer
     // Start Manager Course Type
     public function getListCourseType()
     {
@@ -550,17 +676,29 @@ class AdminController extends Controller
     // Start Schedule
     public function getCreateCalendar()
     {
+        $lessions = Lession::all();
         $courses = Course::all();
-        return view('admin.schedules.calendar',['courses'=>$courses]);
+        return view('admin.schedules.calendar',['courses'=>$courses,'lessions'=>$lessions]);
     }
     public function postCreateCalendar(Request $request)
     {
         $lession = new Lession;
         $lession->course_id = $request->course_id;
         $lession->start_time = new DateTime($request->start_time);
-        $lession->end_time = new DateTime($request->end_time);
+        $lession->end_time = new DateTime($request->start_time);
         $lession->save();
         return 1;
+    }
+    public function getDeleteLession()
+    {
+        $lessions = Lession::all();
+        $courses = Course::all();
+        return view('admin.schedules.delete_lession',['courses'=>$courses,'lessions'=>$lessions]);
+    }
+    public function postDeleteLession($id)
+    {
+        $lession = Lession::destroy($id);
+        return $lession;
     }
     // End Schedule
 }

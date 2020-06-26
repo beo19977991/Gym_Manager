@@ -5,35 +5,25 @@
       <li class="nav-item">
         <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
       </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="index3.html" class="nav-link">Home</a>
-      </li>
-      <li class="nav-item d-none d-sm-inline-block">
-        <a href="#" class="nav-link">Contact</a>
-      </li>
+      @if(isset($staff_login))
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="" class="nav-link">{{$staff_login->full_name}}</a>
+        </li>
+        <li class="nav-item d-none d-sm-inline-block">
+          <a href="{{ route('logout_admin') }}" class="nav-link">Đăng xuất</a>
+        </li>
+      @endif
     </ul>
-
-    <!-- SEARCH FORM -->
-    <form class="form-inline ml-3">
-      <div class="input-group input-group-sm">
-        <input class="form-control form-control-navbar" type="search" placeholder="Search" aria-label="Search">
-        <div class="input-group-append">
-          <button class="btn btn-navbar" type="submit">
-            <i class="fas fa-search"></i>
-          </button>
-        </div>
-      </div>
-    </form>
   </nav>
   <!-- /.navbar -->
 
   <!-- Main Sidebar Container -->
   <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
-    <a href="index3.html" class="brand-link">
+    <a href="home" class="brand-link">
       <img src=""  class="brand-image img-circle elevation-3"
            style="opacity: .8">
-      <span class="brand-text font-weight-light">Admin Home</span>
+      <span class="brand-text font-weight-light">GymSTar</span>
     </a>
 
     <!-- Sidebar -->
@@ -70,7 +60,7 @@
           <!-- customer end -->
           <!-- trainer start -->
           <li class="nav-item has-treeview">
-            <a href="#" class="nav-link active">
+            <a href="{{ route('admin-list-trainer') }}" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Huấn Luyện Viên
@@ -79,13 +69,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="./index.html" class="nav-link">
+                <a href="{{ route('admin-list-trainer') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Danh Sách Huấn Luyện Viên</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('admin-add-trainer') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm Huấn Luyện Viên</p>
                 </a>
@@ -193,31 +183,6 @@
             </ul>
         </li>
     <!-- Exercise end -->
-    <!-- Lession start -->
-        <li class="nav-item has-treeview">
-            <a href="#" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Buổi Tập
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="./index.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Buổi Tập</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Buổi Tập</p>
-                </a>
-              </li>
-            </ul>
-        </li>
-    <!-- Lession end -->
         <!-- Lession start -->
         <li class="nav-item has-treeview">
             <a href="" class="nav-link active">
@@ -235,9 +200,9 @@
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('admin-get-delete-lession') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Sửa Lịch Tập</p>
+                  <p>Xóa Lịch Tập</p>
                 </a>
               </li>
             </ul>

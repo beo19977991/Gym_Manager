@@ -13,6 +13,9 @@ class Lession extends Model
         'start_time',
         'end_time',
     ];
-
+    public function course()
+    {
+        return $this->belongsTo('App\Course','course_id','id');
+    }
     
 }

@@ -27,51 +27,30 @@
     </section>
     <!-- modal xác nhập thêm lịch cho khóa tập -->
     <div class="modal" id="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Lịch Tập</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <span>Tên Khóa Tập: </span><p class="course_name"></p>
-                <span>Thời gian bắt đầu: </span><p class="start_time" ></p>
-            </div>
-            <div class="modal-footer">
-                <button type="submit" class="btn btn-primary" onclick="submitForm()">Save</button>
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-            </div>
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+        <div class="modal-header">
+            <h5 class="modal-title">Confirm</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+        <div class="modal-body">
+            <span>Bạn có chắc chắn muốn xóa lịch tập này cho khóa: &nbsp;</span><span class="title"></span>
+        </div>
+        <div class="modal-footer">
+            <button type="submit" class="btn btn-primary" onclick="submitForm()">Xóa</button>
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Hủy</button>
+        </div>
         </div>
     </div>
-    <!-- end modal -->
-    <!-- modal cảnh báo-->
-    <div class="modal wanning" id="warning" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title">Lịch Tập</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-            <p>Ngày bạn chọn không thuộc trong phạm vi khóa học</p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            </div>
-            </div>
-        </div>
     </div>
-    <!-- end modal -->    
+    <!-- end modal -->  
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3">
+          <div class="col-md-3" style="display:none">
             <div class="sticky-top mb-3">
               <div class="card">
                 <div class="card-header">
@@ -93,9 +72,9 @@
                 </div>
                 <!-- /.card-body -->
               </div>
-            </div>
-                    <!-- /.col -->
-          <div class="col-md-9">
+          </div>
+           <!-- /.col -->
+          <div class="col-md-9 m-auto" >
             <div class="card card-primary">
               <div class="card-body p-0">
                 <!-- THE CALENDAR -->
@@ -127,9 +106,26 @@
 <script src="{{ asset('css/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <script>
     var id;
-    $(function () {
-    /* initialize the external events
-     -----------------------------------------------------------------*/
+    function submitForm()
+    {
+        $.ajax({
+            url: "admin/schedule/post_delete_lession/" + id,  
+            method: "POST",
+            data: {
+            id : id,
+            _token: "{{ csrf_token() }}"
+            },
+            success: function(result) {
+            // console.log(result);
+            $(".modal").modal('hide');
+
+            location.reload();
+            },
+            error: function (err) {
+
+            }
+        })
+    }
     function ini_events(ele) {
       ele.each(function () {
 
@@ -184,7 +180,7 @@
         };
       }
     });
-
+    function newCalendar() {
     var calendar = new Calendar(calendarEl, {
       plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
       header    : {
@@ -195,8 +191,9 @@
       'themeSystem': 'bootstrap',
       //Random default events
       events    : [
-        @foreach($lessions as $lession)
+          @foreach ($lessions as $lession)
         {
+          id    : '{{ $lession->id}}',
           title : '{{$lession->course->course_name}}',
           start : new Date('{{$lession->start_time}}'),
           end   : new Date('{{$lession->end_time}}'),
@@ -207,38 +204,16 @@
       ],
       editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
-      eventReceive: function(info) {
-        $(".course_name").text(info.event.title);
-        let date_event = info.event.start
-        let day = date_event.getFullYear() + "-" + (date_event.getMonth() + 1) + "-" + date_event.getDate()
-        let time = date_event.getHours() + ":" + date_event.getMinutes(); + ":" + date_event.getSeconds();
-        $(".start_time").text(day + " " + time);
+      eventClick: function(event) {
+        id = event.event.id;
+        $(".title").text(event.event.title);
         $("#modal").modal('show');
-      },
+        // newCalendar();
+    }
     });
     calendar.render();
-});
-var course_id;
-function submitForm() {
-        let start_time = $(".start_time").text();
-        $.ajax({
-            url: "{{route('admin-post-create-calendar')}}",
-            method: "POST",
-            data: {
-            course_id: course_id,
-            start_time: start_time, 
-            _token: "{{ csrf_token() }}"
-            },
-            success: function(result) {
-                $(".modal").modal('hide');
-            },
-            error: function (err) {
-                console.log("err");
-            }
-        })
-    }
-function getCourseId(id){
-    course_id = id;
+
 }
+newCalendar();
 </script>
 @endsection

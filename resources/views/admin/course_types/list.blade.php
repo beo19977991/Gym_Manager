@@ -35,7 +35,7 @@
                 @endif
               <div class="card-body">
               <input type="text" id="myInput" placeholder="Tìm theo tên">
-                <table id="example2" class="table table-bordered table-hover myTable">
+                <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
                     <th>Tên Loại Khóa Tập</th>
@@ -48,8 +48,10 @@
                   <tr>
                     <td><a target="_blank" href="#">{{$course_type->course_type_name}}</a></td>
                     <td>{!!$course_type->description!!}</td>
-                    <td><i class="ion-paintbrush" ></i> &nbsp;<a href="{{ route('admin-edit-course-type',['id'=>$course_type->id])}}">Sửa</a></br>
-                    <i class="ion-ios-trash"></i> &nbsp;<a href="{{ route('admin-delete-course-type',['id'=>$course_type->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$course_type->course_type_name}}" class="delete">Xóa</a></td>
+                    <td class="text-center">
+                      <a href="{{ route('admin-edit-course-type',['id'=>$course_type->id])}}"><i class="ion-paintbrush" ></i></a>
+                     <a href="{{ route('admin-delete-course-type',['id'=>$course_type->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$course_type->course_type_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>
+                    </td>
                   </tr>
                 @endforeach
                   </tbody>
@@ -87,7 +89,7 @@
       event.preventDefault();
       /* Act on the event */
       var tukhoa = $(this).val().toLowerCase();
-      $('.myTable tr').filter(function() {
+      $('tbody tr').filter(function() {
          $(this).toggle($(this).text().toLowerCase().indexOf(tukhoa)>-1);
       });
     });

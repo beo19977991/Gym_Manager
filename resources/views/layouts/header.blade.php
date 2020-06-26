@@ -17,13 +17,17 @@
                                     <li><a href="#">{{$trainer_login->full_name}}</a></li>
                                     <li><a href="{{ route('logout_trainer')}}"><span> Đăng xuất</span></a></li>
                                     @elseif(isset($staff_login))
-                                    <li><a href="#">{{$staff_login->full_name}}</a></li>
-                                    <li><a href="{{ route('logout_staff')}}"><span> Đăng xuất</span></a></li>
+                                        @if($staff_login->role == 0)
+                                            <li><a href="#">{{$staff_login->full_name}}</a></li>
+                                            <li><a href="{{ route('logout_staff')}}"><span> Đăng xuất</span></a></li>
+                                            <li><a href="{{ route('admin-home')}}">Trang quản trị</a></li>
+                                        @else
+                                            <li><a href="#">{{$staff_login->full_name}}</a></li>
+                                            <li><a href="{{ route('logout_staff')}}"><span> Đăng xuất</span></a></li>
+                                        @endif
                                     @else
                                     <li><a href="{{ route('select_login')}}">Đăng nhập</a></li>
                                     @endif 
-                                    <li><a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a></li>
-                                    <li><a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a></li>
                                 </ul>
                             </div>
                         </div>

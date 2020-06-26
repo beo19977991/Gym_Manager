@@ -78,6 +78,16 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('edit/{id}','AdminController@postEditUser');
         Route::get('delete/{id}','AdminController@getDeleteUser')->name('admin-delete-user');
     });
+    // ======================Trainer===============================
+    Route::group(['prefix' => 'traienr'], function () {
+        Route::get('list','AdminController@getListTrainer')->name('admin-list-trainer');
+        Route::get('add','AdminController@getAddTrainer')->name('admin-add-trainer');
+        Route::post('add','AdminController@postAddTrainer')->name('admin-post-add-trainer');
+
+        Route::get('edit/{id}','AdminController@getEditTrainer')->name('admin-edit-trainer');
+        Route::post('edit/{id}','AdminController@postEditTrainer');
+        Route::get('delete/{id}','AdminController@getDeleteTrainer')->name('admin-delete-trainer');
+    });
     // =======================Course Type=========================================
     Route::group(['prefix' => 'course_type'], function () {
         Route::get('list','AdminController@getListCourseType')->name('admin-list-course-type');
@@ -127,6 +137,9 @@ Route::group(['prefix' => 'admin'], function () {
     Route::group(['prefix' => 'schedule'], function () {
         Route::get('create_calendar','AdminController@getCreateCalendar')->name('admin-schedule');
         Route::post('post_create_calendar','AdminController@postCreateCalendar')->name('admin-post-create-calendar');
+
+        Route::get('get_delete_lession','AdminController@getDeleteLession')->name('admin-get-delete-lession');
+        Route::post('post_delete_lession/{id}','AdminController@postDeleteLession')->name('admin-post-delete-lession');
     });
     // ========================Ajax - admin=========================================
     Route::group(['prefix' => 'ajax'], function () {

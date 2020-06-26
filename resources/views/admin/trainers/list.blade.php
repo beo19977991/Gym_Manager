@@ -1,4 +1,4 @@
-@extends('admin.layouts.app', ['title' => 'Danh sách loại bài tập'])
+@extends('admin.layouts.app', ['title' => 'Danh sách huấn luyện viên'])
 @section('content')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -38,26 +38,35 @@
                 <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
-                    <th>Tên Loại Bài Tập</th>
+                    <th>Họ Tên</th>
+                    <th>Tuổi </th>
+                    <th>Địa Chỉ</th>
+                    <th>Giới Tính</th>
+                    <th>Môn Dạy</th>
+                    <th>Hình Đại Diện</th>
                     <th>Thao tác</th>
                   </tr>
                   </thead>
                   <tbody>
-                @foreach($exercise_types as $exercise_type)
+                @foreach($trainers as $trainer)
                   <tr>
-                    <td><a target="_blank" href="#">{{$exercise_type->exercise_type_name}}</a></td>
-                    <td class="text-center"><a href="{{ route('admin-edit-exercise-type',['id'=>$exercise_type->id])}}"><i class="ion-paintbrush" ></i></a>
-                     <a href="{{ route('admin-delete-exercise-type',['id'=>$exercise_type->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$exercise_type->exercise_type_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>
+                    <td><a target="_blank" href="#">{{$trainer->full_name}}</a></td>
+                    <td>{{$trainer->age}}</td>
+                    <td>{{$trainer->address}}</td>
+                    <td>
+                      @if($trainer->gender == 1)
+                      <span class="badge badge-success">Nam</span>
+                      @else
+                      <span class="badge badge-warning">Nữ</span>
+                      @endif
                     </td>
+                    <td>{{$trainer->course_type->course_type_name}}</td>
+                    <td class="text-center"><img class="direct-chat-img " width="50" height="50" src="upload/trainer/photo/{{$trainer->photo}}"></td>
+                    <td class="text-center"><a href="{{ route('admin-edit-trainer',['id'=>$trainer->id])}}"><i class="ion-paintbrush" ></i></a>
+                     &nbsp;<a href="{{ route('admin-delete-trainer',['id'=>$trainer->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa huẫn luyện viên  {{$trainer->full_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a></td>
                   </tr>
                 @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                  <th>Tên Loại Bài Tập</th>
-                    <th>Sửa|Xóa</th>
-                  </tr>
-                  </tfoot>
                 </table>
               </div>
           </div>
@@ -89,8 +98,13 @@
          $(this).toggle($(this).text().toLowerCase().indexOf(tukhoa)>-1);
       });
     });
-
-    
+    $('.switchblock').on('change',function(){
+      var user_id = $(this).attr("user_id");
+      $.ajax({url:"admin/ajax/user/"+user_id, success:function(data){
+          $('.switchblock').html(data);
+          console.log("admin/ajax/user/"+user_id);
+      }});
+    });
     var deleteLinks = document.querySelectorAll('.delete');
     for (var i = 0; i < deleteLinks.length; i++) {
         deleteLinks[i].addEventListener('click', function(event) {
@@ -103,6 +117,9 @@
             }
         });
     }
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    });
   });
 </script>
 @endsection

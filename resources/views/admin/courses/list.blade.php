@@ -35,7 +35,7 @@
                 @endif
               <div class="card-body">
               <input type="text" id="myInput" placeholder="Tìm theo tên">
-                <table id="example2" class="table table-bordered table-hover myTable">
+                <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
                     <th>Tên Loại Khóa Tập</th>
@@ -45,7 +45,7 @@
                     <th>Giá</th>
                     <th>Giảm Giá</th>
                     <th>Ảnh</th>
-                    <th>Sửa|Xóa</th>
+                    <th>Thao tác</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -58,23 +58,11 @@
                     <td>{{$course->price}}</td>
                     <td>{{$course->discount}}</td>
                     <td><img style="width:150px;height:100px" src="upload/course/photo/{{$course->photo}}"></td>
-                    <td><i class="ion-paintbrush" ></i> &nbsp;<a href="{{ route('admin-edit-course',['id'=>$course->id])}}">Sửa</a></br>
-                    <i class="ion-ios-trash"></i> &nbsp;<a href="{{ route('admin-delete-course',['id'=>$course->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$course->course_name}}" class="delete">Xóa</a></td>
+                    <td><a href="{{ route('admin-edit-course',['id'=>$course->id])}}"><i class="ion-paintbrush" ></i></a>
+                     &nbsp;<a href="{{ route('admin-delete-course',['id'=>$course->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$course->course_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a></td>
                   </tr>
                 @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                  <th>Tên Loại Khóa Tập</th>
-                    <th>Huấn Luyện Viên</th>
-                    <th>Tên Khóa Tập</th>
-                    <th>Mô Tả</th>
-                    <th>Giá</th>
-                    <th>Giảm Giá</th>
-                    <th>Ảnh</th>
-                    <th>Sửa|Xóa</th>
-                  </tr>
-                  </tfoot>
                 </table>
               </div>
           </div>
@@ -102,7 +90,7 @@
       event.preventDefault();
       /* Act on the event */
       var tukhoa = $(this).val().toLowerCase();
-      $('.myTable tr').filter(function() {
+      $('tbody tr').filter(function() {
          $(this).toggle($(this).text().toLowerCase().indexOf(tukhoa)>-1);
       });
     });
