@@ -35,7 +35,7 @@
                 @endif
               <div class="card-body">
               <input type="text" id="myInput" placeholder="Tìm theo tên">
-                <table id="example2" class="table table-bordered table-hover myTable">
+                <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
                     <th>Họ Tên</th>
@@ -46,7 +46,7 @@
                     <th>Hình Đại Diện</th>
                     <th>Thanh Toán</th>
                     <th>Hoạt Động</th>
-                    <th>Sửa|Xóa</th>
+                    <th>Thao tác</th>
                   </tr>
                   </thead>
                   <tbody>
@@ -69,12 +69,12 @@
                         {{$user->course}}
                         @endif
                     </td>
-                    <td><img style="width:150px;height:100px" src="upload/user/photo/{{$user->photo}}"></td>
+                    <td class="text-center"><img class="direct-chat-img " width="50" height="50" src="upload/user/photo/{{$user->photo}}"></td>
                     <td>
                         @if($user->status == 0)
-                        <span>Chưa thanh toán</span>
+                        <span class="badge badge-danger">Chưa thanh toán</span>
                         @else
-                        <span>Đã thanh toán</span>
+                        <span class="badge badge-success">Đã thanh toán</span>
                         @endif
                     </td>
                     <td>
@@ -88,24 +88,11 @@
                             </div>
                         </label>
                     </td>
-                    <td><i class="ion-paintbrush" ></i> &nbsp;<a href="{{ route('admin-edit-user',['id'=>$user->id])}}">Sửa</a></br>
-                    <i class="ion-ios-trash"></i> &nbsp;<a href="{{ route('admin-delete-user',['id'=>$user->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa người dùng  {{$user->full_name}}" class="delete">Xóa</a></td>
+                    <td class="text-center"><a href="{{ route('admin-edit-user',['id'=>$user->id])}}"><i class="ion-paintbrush" ></i></a>
+                     &nbsp;<a href="{{ route('admin-delete-user',['id'=>$user->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa người dùng  {{$user->full_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a></td>
                   </tr>
                 @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                  <th>Họ Tên</th>
-                    <th>Tuổi </th>
-                    <th>Địa Chỉ</th>
-                    <th>Giới Tính</th>
-                    <th>Khóa Học</th>
-                    <th>Hình Đại Diện</th>
-                    <th>Thanh Toán</th>
-                    <th>Hoạt Động</th>
-                    <th>Sửa|Xóa</th>
-                  </tr>
-                  </tfoot>
                 </table>
               </div>
           </div>
@@ -133,7 +120,7 @@
       event.preventDefault();
       /* Act on the event */
       var tukhoa = $(this).val().toLowerCase();
-      $('.myTable tr').filter(function() {
+      $('tbody tr').filter(function() {
          $(this).toggle($(this).text().toLowerCase().indexOf(tukhoa)>-1);
       });
     });
@@ -156,6 +143,9 @@
             }
         });
     }
+    $("input[data-bootstrap-switch]").each(function(){
+      $(this).bootstrapSwitch('state', $(this).prop('checked'));
+    });
   });
 </script>
 @endsection

@@ -53,4 +53,8 @@ class Trainer extends Authenticatable
     {
         return $this->belongsTo('App\CourseType', 'course_type_id', 'id');
     }
+    public function exercise()
+    {
+        return $this->hasMany('App\Exercise','trainer_id','id');
+    }
 }

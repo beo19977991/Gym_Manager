@@ -12,11 +12,16 @@ class Exercise extends Model
         'exercise_type_id',
         'exercise_name',
         'video',
-        'description'
+        'description',
+        'trainer_id',
     ];
 
     public function exercise_type()
     {
-        return $this->belongsTo('App\ExerciseType','id','exercise_type_id');
+        return $this->belongsTo('App\ExerciseType','exercise_type_id','id');
+    }
+    public function trainer()
+    {
+        return $this->belongsTo('App\Trainer','trainer_id','id');
     }
 }

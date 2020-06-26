@@ -101,6 +101,33 @@ Route::group(['prefix' => 'admin'], function () {
 
         Route::get('delete/{id}','AdminController@getDeleteCourse')->name('admin-delete-course');
     });
+    // =============================Exercise Type ==================================
+    Route::group(['prefix' => 'exercise_type'], function () {
+        Route::get('list','AdminController@getListExerciseType')->name('admin-list-exercise-type');
+
+        Route::get('add','AdminController@getAddExerciseType')->name('admin-add-exercise-type');
+        Route::post('add','AdminController@postAddExerciseType');
+
+        Route::get('edit/{id}','AdminController@getEditExerciseType')->name('admin-edit-exercise-type');
+        Route::post('edit/{id}','AdminController@postEditExerciseType');
+        Route::get('delete/{id}','AdminController@getDeleteExerciseType')->name('admin-delete-exercise-type');
+    });
+        // =============================Exercise ==================================
+    Route::group(['prefix' => 'exercise'], function () {
+        Route::get('list','AdminController@getListExercise')->name('admin-list-exercise');
+    
+        Route::get('add','AdminController@getAddExercise')->name('admin-add-exercise');
+        Route::post('add','AdminController@postAddExercise');
+    
+        Route::get('edit/{id}','AdminController@getEditExercise')->name('admin-edit-exercise');
+        Route::post('edit/{id}','AdminController@postEditExercise');
+        Route::get('delete/{id}','AdminController@getDeleteExercise')->name('admin-delete-exercise');
+    });
+        // =============================Schedule ==================================
+    Route::group(['prefix' => 'schedule'], function () {
+        Route::get('create_calendar','AdminController@getCreateCalendar')->name('admin-schedule');
+        Route::post('post_create_calendar','AdminController@postCreateCalendar')->name('admin-post-create-calendar');
+    });
     // ========================Ajax - admin=========================================
     Route::group(['prefix' => 'ajax'], function () {
         Route::get('user/{user_id}','AdminController@getBlockUser');

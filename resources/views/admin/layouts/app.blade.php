@@ -32,9 +32,10 @@
 <script src="{{ asset('css/plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('css/dist/js/adminlte.min.js') }}"></script>
-
+<!-- Bootstrap Switch -->
+<script src="{{ asset('css/plugins/bootstrap-switch/bootstrap-switch.min.js') }}"></script>
 <!-- OPTIONAL SCRIPTS -->
-<script src="{{ asset('css/plugins/chart/Chart.min.js') }}"></script>
+
 <script src="{{ asset('css/dist/js/demo.js') }}"></script>
 <script src="{{ asset('css/dist/js/pages/dashboard3.js') }}"></script>
 @yield('scripts')
