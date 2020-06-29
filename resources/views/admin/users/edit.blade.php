@@ -87,15 +87,37 @@
                   <div class="form-group">
                     <img id="thumbnil" style="width:20%; margin-top:10px;"  src="" alt="image"/>
                   </div>
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                        <input class="form-check-input" type="radio" name="gender" @if($user->gender == 1){{"checked"}}@endif value="1" id="male">
-                            <label class="form-check-label">Nam</label>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input class="form-check-input" type="radio" name="gender" @if($user->gender == 2){{"checked"}}@endif value="2" id="female">
-                            <label class="form-check-label">Nữ</label>
-                        </div>
-                    </div>
+                  <div class="form-group">
+                      <div class="custom-control custom-radio">
+                      <input class="form-check-input" type="radio" name="gender" @if($user->gender == 1){{"checked"}}@endif value="1" id="male">
+                          <label class="form-check-label">Nam</label>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input class="form-check-input" type="radio" name="gender" @if($user->gender == 2){{"checked"}}@endif value="2" id="female">
+                          <label class="form-check-label">Nữ</label>
+                      </div>
+                  </div>
+                  <div class="form-group">
+                    <label>Giá khóa tập</label>
+                    <input type="text" name="price" class="form-control" disabled value ="{{$user->course->price}}">
+                  </div>
+                  <div class="form-group">
+                    <label>Giảm giá</label>
+                    <input type="text" name="discount" class="form-control" disabled value="{{$user->course->discount * 100}} %">
+                  </div>
+                  <div class="form-group">
+                    <label>Giá phải trả</label>
+                    <input type="text" name="cost" class="form-control" disabled value="{{$user->course->price * (1 - $user->course->discount)}} vnd">
+                  </div>
+                  <div class="form-group">
+                    <label>Thanh Toán</label>
+                    <div class="custom-control custom-radio">
+                      <input class="form-check-input" type="radio" name="status" @if($user->status == 1){{"checked"}}@endif value="1" id="paid">
+                          <label class="form-check-label">Đã thanh toán</label>
+                          &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                      <input class="form-check-input" type="radio" name="status" @if($user->status == 0){{"checked"}}@endif value="0" id="unpaid">
+                          <label class="form-check-label">Chưa thanh toán</label>
+                      </div>
+                  </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
@@ -121,24 +143,24 @@
 @endsection
 @section('scripts')
 <script>
-        function showMyImage(fileInput) {
-        var files = fileInput.files;
-        for (var i = 0; i < files.length; i++) {           
-            var file = files[i];
-            var imageType = /image.*/;     
-            if (!file.type.match(imageType)) {
-                continue;
-            }           
-            var img=document.getElementById("thumbnil");            
-            img.file = file;    
-            var reader = new FileReader();
-            reader.onload = (function(aImg) { 
-                return function(e) { 
-                    aImg.src = e.target.result; 
-                }; 
-            })(img);
-            reader.readAsDataURL(file);
-        }    
-    }
+  function showMyImage(fileInput) {
+    var files = fileInput.files;
+    for (var i = 0; i < files.length; i++) {           
+      var file = files[i];
+      var imageType = /image.*/;     
+      if (!file.type.match(imageType)) {
+          continue;
+      }           
+      var img=document.getElementById("thumbnil");            
+          img.file = file;    
+      var reader = new FileReader();
+          reader.onload = (function(aImg) { 
+            return function(e) { 
+              aImg.src = e.target.result; 
+            }; 
+          })(img);
+          reader.readAsDataURL(file);
+    }    
+  }
 </script>
 @endsection

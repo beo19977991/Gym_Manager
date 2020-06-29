@@ -1,4 +1,4 @@
-@extends('admin.layouts.app', ['title' => 'Thêm Loại Bài tập'])
+@extends('admin.layouts.app', ['title' => 'Thêm Loại Sản Phẩm'])
 @section('styles')
   <base href="{{asset(' ')}}">
   <!-- summernote -->
@@ -13,7 +13,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Thêm Loại Bài Tập</h1>
+            <h1>Thêm Loại Sản Phẩm</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -34,7 +34,7 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Thêm Loại Bài Tập</h3>
+                <h3 class="card-title">Thêm Loại Sản Phẩm</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -50,22 +50,21 @@
                             {{session('message')}}
                         </div>
                 @endif
-              <form action="{{route('admin-add-exercise-type')}}" method="POST" enctype="multipart/form-data">
+              <form action="{{route('admin-add-product-type')}}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="card-body">
                   <div class="form-group">
-                    <label>Tên Loại Khóa Tập</label>
-                    <select class="form-control" name="course_type" id="course_type">
-                      @foreach($course_types as $course_type)
-                        <option value = "{{$course_type->id}}">{{$course_type->course_type_name}}</option>
-                      @endforeach
-                    </select>
+                    <label>Tên Loại Sản Phẩm</label>
+                    <input type="text" name="product_type_name" class="form-control" id="full_name" placeholder="Nhập tên loại Sản Phẩm">
                   </div>
                   <div class="form-group">
-                    <label>Tên Loại Bài Tập</label>
-                    <input type="text" name="exercise_type_name" class="form-control" id="full_name" placeholder="Nhập tên loại bài tập">
+                    <label>Mô tả</Label>
+                    <div class="mb-3">
+                      <textarea class="textarea" name ="discription" placeholder="Nhập Mô Tả"
+                        style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
+                      </textarea>
+                    </div>
                   </div>
-                </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
                   <button type="submit" class="btn btn-primary">Submit</button>

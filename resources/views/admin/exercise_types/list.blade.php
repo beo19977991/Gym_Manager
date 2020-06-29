@@ -38,6 +38,7 @@
                 <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
+                    <th>Tên Loại Khóa Học</th>
                     <th>Tên Loại Bài Tập</th>
                     <th>Thao tác</th>
                   </tr>
@@ -45,6 +46,7 @@
                   <tbody>
                 @foreach($exercise_types as $exercise_type)
                   <tr>
+                    <td><a target="_blank" href="">{{$exercise_type->course_type->course_type_name}}</a></td>
                     <td><a target="_blank" href="#">{{$exercise_type->exercise_type_name}}</a></td>
                     <td class="text-center"><a href="{{ route('admin-edit-exercise-type',['id'=>$exercise_type->id])}}"><i class="ion-paintbrush" ></i></a>
                      <a href="{{ route('admin-delete-exercise-type',['id'=>$exercise_type->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$exercise_type->exercise_type_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>
@@ -52,12 +54,6 @@
                   </tr>
                 @endforeach
                   </tbody>
-                  <tfoot>
-                  <tr>
-                  <th>Tên Loại Bài Tập</th>
-                    <th>Sửa|Xóa</th>
-                  </tr>
-                  </tfoot>
                 </table>
               </div>
           </div>

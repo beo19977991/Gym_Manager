@@ -1,4 +1,4 @@
-@extends('admin.layouts.app', ['title' => 'Danh sách khóa tập'])
+@extends('admin.layouts.app', ['title' => 'Danh sách Bài viết'])
 @section('content')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -38,30 +38,23 @@
                 <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
-                    <th>Tên Loại Khóa Tập</th>
-                    <th>Huấn Luyện Viên</th>
-                    <th>Tên Khóa Tập</th>
-                    <th>Mô Tả</th>
-                    <th>Giá</th>
-                    <th>Giảm Giá</th>
+                    <th>Tên Bài Viết</th>
+                    <th>Tên Người Viết</th>
+                    <th>Nội dung</th>
                     <th>Ảnh</th>
                     <th>Thao tác</th>
                   </tr>
                   </thead>
                   <tbody>
-                @foreach($courses as $course)
+                @foreach($posts as $post)
                   <tr>
-                    <td><a target="_blank" href="#">{{$course->course_type->course_type_name}}</a></td>
-                    <td><a target="_blank" href="">{{$course->trainer->full_name}}</a></td>
-                    <td><a target="_blank" href="{{route('get-class-lession-calendar',['id'=>$course->id])}}">{{$course->course_name}}</a></td>
-                    <td>{!!$course->description!!}</td>
-                    <td>{{$course->price}}</td>
-                    <td>{{$course->discount}}</td>
-                    <td><img style="width:150px;height:100px" src="upload/course/photo/{{$course->photo}}"></td>
+                    <td><a target="_blank" href="#">{{$post->title}}</a></td>
+                    <td><a target="_blank" href="">{{$post->staff->full_name}}</a></td>
+                    <td>{!!$post->body!!}</td>
+                    <td><img style="width:150px;height:100px" src="upload/post/photo/{{$post->photo}}"></td>
                     <td>
-                    <a  href="{{ route('admin-view-schedule-class',['id'=>$course->id])}}"><i class="ion-settings"></i></a>
-                    <a class="ml-2" href="{{ route('admin-edit-course',['id'=>$course->id])}}"><i class="ion-paintbrush" ></i></a>
-                     &nbsp;<a href="{{ route('admin-delete-course',['id'=>$course->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$course->course_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>
+                    <a href="{{ route('admin-edit-post',['id'=>$post->id])}}"><i class="ion-paintbrush" ></i></a>
+                     &nbsp;<a href="{{ route('admin-delete-post',['id'=>$post->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$post->title}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>
                      </td>
                   </tr>
                 @endforeach

@@ -48,4 +48,8 @@ class Staff extends Authenticatable
     {
         return $this->roles()->where('role', 0)->exists();
     }
+    public function post()
+    {
+        return $this->hasMany('App\Post','staff_id','id');
+    }
 }

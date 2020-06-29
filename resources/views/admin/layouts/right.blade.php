@@ -183,31 +183,100 @@
             </ul>
         </li>
     <!-- Exercise end -->
-        <!-- Lession start -->
+        <!-- Exercise start -->
         <li class="nav-item has-treeview">
             <a href="" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Lịch
+                Tin tức
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="{{ route('admin-schedule') }}" class="nav-link">
+                <a href="{{ route('admin-list-post')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Tạo lịch tập</p>
+                  <p>Danh Sách Tin Tức</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="{{ route('admin-get-delete-lession') }}" class="nav-link">
+                <a href="{{route('admin-add-post')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Xóa Lịch Tập</p>
+                  <p>Thêm Tin Tức</p>
                 </a>
               </li>
             </ul>
         </li>
-    <!-- Lession end -->
+    <!-- Exercise end -->
+            <!-- Schedule start -->
+            <li class="nav-item has-treeview">
+            <a href="" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Lịch tập
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin-add-schedule') }}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Lịch</p>
+                </a>
+              </li>
+            </ul>
+        </li>
+    <!-- Schedule end -->
+          <!-- Product Type start -->
+          <li class="nav-item has-treeview">
+            <a href="" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Loại Sản Phẩm
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin-list-product-type')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh Sách Loại Sản phẩm</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('admin-add-product-type')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm Loại Sản Phẩm</p>
+                </a>
+              </li>
+            </ul>
+        </li>
+    <!-- Product type end -->
+          <!-- Product start -->
+          <li class="nav-item has-treeview">
+            <a href="" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Sản Phẩm
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{ route('admin-list-product')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh Sách Sản phẩm</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('admin-add-product')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm Sản Phẩm</p>
+                </a>
+              </li>
+            </ul>
+        </li>
+    <!-- Product end -->
     </ul>
     </nav>
       <!-- /.sidebar-menu -->

@@ -1,4 +1,4 @@
-@extends('admin.layouts.app', ['title' => 'Sửa khóa tập'])
+@extends('admin.layouts.app', ['title' => 'Sửa Bài viết'])
 @section('styles')
   <base href="{{asset(' ')}}">
   <!-- summernote -->
@@ -16,7 +16,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Sửa Khóa Tập</h1>
+            <h1>Sửa bài viết</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -37,7 +37,7 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Sửa Khóa Tập</h3>
+                <h3 class="card-title">Sửa Bài viết</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -53,68 +53,28 @@
                             {{session('message')}}
                         </div>
                 @endif
-              <form action="{{route('admin-edit-course',['id'=>$course->id])}}" method="POST" enctype="multipart/form-data">
+              <form action="{{route('admin-edit-post',['id'=>$post->id])}}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="card-body">
                   <div class="form-group">
-                    <label>Tên Loại Khóa Tập</label>
-                    <select class="form-control" name="course_type" id="course_type">
-                      @foreach($course_types as $course_type)
-                        <option 
-                          @if($course_type->id == $course->course_type->id)
-                          {{"selected"}}
-                          @endif
-                        value = "{{$course_type->id}}">{{$course_type->course_type_name}}</option>
-                      @endforeach
-                    </select>
+                    <label>Bài viết</label>
+                    <input type="text" name="title" class="form-control" id="address" placeholder="Nhập Tên bài viết" value="{{$post->title}}">
                   </div>
                   <div class="form-group">
-                    <label>Tên Huấn Luyện Viên</label>
-                    <select class="form-control" name="trainer" id="trainer">
-                      @foreach($trainers as $trainer)
-                        <option
-                        @if($trainer->id == $course->trainer->id)
-                        {{"selected"}}
-                        @endif
-                        value = "{{$trainer->id}}">{{$trainer->full_name}}</option>
-                      @endforeach
-                    </select>
-                  </div>
-                  <div class="form-group">
-                    <label>Tên Khóa Tập</label>
-                    <input type="text" name="course_name" class="form-control" id="address" placeholder="Nhập Tên Khóa Tập" value="{{$course->course_name}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Mô tả</Label>
+                    <label>Nội dung bài viết</Label>
                     <div class="mb-3">
-                      <textarea class="textarea" name ="description"
+                      <textarea class="textarea" name ="body"
                         style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
-                        {!!$course->description!!}
+                        {!!$post->body!!}
                       </textarea>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label>Giá</label>
-                    <input type="text" name="price" class="form-control" id="address" placeholder="Nhập Giá Khóa Tập" value="{{$course->price}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Giảm Giá</label>
-                    <input type="text" name="discount" class="form-control" id="address" placeholder="Nhập Giảm Giá Khóa Tập" value="{{$course->discount}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Start Time</label>
-                      <input type="text" class="form-control" id="start_time" name="start_time" value="{{ Carbon\Carbon::parse($course->start_time)->format('Y-m-d') }}"/>
-                  </div>
-                  <div class="form-group">
-                    <label>End Time</label>
-                      <input type="text" class="form-control" id="end_time" name="end_time" value="{{ Carbon\Carbon::parse($course->end_time)->format('Y-m-d') }}" />
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputFile">Ảnh</label>                  
+                    <label for="exampleInputFile">Ảnh</label>
                     <input class="form-control" type="file" name="photo" accept="image/*"  onchange="showMyImage(this)">
-                    <img class="mt-2" style="width:150px;height:100px" src="upload/course/photo/{{$course->photo}}">
+                    <img class="mt-2" style="width:150px;height:100px" src="upload/post/photo/{{$post->photo}}">
                   </div>
-                  <div class="form-group mt-2">
+                  <div class="form-group">
                     <img id="thumbnil" style="width:20%; margin-top:10px;"  src="" alt="image"/>
                   </div>
                 </div>

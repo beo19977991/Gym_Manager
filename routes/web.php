@@ -110,6 +110,8 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('edit/{id}','AdminController@postEditCourse');
 
         Route::get('delete/{id}','AdminController@getDeleteCourse')->name('admin-delete-course');
+
+        Route::get('view/schedule-class/{id}','AdminController@getViewScheduleClass')->name('admin-view-schedule-class');
     });
     // =============================Exercise Type ==================================
     Route::group(['prefix' => 'exercise_type'], function () {
@@ -122,7 +124,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('edit/{id}','AdminController@postEditExerciseType');
         Route::get('delete/{id}','AdminController@getDeleteExerciseType')->name('admin-delete-exercise-type');
     });
-        // =============================Exercise ==================================
+    // =============================Exercise ==================================
     Route::group(['prefix' => 'exercise'], function () {
         Route::get('list','AdminController@getListExercise')->name('admin-list-exercise');
     
@@ -133,13 +135,47 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('edit/{id}','AdminController@postEditExercise');
         Route::get('delete/{id}','AdminController@getDeleteExercise')->name('admin-delete-exercise');
     });
-        // =============================Schedule ==================================
-    Route::group(['prefix' => 'schedule'], function () {
-        Route::get('create_calendar','AdminController@getCreateCalendar')->name('admin-schedule');
-        Route::post('post_create_calendar','AdminController@postCreateCalendar')->name('admin-post-create-calendar');
+    // =============================Schedule ==================================
+    Route::group(['prefix' => 'schedules'], function () {
+        Route::get('add-schedule','AdminController@getAddSchedule')->name('admin-add-schedule');
+        Route::post('add-schedule-calendar','AdminController@postAddSchedule')->name('admin-post-add-schedule');
+        Route::post('delete-schedule-calendar/{id}','AdminController@postDeleteSchedule')->name('admin-post-delete-schedule');
+        Route::post('check-date-click/{date}/{time}','AdminController@checkDateClick')->name('admin-check-date-click');
+    });
+    // =============================Post ==================================
+    Route::group(['prefix' => 'post'], function () {
+        Route::get('list','AdminController@getListPost')->name('admin-list-post');
+    
+        Route::get('add','AdminController@getAddPost')->name('admin-add-post');
+        Route::post('add','AdminController@postAddPost');
+    
+        Route::get('edit/{id}','AdminController@getEditPost')->name('admin-edit-post');
+        Route::post('edit/{id}','AdminController@postEditPost');
+        Route::get('delete/{id}','AdminController@getDeletePost')->name('admin-delete-post');
+    });
+    // =============================ProductType ==================================
+    Route::group(['prefix' => 'product_type'], function () {
+        Route::get('list','AdminController@getListProductType')->name('admin-list-product-type');
+    
+        Route::get('add','AdminController@getAddProductType')->name('admin-add-product-type');
+        Route::post('add','AdminController@postAddProductType');
+    
+        Route::get('edit/{id}','AdminController@getEditProductType')->name('admin-edit-product-type');
+        Route::post('edit/{id}','AdminController@postEditProductType');
 
-        Route::get('get_delete_lession','AdminController@getDeleteLession')->name('admin-get-delete-lession');
-        Route::post('post_delete_lession/{id}','AdminController@postDeleteLession')->name('admin-post-delete-lession');
+        Route::get('delete/{id}','AdminController@getDeleteProductType')->name('admin-delete-product-type');
+    });
+    // =============================Product ==================================
+    Route::group(['prefix' => 'product'], function () {
+        Route::get('list','AdminController@getListProduct')->name('admin-list-product');
+    
+        Route::get('add','AdminController@getAddProduct')->name('admin-add-product');
+        Route::post('add','AdminController@postAddProduct');
+    
+        Route::get('edit/{id}','AdminController@getEditProduct')->name('admin-edit-product');
+        Route::post('edit/{id}','AdminController@postEditProduct');
+
+        Route::get('delete/{id}','AdminController@getDeleteProduct')->name('admin-delete-product');
     });
     // ========================Ajax - admin=========================================
     Route::group(['prefix' => 'ajax'], function () {

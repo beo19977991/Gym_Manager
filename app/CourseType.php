@@ -21,4 +21,8 @@ class CourseType extends Model
     {
         return $this->hasMany('App\Trainer','course_type_id','id');
     }
+    public function exercise_type()
+    {
+        return $this->hasMany('App\ExerciseType','course_type_id','id');
+    }
 }

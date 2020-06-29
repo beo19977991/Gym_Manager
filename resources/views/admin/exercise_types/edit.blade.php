@@ -53,6 +53,18 @@
               <form action="{{route('admin-edit-exercise-type',['id'=>$exercise_type->id])}}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="card-body">
+                <div class="form-group">
+                    <label>Tên Loại Khóa Tập</label>
+                    <select class="form-control" name="course_type" id="course_type">
+                      @foreach($course_types as $course_type)
+                        <option 
+                        @if($course_type->id == $exercise_type->course_type_id)
+                          {{"selected"}}
+                        @endif
+                        value = "{{$course_type->id}}">{{$course_type->course_type_name}}</option>
+                      @endforeach
+                    </select>
+                  </div>
                   <div class="form-group">
                     <label>Tên Loại Bài Tập</label>
                     <input type="text" name="exercise_type_name" class="form-control" id="full_name" value ="{{$exercise_type->exercise_type_name}}">

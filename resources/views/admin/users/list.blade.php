@@ -66,7 +66,7 @@
                         @if($user->course_id == 0)
                         <span>Chưa tham gia</span>
                         @else
-                        {{$user->course}}
+                        {{$user->course->course_name}}
                         @endif
                     </td>
                     <td class="text-center"><img class="direct-chat-img " width="50" height="50" src="upload/user/photo/{{$user->photo}}"></td>
