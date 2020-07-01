@@ -31,7 +31,7 @@ class StaffController extends Controller
         if(Auth::guard('staff')->attempt($credentials) && Auth::guard('staff')->user()->role == 1)
         {
             $request->session()->put('staff','login_success');
-            return redirect('home');
+            return redirect()->route('page-home');
         }
         else{
             return view('staff.login');
@@ -102,6 +102,6 @@ class StaffController extends Controller
     {
         $request->session()->forget('key');
         Auth::guard('staff')->logout();
-        return redirect('home');
+        return redirect()->route('page-home');
     }
 }

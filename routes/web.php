@@ -27,9 +27,6 @@ View::composer(['*'],function($view)
     $staff_login = Auth::guard('staff')->user();
     $view->with('staff_login',$staff_login);
 });
-Route::get('home', function () {
-    return view('pages.index');
-});
 // ======================Select Login===================================
 Route::get('select_option_login','SelectLoginController@getSelectLogin')->name('select_login');
 Route::post('select_option_login','SelectLoginController@postSelectLogin')->name('post_select_login');
@@ -153,6 +150,17 @@ Route::group(['prefix' => 'admin'], function () {
         Route::post('edit/{id}','AdminController@postEditPost');
         Route::get('delete/{id}','AdminController@getDeletePost')->name('admin-delete-post');
     });
+    // =============================Trainer Post ==================================
+        Route::group(['prefix' => 'trainerpost'], function () {
+            Route::get('list','AdminController@getListTrainerPost')->name('admin-list-trainer-post');
+        
+            Route::get('add','AdminController@getAddTrainerPost')->name('admin-add-trainer-post');
+            Route::post('add','AdminController@postAddTrainerPost');
+        
+            Route::get('edit/{id}','AdminController@getEditTrainerPost')->name('admin-edit-trainer-post');
+            Route::post('edit/{id}','AdminController@postEditTrainerPost');
+            Route::get('delete/{id}','AdminController@getDeleteTrainerPost')->name('admin-delete-trainer-post');
+        });
     // =============================ProductType ==================================
     Route::group(['prefix' => 'product_type'], function () {
         Route::get('list','AdminController@getListProductType')->name('admin-list-product-type');
@@ -184,3 +192,33 @@ Route::group(['prefix' => 'admin'], function () {
     });
 });
 // ===================================================================
+
+// ==============================Page==================================
+    Route::group(['prefix'=>'page'],function(){
+    // =========================ajax=====================================
+        Route::group(['prefix' => 'ajax'], function () {
+            Route::get('search_course','PageController@getSearchCourse')->name('search-course');
+            Route::get('search_trainer','PageController@getSearchTrainer')->name('search-trainer');
+            Route::get('search_exercise','PageController@getSearchExercise')->name('search-exercise');
+            Route::get('course/{id}', 'PageController@getResultSearchCourse')->name('getCourse');
+        });
+    // =================Home====================================================================
+        Route::get('home','PageController@getHome')->name('page-home');
+        Route::get('course','PageController@getCourse')->name('page-course');
+        Route::get('schedule','PageController@getSchedule')->name('page-schedule');
+        Route::get('trainer','PageController@getTrainer')->name('page-trainer');
+        Route::get('news','PageController@getNews')->name('page-news');
+        Route::get('exercise','PageController@getExercise')->name('page-exercise');
+
+    // ===============================Course Detail=============================================
+        Route::get('course/detail/{id}','PageController@getCourseDetail')->name('page-course-detail');
+    // ==============================Register Course============================================
+        Route::get('course/register/{id}','UserController@getCourseRegister')->name('page-course-register');
+    // ==============================Cancel register course ====================================
+        Route::get('course/cancel_register/{id}','UserController@getCancelRegisterCourse')->name('page-course-cancel-register');
+
+        // ================**************************==============================================
+    // =====================================Trainer Detail ========================================
+        Route::get('trainer/detail/{id}','TrainerController@getTrainerDetail')->name('page-trainer-detail');
+
+});

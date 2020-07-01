@@ -46,12 +46,12 @@
                             <div class="main-menu">
                                 <nav>
                                     <ul>
-                                        <li class="active"><a href="#">Trang Chủ</a></li>
-                                        <li><a href="#">Lớp Học</a></li>
-                                        <li><a href="#">Lịch Học</a></li>
-                                        <li><a href="#">Huấn Luyện Viên</a></li>
-                                        <li><a href="#">Tin Tức</a></li>
-                                        <li><a href="#">Bài Tập</a></li>
+                                        <li class="active"><a href="{{route('page-home')}}">Trang Chủ</a></li>
+                                        <li><a href="{{route('page-course')}}">Khóa Tập</a></li>
+                                        <li><a href="{{route('page-schedule')}}">Lịch Tập</a></li>
+                                        <li><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
+                                        <li><a href="{{route('page-news')}}">Tin Tức</a></li>
+                                        <li><a href="{{route('page-exercise')}}">Bài Tập</a></li>
                                     </ul>
                                 </nav>
                             </div>

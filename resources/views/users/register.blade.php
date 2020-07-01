@@ -101,7 +101,7 @@
           <!-- /.col -->
         </div>
       </form>
-      <a href="{{ route('login)}}" class="text-center">Tôi đã có tài khoản</a>
+      <a href="{{ route('login')}}" class="text-center">Tôi đã có tài khoản</a>
     </div>
     <!-- /.form-box -->
   </div><!-- /.card -->

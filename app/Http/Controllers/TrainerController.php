@@ -3,9 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Trainer;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
+use App\Trainer;
+use App\Course;
+use App\Exercise;
+use App\TrainerPost;
 
 class TrainerController extends Controller
 {
@@ -31,7 +34,7 @@ class TrainerController extends Controller
         if(Auth::guard('trainer')->attempt($credentials))
         {
             $request->session()->put('trainer','login_success');
-            return redirect('home');
+            return redirect()->route('page-home');
         }
         else{
             return view('trainer.login');
@@ -95,6 +98,7 @@ class TrainerController extends Controller
         {
             $trainer->photo="default.png";
         }
+        $trainer->description ="";
         $trainer->save();
 
         return redirect()->route('login_trainer');
@@ -103,6 +107,19 @@ class TrainerController extends Controller
     {
         $request->session()->forget('key');
         Auth::guard('trainer')->logout();
-        return redirect()->route('home');
+        return redirect()->route('page-home');
+    }
+    public function getTrainerDetail($id)
+    {
+        $trainer_posts = TrainerPost::where('trainer_id','=',$id)
+                                    ->orderBy('created_at','DESC')
+                                    ->get();
+        $trainer_others = Trainer::where('id','!=',$id)->get();
+        $exercise_trainers = Exercise::where('trainer_id','=',$id)
+                                        ->orderBy('created_at','DESC')            
+                                        ->get();
+        $course_trainers = Course::where('trainer_id','=',$id)->get();
+        $trainer = Trainer::find($id);
+        return view('trainer.trainer_detail',['trainer'=>$trainer,'course_trainers'=>$course_trainers,'exercise_trainers'=>$exercise_trainers,'trainer_others'=>$trainer_others,'trainer_posts'=>$trainer_posts]);
     }
 }

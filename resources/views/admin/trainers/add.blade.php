@@ -1,4 +1,11 @@
 @extends('admin.layouts.app', ['title' => 'Thêm huấn luyện viên'])
+@section('styles')
+  <base href="{{asset(' ')}}">
+  <!-- summernote -->
+  <link rel="stylesheet" href="{{ asset('css/plugins/summernote/summernote-bs4.css')}}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+
+@endsection
 @section('content')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -80,6 +87,14 @@
                     <input class="form-control" type="file" name="photo" accept="image/*"  onchange="showMyImage(this)">
                   </div>
                   <div class="form-group">
+                    <label>Mô tả</Label>
+                    <div class="mb-3">
+                      <textarea class="textarea" name ="description"
+                        style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
+                      </textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
                     <img id="thumbnil" style="width:20%; margin-top:10px;"  src="" alt="image"/>
                   </div>
                     <div class="form-group">
@@ -115,7 +130,13 @@
   <!-- /.content-wrapper -->
 @endsection
 @section('scripts')
+<!-- Summernote -->
+<script src="css/plugins/summernote/summernote-bs4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
+  $(function () {
+    $('.textarea').summernote();
+  })
     function showMyImage(fileInput) {
         var files = fileInput.files;
         for (var i = 0; i < files.length; i++) {           

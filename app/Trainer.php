@@ -24,6 +24,7 @@ class Trainer extends Authenticatable
         'address',
         'gender',
         'photo',
+        'description',
     ];
 
     /**
@@ -56,5 +57,9 @@ class Trainer extends Authenticatable
     public function exercise()
     {
         return $this->hasMany('App\Exercise','trainer_id','id');
+    }
+    public function trainer_post()
+    {
+        return $this->hasMany('App\TrainerPost','trainer_id','id');
     }
 }

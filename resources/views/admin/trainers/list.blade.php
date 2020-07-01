@@ -43,6 +43,7 @@
                     <th>Địa Chỉ</th>
                     <th>Giới Tính</th>
                     <th>Môn Dạy</th>
+                    <th>Giới Thiệu</th>
                     <th>Hình Đại Diện</th>
                     <th>Thao tác</th>
                   </tr>
@@ -61,6 +62,7 @@
                       @endif
                     </td>
                     <td>{{$trainer->course_type->course_type_name}}</td>
+                    <td>{!!$trainer->description!!}</td>
                     <td class="text-center"><img class="direct-chat-img " width="50" height="50" src="upload/trainer/photo/{{$trainer->photo}}"></td>
                     <td class="text-center"><a href="{{ route('admin-edit-trainer',['id'=>$trainer->id])}}"><i class="ion-paintbrush" ></i></a>
                      &nbsp;<a href="{{ route('admin-delete-trainer',['id'=>$trainer->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa huẫn luyện viên  {{$trainer->full_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a></td>

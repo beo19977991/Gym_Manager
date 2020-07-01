@@ -29,7 +29,7 @@ class LoginController extends Controller
         if(Auth::attempt($credentials))
         {
             $request->session()->put('user','login_success');
-            return redirect('home');
+            return redirect()->route('page-home');
         }
         else{
             return view('users.login');
@@ -39,6 +39,6 @@ class LoginController extends Controller
     {
         $request->session()->forget('key');
         Auth::logout();
-        return redirect('home');
+        return redirect()->route('page-home');
     }
 }

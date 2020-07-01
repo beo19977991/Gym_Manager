@@ -1,8 +1,11 @@
-@extends('admin.layouts.app', ['title' => 'Sửa Sản Phẩm'])
+@extends('admin.layouts.app', ['title' => 'Sửa Bài viết'])
 @section('styles')
   <base href="{{asset(' ')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('css/plugins/summernote/summernote-bs4.css')}}">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/daterangepicker/daterangepicker.css')}}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 @endsection
 @section('content')
@@ -13,7 +16,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Sửa Sản Phẩm</h1>
+            <h1>Sửa bài viết</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
@@ -34,7 +37,7 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Sửa Sản Phẩm</h3>
+                <h3 class="card-title">Sửa Bài viết</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -50,46 +53,30 @@
                             {{session('message')}}
                         </div>
                 @endif
-              <form action="{{route('admin-edit-product',['id'=>$product->id])}}" method="POST" enctype="multipart/form-data">
+              <form action="{{route('admin-edit-trainer-post',['id'=>$trainer_post->id])}}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="card-body">
                   <div class="form-group">
-                    <label>Tên Loại Sản Phẩm</label>
-                    <select class="form-control" name="product_type" id="product_type">
-                      @foreach($product_types as $product_type)
-                      <option 
-                      @if($product->produt_type_id == $product_type->id)
-                      {{"selected"}}
-                      @endif
-                      value="{{$product_type->id}}">{{$product_type->product_type_name}}</option>
-                      @endforeach
-                    </select>
+                    <label>Bài viết</label>
+                    <input type="text" name="title" class="form-control" id="address" placeholder="Nhập Tên bài viết" value="{{$trainer_post->title}}">
                   </div>
                   <div class="form-group">
-                    <label>Tên Sản Phẩm</label>
-                    <input type="text" name="product_name" class="form-control" id="product_name" placeholder="Nhập Tên Sản Phẩm" value="{{$product->product_name}}">
+                    <label>Tóm Tắt</label>
+                    <input type="text" name="preview" class="form-control" id="address" placeholder="Nhập Tên bài viết" value="{{$trainer_post->preview}}">
                   </div>
                   <div class="form-group">
-                    <label>Mô tả</Label>
+                    <label>Nội dung bài viết</Label>
                     <div class="mb-3">
-                      <textarea class="textarea" name ="discription" placeholder="Nhập Mô Tả"
+                      <textarea class="textarea" name ="body"
                         style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
-                        {!!$product->description!!}
+                        {!!$trainer_post->body!!}
                       </textarea>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label>Giá</label>
-                    <input type="text" name="price" class="form-control" id="price" placeholder="Nhập Giá Sản Phẩm" value="{{$product->price}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Số Lượng</label>
-                    <input type="text" name="quantity" class="form-control" id="quantity" placeholder="Nhập Số Lượng Sản Phẩm" value="{{$product->quantity}}">
-                  </div>
-                  <div class="form-group">
                     <label for="exampleInputFile">Ảnh</label>
                     <input class="form-control" type="file" name="photo" accept="image/*"  onchange="showMyImage(this)">
-                    <img class="mt-2" style="width:150px;height:100px" src="upload/product/photo/{{$product->photo}}">
+                    <img class="mt-2" style="width:150px;height:100px" src="upload/trainerpost/photo/{{$trainer_post->photo}}">
                   </div>
                   <div class="form-group">
                     <img id="thumbnil" style="width:20%; margin-top:10px;"  src="" alt="image"/>
@@ -120,10 +107,19 @@
 @section('scripts')
 <!-- Summernote -->
 <script src="css/plugins/summernote/summernote-bs4.min.js"></script>
+<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
   $(function () {
     // Summernote
-    $('.textarea').summernote()
+    $('.textarea').summernote();
+    $('#course_type').change(function(){
+      var course_type_id = $(this).val();
+      $.get("admin/ajax/add-trainer/"+course_type_id,function(data){
+        $('#trainer').html(data);
+      });
+    });
+    $( "#start_time" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#end_time" ).datepicker({ dateFormat: 'yy-mm-dd' });
   })
   function showMyImage(fileInput) {
         var files = fileInput.files;

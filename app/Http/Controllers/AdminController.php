@@ -12,6 +12,7 @@ use App\ProductType;
 use App\Product;
 use App\Trainer;
 use App\User;
+use App\TrainerPost;
 use DateTime;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -54,7 +55,7 @@ class AdminController extends Controller
     {
         $request->session()->forget('key');
         Auth::guard('staff')->logout();
-        return redirect('home');
+        return redirect()->route('page-home');
     }
     // End Admin Login -Logout
 
@@ -207,6 +208,7 @@ class AdminController extends Controller
             'password' => 'required|min:8|max:16',
             'age' => 'required|integer',
             'address' => 'required',
+            'description' => 'required',
         ], [
             'full_name.required' => 'Bạn chưa nhập họ tên',
             'email.required' => 'Bạn chưa nhập email',
@@ -218,6 +220,7 @@ class AdminController extends Controller
             'age.required' => 'Bạn chưa nhập tuổi',
             'age.integer' => 'Tuổi nhập vào phải là số',
             'address.required' => 'Bạn chưa nhập địa chỉ',
+            'description.required' => 'Bạn chưa nhập mô tả',
         ]);
         $trainer = new Trainer;
         $trainer->course_type_id = $request->course_type;
@@ -243,6 +246,7 @@ class AdminController extends Controller
         } else {
             $trainer->photo = "default.png";
         }
+        $trainer->description = $request->description;
         $trainer->save();
         return redirect()->route('admin-list-trainer')->with('message', 'Thêm huấn luyện viên thành công');
     }
@@ -262,6 +266,7 @@ class AdminController extends Controller
             'repeat_password' => 'required|same:password',
             'age' => 'required|integer',
             'address' => 'required',
+            'description' => 'required',
         ], [
             'full_name.required' => 'Bạn chưa nhập họ tên',
             'email.required' => 'Bạn chưa nhập email',
@@ -272,6 +277,7 @@ class AdminController extends Controller
             'age.required' => 'Bạn chưa nhập tuổi',
             'age.integer' => 'Tuổi nhập vào phải là số',
             'address.required' => 'Bạn chưa nhập địa chỉ',
+            'description.required' => 'Bạn chưa nhập mô tả', 
         ]);
         $trainer = Trainer::find($id);
         $trainer->course_type_id = $request->course_type;
@@ -296,6 +302,7 @@ class AdminController extends Controller
             unlink("upload/trainer/photo" . $trainer->photo);
             $trainer->photo = $photo;
         }
+        $trainer->description = $request->description;
         $trainer->save();
         return redirect()->route('admin-list-trainer')->with('message', 'Sửa huấn luyện viên thành công');
     }
@@ -717,7 +724,7 @@ class AdminController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/post/photo", $photo);
-            $course->photo = $photo;
+            $post->photo = $photo;
         } else {
             $post->photo = "default.jpg";
         }
@@ -765,6 +772,97 @@ class AdminController extends Controller
     {
         $post = Post::destroy($id);
         return $post;
+    }
+    // End Post =========================================================
+    // Start Manager Trainer Post============================================
+    public function getListTrainerPost()
+    {
+        $trainer_posts = TrainerPost::orderBy('created_at', 'DESC')->get();
+        return view('admin.trainerposts.list', ['trainer_posts' => $trainer_posts]);
+    }
+    public function getAddTrainerPost()
+    {
+        return view('admin.trainerposts.add');
+    }
+    public function postAddTrainerPost(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'preview'=>'required',
+            'body' => 'required',
+        ], [
+            'title.required' => 'Bạn chưa nhập tên bài viết',
+            'preview.required' => 'Bạn chưa nhập tóm tắt bài viết',
+            'body.required' => 'Bạn chưa nhập nội dung bài viết',
+        ]);
+        $trainer_post = new TrainerPost;
+        $trainer_post->title = $request->title;
+        $trainer_post->preview = $request->preview;
+        $trainer_post->body = $request->body;
+        $trainer_post->trainer_id = Auth::guard('staff')->user()->id;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('admin-add-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/trainerpost/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/trainerpost/photo", $photo);
+            $trainer_post->photo = $photo;
+        } else {
+            $trainer_post->photo = "default.jpg";
+        }
+        $trainer_post->save();
+        return redirect()->route('admin-list-trainer-post')->with('message', 'Thêm bài viết thành công');
+    }
+    public function getEditTrainerPost($id)
+    {
+        $trainer_post = TrainerPost::find($id);
+        return view('admin.trainerposts.edit', ['trainer_post' => $trainer_post]);
+    }
+
+    public function postEditTrainerPost($id, Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'preview' =>'required',
+            'body' => 'required',
+        ], [
+            'title.required' => 'Bạn chưa nhập tên bài viết',
+            'preview.required' => 'Bạn chưa nhập tóm tắt bài viết',
+            'body.required' => 'Bạn chưa nhập nội dung bài viết',
+        ]);
+        $trainer_post = TrainerPost::find($id);
+        $trainer_post->title = $request->title;
+        $trainer_post->body = $request->body;
+        $trainer_post->preview = $request->preview;
+        $trainer_post->staff_id = Auth::guard('staff')->user()->id;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('admin-add-trainer-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/trainerpost/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/trainerpost/photo", $photo);
+            unlink("upload/post/photo" . $trainer_post->photo);
+            $trainer_post->photo = $photo;
+        }
+        $trainer_post->save();
+        return redirect()->route('admin-list-trainer-post')->with('message', 'Sửa bài viết thành công');
+    }
+    public function getDeleteTrainerPost($id)
+    {
+        $trainer_post = TrainerPost::destroy($id);
+        return redirect()->route('admin-list-trainer-post')->with('message','Xóa Bài viết thành công');
     }
     // End Post =========================================================
     // Start product type ==============================================
@@ -831,7 +929,7 @@ class AdminController extends Controller
         $product_types = ProductType::all();
         return view('admin.products.add',['product_types'=>$product_types]);
     }
-    public function postAddProduct($id, Request $request)
+    public function postAddProduct(Request $request)
     {
         $this->validate($request, [
             'product_name' => 'required',
@@ -848,7 +946,7 @@ class AdminController extends Controller
         $product = new Product;
         $product->product_type_id = $request->product_type;
         $product->product_name = $request->product_name;
-        $product->discription = $request->discription;
+        $product->description = $request->discription;
         $product->price = $request->price;
         $product->quantity = $request->quantity;
         if ($request->hasFile('photo')) {
@@ -865,11 +963,61 @@ class AdminController extends Controller
             $file->move("upload/product/photo", $photo);
             $product->photo = $photo;
         } else {
-            $product->photo = "default.jpg";
+            $product->photo = "default.png";
         }
         $product->save();
         return redirect()->route('admin-list-product')->with('message','Thêm sản phẩm thành công');
     }
     // *********************edit***************************************
+    public function getEditProduct($id)
+    {
+        $product_types = ProductType::all();
+        $product = Product::find($id);
+        return view('admin.products.edit',['product'=>$product,'product_types'=>$product_types]);
+    }
+
+    public function postEditProduct($id, Request $request)
+    {
+        $this->validate($request, [
+            'product_name' => 'required',
+            'discription' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
+        ], [
+            'product_name.required' => 'Bạn chưa nhập tên sản phẩm',
+            'discription.required' => 'Bạn chưa nhập mô tả  sản phẩm',
+            'price.required' => 'Bạn chưa nhập giá của sản phẩm',
+            'quantity.required' => 'Bạn chưa nhập số lượng sản phẩm',
+        ]);
+
+        $product = Product::find($id);
+        $product->product_type_id = $request->product_type;
+        $product->product_name = $request->product_name;
+        $product->description = $request->discription;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('admin-add-product')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/product/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/product/photo", $photo);
+            unlink("upload/product/photo" . $post->photo);
+            $product->photo = $photo;
+        }
+        $product->save();
+        return redirect()->route('admin-list-product')->with('message','Sửa Sản phẩm thành công');
+    }
+    public function getDeleteProduct($id)
+    {
+        $product = Product::destroy($id);
+        return redirect()->route('admin-list-product')->with('message','Xóa sản phẩm thành công');
+    }
     // End Product
 }
