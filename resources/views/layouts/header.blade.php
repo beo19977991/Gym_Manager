@@ -12,18 +12,21 @@
                                 <ul>
                                     @if(isset($user_login))                                  
                                     <li><a href="#">{{$user_login->full_name}}</a></li>
-                                    <li><a href="{{ route('logout')}}"><span> Đăng xuất</span></a></li>                                    
+                                    <li><a href="{{ route('logout')}}"><span> Đăng xuất</span></a></li>
+                                    <li><a href="{{ route('get-user-profile',['id'=>$user_login->id]) }}">Trang Cá Nhân</a></li>                                 
                                     @elseif(isset($trainer_login))
                                     <li><a href="#">{{$trainer_login->full_name}}</a></li>
                                     <li><a href="{{ route('logout_trainer')}}"><span> Đăng xuất</span></a></li>
+                                    <li><a href="{{ route('trainer-get-home')}}">Trang Quản Lý</a></li>
                                     @elseif(isset($staff_login))
                                         @if($staff_login->role == 0)
                                             <li><a href="#">{{$staff_login->full_name}}</a></li>
                                             <li><a href="{{ route('logout_staff')}}"><span> Đăng xuất</span></a></li>
-                                            <li><a href="{{ route('admin-home')}}">Trang quản trị</a></li>
+                                            <li><a href="{{ route('admin-home')}}">Trang Quản Trị</a></li>
                                         @else
                                             <li><a href="#">{{$staff_login->full_name}}</a></li>
                                             <li><a href="{{ route('logout_staff')}}"><span> Đăng xuất</span></a></li>
+                                            <li><a href="{{ route('staff-get-home')}}">Trang Quản Lý</a></li>
                                         @endif
                                     @else
                                     <li><a href="{{ route('select_login')}}">Đăng nhập</a></li>
@@ -52,6 +55,7 @@
                                         <li><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
                                         <li><a href="{{route('page-news')}}">Tin Tức</a></li>
                                         <li><a href="{{route('page-exercise')}}">Bài Tập</a></li>
+                                        <li><a href="{{route('page-product')}}">Cửa Hàng</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -84,12 +88,13 @@
                             <div class="mobile-menu">
                                 <nav id="dropdown">
                                     <ul>
-                                        <li><a href="#">Trang Chủ</a></li>
-                                        <li><a href="#">Lớp Học</a></li>
-                                        <li><a href="#">Lịch Học</a></li>
-                                        <li><a href="#">Huấn Luyện Viên</a></li>
-                                        <li><a href="#">Tin Tức</a></li>
-                                        <li><a href="#">Bài Tập</a></li>
+                                        <li class="active"><a href="{{route('page-home')}}">Trang Chủ</a></li>
+                                        <li><a href="{{route('page-course')}}">Khóa Tập</a></li>
+                                        <li><a href="{{route('page-schedule')}}">Lịch Tập</a></li>
+                                        <li><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
+                                        <li><a href="{{route('page-news')}}">Tin Tức</a></li>
+                                        <li><a href="{{route('page-exercise')}}">Bài Tập</a></li>
+                                        <li><a href="{{route('page-product')}}">Cửa Hàng</a></li>
                                     </ul>
                                 </nav>
                             </div>

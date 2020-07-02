@@ -22,6 +22,7 @@
 </head>
 <body class="hold-transition sidebar-mini">
 <div class="wrapper">
+@include('admin.layouts.header')
 @include('admin.layouts.right')
 @yield('content')
 @include('admin.layouts.footer')

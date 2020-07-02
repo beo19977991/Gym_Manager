@@ -11,12 +11,14 @@ use App\Post;
 use App\Exercise;
 use App\Lession;
 use App\User;
+use App\TrainerPost;
 use DateTime;
 
 class PageController extends Controller
 {
     public function getHome()
     {
+        $lessions = Lession::all();
         $today = new DateTime;
         date_format($today, 'Y-m-d H:i:s');
         $courses = Course::where('start_time','>',$today)
@@ -31,7 +33,7 @@ class PageController extends Controller
         $trainers = Trainer::all();
         $course_max_discount = Course::orderBy('discount','DESC')->first();
         $products = Product::orderBy('created_at','DESC')->take(5)->get();
-        return view('pages.index',['course_types'=>$course_types,'new_courses'=>$new_courses,'trainers'=>$trainers,'course_max_discount'=>$course_max_discount,'products'=>$products,'courses'=>$courses]);
+        return view('pages.index',['course_types'=>$course_types,'new_courses'=>$new_courses,'trainers'=>$trainers,'course_max_discount'=>$course_max_discount,'products'=>$products,'courses'=>$courses,'lessions'=>$lessions]);
     }
     public function getCourse()
     {
@@ -93,7 +95,8 @@ class PageController extends Controller
         $course_types = CourseType::all();
         $posts = Post::orderBy('created_at','DESC')->get();
         $new_posts = Post::orderBy('created_at','DESC')->take(4)->get();
-        return view('pages.news',['posts'=>$posts,'new_posts'=>$new_posts,'course_types'=>$course_types,'course_max_discount'=>$course_max_discount,'courses'=>$courses]);
+        $trainer_posts = TrainerPost::orderBy('created_at','DESC')->get();
+        return view('pages.news',['posts'=>$posts,'new_posts'=>$new_posts,'course_types'=>$course_types,'course_max_discount'=>$course_max_discount,'courses'=>$courses,'trainer_posts'=>$trainer_posts]);
     }
 
     public function getExercise()
@@ -121,5 +124,11 @@ class PageController extends Controller
             abort(404);
         }
         return $course; 
+    }
+
+    public function getProduct()
+    {
+        $products = Product::all();
+        return view('pages.product',['products'=>$products]);
     }
 }

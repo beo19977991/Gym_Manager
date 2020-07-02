@@ -37,8 +37,22 @@
                                         <div class="date">{{\Carbon\Carbon::parse($post->created_at)->format('d')}}<br>{{\Carbon\Carbon::parse($post->created_at)->format('M')}}<br>{{\Carbon\Carbon::parse($post->created_at)->format('Y')}}</div>
                                     </div>
                                     <div class="news-content">
-                                        <h3><a href="">{{$post->title}}</a></h3>
-                                        <a class="read-more" href="">Xem nhiều hơn</a>
+                                        <h3><a href="{{route('page-post-detail',['id'=>$post->id])}}">{{$post->title}}</a></h3>
+                                        <a class="read-more" href="{{route('page-post-detail',['id'=>$post->id])}}">Xem nhiều hơn</a>
+                                    </div>
+                                </div>
+                            </div>
+                            @endforeach()
+                            @foreach($trainer_posts as $trainer_post)
+                            <div class="col-lg-6 col-md-6 col-sm-6">
+                                <div class="single-news-page">
+                                    <div class="single-news">
+                                        <img src="upload/trainerpost/photo/{{$trainer_post->photo}}" alt="">
+                                        <div class="date">{{\Carbon\Carbon::parse($trainer_post->created_at)->format('d')}}<br>{{\Carbon\Carbon::parse($trainer_post->created_at)->format('M')}}<br>{{\Carbon\Carbon::parse($trainer_post->created_at)->format('Y')}}</div>
+                                    </div>
+                                    <div class="news-content">
+                                        <h3><a href="{{route('page-trainer-post-detail',['id'=>$trainer_post->id])}}">{{$trainer_post->title}}</a></h3>
+                                        <a class="read-more" href="{{route('page-trainer-post-detail',['id'=>$trainer_post->id])}}">Xem nhiều hơn</a>
                                     </div>
                                 </div>
                             </div>
@@ -84,6 +98,7 @@
                 </div>
             </div>
             <!-- Start latest news area -->
+
         <!-- Start Fitness class summer area -->
         <div class="fitness-summer-area padding-space">
             <div class="container">

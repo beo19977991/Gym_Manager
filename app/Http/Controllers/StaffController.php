@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Staff;
+use App\Post;
+use App\CourseType;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
@@ -103,5 +105,65 @@ class StaffController extends Controller
         $request->session()->forget('key');
         Auth::guard('staff')->logout();
         return redirect()->route('page-home');
+    }
+    public function getPostDetail($id)
+    {
+        $course_types = CourseType::all();
+        $post = Post::find($id);
+        $news_posts = Post::orderBy('created_at','DESC')->get();
+        return view('staff.post_detail',['post'=>$post,'news_posts'=>$news_posts,'course_types'=>$course_types]);
+    }
+    // Manager==============================================
+    public function getHome()
+    {
+        return view('staff.index');
+    }
+    
+    public function getStaffProfile($id)
+    {
+        $staff = Staff::find($id);
+        return view('staff.profile',['staff'=>$staff]);
+    }
+    public function postStaffProfile($id, Request $request)
+    {
+        $this->validate($request, [
+            'full_name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'age' => 'required|integer',
+            'address' => 'required',
+        ], [
+            'full_name.required' => 'Bạn chưa nhập họ tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'email bạn nhập chưa đúng',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'age.required' => 'Bạn chưa nhập tuổi',
+            'age.integer' => 'Tuổi nhập vào phải là số',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+        ]);
+        $staff = Staff::find($id);
+        $staff->full_name = $request->full_name;
+        $staff->email = $request->email;
+        $staff->password = $request->password;
+        $staff->age = $request->age;
+        $staff->address = $request->address;
+        $staff->gender = $request->gender;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('get-staff-profile',['id'=>$id])->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/staff/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/staff/photo", $photo);
+            unlink("upload/staff/photo/" . $staff->photo);
+            $staff->photo = $photo;
+        }
+        $staff->save();
+        return redirect()->route('get-staff-profile',['id'=>$id]);
     }
 }

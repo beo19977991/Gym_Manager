@@ -5132,7 +5132,7 @@ ul.counter-list li:last-child {
 .single-news-page img {
   transform: scale(1);
   transition: all 0.5s ease 0s;
-  width: 100%;
+  width: 70%;
   height: 142.2px;
 }
 .single-news-page img:hover {
@@ -5205,7 +5205,6 @@ ul.counter-list li:last-child {
   overflow: hidden;
 }
 .single-news-detail .detail-img::after {
-  background: rgba(0, 0, 0, 0.5);
   bottom: 0;
   left: 0;
   content: "";

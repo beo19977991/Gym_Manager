@@ -59,19 +59,16 @@
                         <div class="detail-heading">
                             <p><span class="title">Các Bài Viết</span></p>
                                 @foreach($trainer_posts as $trainer_post)
-                                <!-- Start Single Post -->
-                                    <div class="col-lg-4 col-md-4 col-sm-6 item">
-                                        <div class="online-product">
-                                            <a href="#"><img src="upload/trainerpost/photo/{{$trainer_post->photo}}" ></a>
-                                        </div>
-                                        <div class="product-content">
-                                            <h3 class="name"><a href="#">{{$trainer_post->title}}</a></h3>
-                                            <span class="regular-price">
-                                                {{$trainer_post->preview}}
-                                            </span>
-                                        </div>
+                                <div style="display:flex">
+                                    <div>
+                                    <img width="100" height="200" src="upload/trainerpost/photo/{{$trainer_post->photo}}">
                                     </div>
-                                <!-- End Single post -->
+                                    &nbsp;&nbsp;
+                                    <div>
+                                    <p><a href="#">{{$trainer_post->title}}</a></p>
+                                        <p>{{$trainer_post->preview}}</p>
+                                    </div>
+                                </div>
                                 @endforeach
                         </div>
                     </div>

@@ -209,6 +209,7 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('trainer','PageController@getTrainer')->name('page-trainer');
         Route::get('news','PageController@getNews')->name('page-news');
         Route::get('exercise','PageController@getExercise')->name('page-exercise');
+        Route::get('product','PageController@getProduct')->name('page-product');
 
     // ===============================Course Detail=============================================
         Route::get('course/detail/{id}','PageController@getCourseDetail')->name('page-course-detail');
@@ -217,8 +218,30 @@ Route::group(['prefix' => 'admin'], function () {
     // ==============================Cancel register course ====================================
         Route::get('course/cancel_register/{id}','UserController@getCancelRegisterCourse')->name('page-course-cancel-register');
 
-        // ================**************************==============================================
+    // ================**************************==============================================
     // =====================================Trainer Detail ========================================
         Route::get('trainer/detail/{id}','TrainerController@getTrainerDetail')->name('page-trainer-detail');
+        Route::get('trainer_post/detail/{id}','TrainerController@getTrainerPostDetail')->name('page-trainer-post-detail');
+    // ======================================Post Detail=========================================
+        Route::get('post_detail/{id}','StaffController@getPostDetail')->name('page-post-detail');
 
-});
+    });
+// =====================================================================================
+
+//======================================manager=========================================
+    Route::group(['prefix' => 'manager'], function () {
+        // ============================ profile ========================================
+        Route::get('user/profile/{id}','UserController@getUserProfile')->name('get-user-profile');
+        Route::post('user/profile/{id}','UserController@postUserProfile')->name('post-user-profile');
+        // =================================================================================
+        Route::group(['prefix' => 'trainer'], function () {
+            Route::get('home','TrainerController@getHome')->name('trainer-get-home');
+            Route::get('profile/{id}','TrainerController@getTrainerProfile')->name('get-trainer-profile');
+            Route::post('profile/{id}','TrainerController@postTrainerProfile')->name('post-trainer-profile');
+        });
+        Route::group(['prefix' => 'staff'], function () {
+            Route::get('home','StaffController@getHome')->name('staff-get-home');
+            Route::get('profile/{id}','StaffController@getStaffProfile')->name('get-staff-profile');
+            Route::post('profile/{id}','StaffController@postStaffProfile')->name('post-staff-profile');
+        });
+    });

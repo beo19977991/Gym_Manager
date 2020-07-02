@@ -9,6 +9,8 @@ use App\Trainer;
 use App\Course;
 use App\Exercise;
 use App\TrainerPost;
+use App\CourseType;
+use App\Post;
 
 class TrainerController extends Controller
 {
@@ -121,5 +123,24 @@ class TrainerController extends Controller
         $course_trainers = Course::where('trainer_id','=',$id)->get();
         $trainer = Trainer::find($id);
         return view('trainer.trainer_detail',['trainer'=>$trainer,'course_trainers'=>$course_trainers,'exercise_trainers'=>$exercise_trainers,'trainer_others'=>$trainer_others,'trainer_posts'=>$trainer_posts]);
+    }
+    public function getTrainerPostDetail($id)
+    {
+        $posts = Post::orderBy('created_at','DESC')->take(5)->get();
+        $course_types = CourseType::all();
+        $trainer_post = TrainerPost::find($id);
+        return view('trainer.trainer_post_detail',['trainer_post'=>$trainer_post,'course_types'=>$course_types,'posts'=>$posts]);
+    }
+    public function getHome()
+    {
+
+    }
+    public function getTrainerProfile($id)
+    {
+
+    }
+    public function postTrainerProfile($id, Request $request)
+    {
+        
     }
 }

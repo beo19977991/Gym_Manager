@@ -1,4 +1,11 @@
 @extends('layouts.app', ['title' => 'Home'])
+@section('styles')
+  <!-- fullCalendar -->
+  <link rel="stylesheet" href="{{ asset('css/plugins/fullcalendar/main.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/plugins/fullcalendar-daygrid/main.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/plugins/fullcalendar-timegrid/main.min.css') }}">
+  <link rel="stylesheet" href="{{ asset('css/plugins/fullcalendar-bootstrap/main.min.css') }}">
+@endsection
 @section('content')
     <!-- Start wrapper -->
     <div class="wrapper">
@@ -131,210 +138,17 @@
             <div class="container">
                 <div class="row">
                     <div class="col-lg-12 col-md-12 col-sm-12">
-                        <h2 class="section-title-white title-bar-high">CLASS SCHEDULE</h2>
-                        <p class="sub-title-white">Rmply dummy text of the printing and typesetting industry dorem Ipsum has been the industry's standard dummy text ever since thewhen an unknown printer took a gal survived five centuries.</p>
-                        <div class="class-schedule-wrap">
-                            <!-- Tabs -->
-                            <ul id="myTab" class="nav nav-tabs">
-                                <li class="active"><a href="#monday" data-toggle="tab">Monday</a></li>
-                                <li><a href="#tuesday" data-toggle="tab">Tuesday</a></li>
-                                <li><a href="#wednesday" data-toggle="tab">Wednesday</a></li>
-                                <li><a href="#thursday" data-toggle="tab">Thursday</a></li>
-                                <li><a href="#friday" data-toggle="tab">Friday</a></li>
-                                <li><a href="#saturday" data-toggle="tab">Saturday</a></li>
-                                <li><a href="#sunday" data-toggle="tab">Sunday</a></li>
-                            </ul>
-                            <div id="myTabContent" class="tab-content class-schedule-tab">
-                                <div class="tab-pane fade in active" id="monday">
-                                    <ul class="odd">
-                                        <li>Yoga</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Robert Smith</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Running</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Petter john</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Gym</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Kazi Fahim</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Free Hand</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Jessy Reo</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Weight Lifting</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Zara Keron</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Fitness</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Jack Sparrow</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
+                        <h2 class="section-title-white title-bar-high">Lịch Tập</h2>
+                        <p class="sub-title-white">Lịch tập của các khóa trong tháng</p>
+                        <!-- schedule here -->
+                            <div class="card card-primary">
+                                <div class="card-body p-0">
+                                    <!-- THE CALENDAR -->
+                                    <div id="calendar"></div>
                                 </div>
-                                <div class="tab-pane fade" id="tuesday">
-                                    <ul class="odd">
-                                        <li>Yoga</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Robert Smith</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Running</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Petter john</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Gym</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Kazi Fahim</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Free Hand</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Jessy Reo</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Weight Lifting</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Zara Keron</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane fade" id="wednesday">
-                                    <ul class="odd">
-                                        <li>Yoga</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Robert Smith</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Running</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Petter john</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Gym</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Kazi Fahim</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Free Hand</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Jessy Reo</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane fade" id="thursday">
-                                    <ul class="odd">
-                                        <li>Yoga</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Robert Smith</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Running</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Petter john</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Gym</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Kazi Fahim</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Free Hand</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Jessy Reo</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Weight Lifting</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Zara Keron</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane fade" id="friday">
-                                    <ul class="odd">
-                                        <li>Yoga</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Robert Smith</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Running</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Petter john</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane fade" id="saturday">
-                                    <ul class="odd">
-                                        <li>Yoga</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Robert Smith</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Running</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Petter john</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Gym</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Kazi Fahim</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                </div>
-                                <div class="tab-pane fade" id="sunday">
-                                    <ul class="odd">
-                                        <li>Yoga</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Robert Smith</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Running</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Petter john</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="odd">
-                                        <li>Gym</li>
-                                        <li>10.00 am - 12.00 pm</li>
-                                        <li>Kazi Fahim</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                    <ul class="even">
-                                        <li>Free Hand</li>
-                                        <li>09.00 am - 12.00 pm</li>
-                                        <li>Jessy Reo</li>
-                                        <li><a href="#">Join Now!</a></li>
-                                    </ul>
-                                </div>
+                            <!-- /.card-body -->
                             </div>
-                        </div>
+                        <!-- /.card -->
                     </div>
                 </div>
             </div>
@@ -452,4 +266,104 @@
         <!-- End Price Table area -->
     </div>
     <!-- End wrapper -->
+@endsection
+@section('scripts')
+<!-- fullCalendar 2.2.5 -->
+<script src="{{ asset('css/plugins/moment/moment.min.js') }}"></script>
+<script src="{{ asset('css/plugins/fullcalendar/main.min.js') }}"></script>
+<script src="{{ asset('css/plugins/fullcalendar-daygrid/main.min.js') }}"></script>
+<script src="{{ asset('css/plugins/fullcalendar-timegrid/main.min.js') }}"></script>
+<script src="{{ asset('css/plugins/fullcalendar-interaction/main.min.js') }}"></script>
+<script src="{{ asset('css/plugins/fullcalendar-bootstrap/main.min.js') }}"></script>
+<!-- jQuery UI -->
+<script src="{{ asset('css/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
+<script>
+    $(document).ready(function() {
+    /* initialize the external events
+     -----------------------------------------------------------------*/
+    function ini_events(ele) {
+      ele.each(function () {
+
+        // create an Event Object (http://arshaw.com/fullcalendar/docs/event_data/Event_Object/)
+        // it doesn't need to have a start or end
+        var eventObject = {
+          title: $.trim($(this).text()) // use the element's text as the event title
+        }
+
+        // store the Event Object in the DOM element so we can get to it later
+        $(this).data('eventObject', eventObject)
+
+        // make the event draggable using jQuery UI
+        $(this).draggable({
+          zIndex        : 1070,
+          revert        : true, // will cause the event to go back to its
+          revertDuration: 0  //  original position after the drag
+        })
+
+      })
+    }
+
+    ini_events($('#calendar'))
+
+    /* initialize the calendar
+     -----------------------------------------------------------------*/
+    //Date for the calendar events (dummy data)
+    var date = new Date()
+    var d    = date.getDate(),
+        m    = date.getMonth(),
+        y    = date.getFullYear()
+
+    var Calendar = FullCalendar.Calendar;
+    var Draggable = FullCalendarInteraction.Draggable;
+
+    var containerEl = document.getElementById('calendar');
+    var checkbox = document.getElementById('drop-remove');
+    var calendarEl = document.getElementById('calendar');
+
+    // initialize the external events
+    // -----------------------------------------------------------------
+
+    new Draggable(containerEl, {
+      itemSelector: '.external-event',
+      eventData: function(eventEl) {
+        console.log(eventEl);
+        return {
+          title: eventEl.innerText,
+          backgroundColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
+          borderColor: window.getComputedStyle( eventEl ,null).getPropertyValue('background-color'),
+          textColor: window.getComputedStyle( eventEl ,null).getPropertyValue('color'),
+        };
+      }
+    });
+
+    var calendar = new Calendar(calendarEl, {
+      plugins: [ 'bootstrap', 'interaction', 'dayGrid', 'timeGrid' ],
+      header    : {
+        left  : 'prev,next today',
+        center: 'title',
+        right : 'dayGridMonth,timeGridWeek,timeGridDay'
+      },
+      'themeSystem': 'bootstrap',
+      //Random default events
+      events    : [
+        @foreach($lessions as $lession)
+        {
+          id    : '{{$lession->id}}',
+          title : '{{$lession->course->course_name}}',
+          start : new Date('{{$lession->start_time}}'),
+          end   : new Date('{{$lession->end_time}}'),
+          backgroundColor: '#fb5b21', //yellow
+          borderColor    : '#fb5b21' //yellow
+        },
+        @endforeach
+      ],
+      editable  : true,
+      droppable : true, // this allows things to be dropped onto the calendar !!!
+      eventClick: function(event) {
+
+      },
+    });
+    calendar.render();
+});
+</script>
 @endsection

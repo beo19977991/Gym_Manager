@@ -73,10 +73,10 @@ select:focus {
                                             <source src="upload/exercise/video/{{$exercise->video}}">
                                         </video>
                                     </div>
-                                    <div class="classes-title">
-                                        <h3>{{$exercise->exercise_type->exercise_type_name}}</h3>
-                                        <h3><a href="">{{$exercise->exercise_name}}</a></h3>
-                                    </div>
+                                </div>
+                                <div class="classes-title">
+                                    <h3>{{$exercise->exercise_type->exercise_type_name}}</h3>
+                                    <h3><a href="">{{$exercise->exercise_name}}</a></h3>
                                 </div>
                             </div>
                             @endforeach                                    
