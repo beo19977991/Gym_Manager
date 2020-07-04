@@ -536,7 +536,7 @@ class AdminController extends Controller
             'exercise_type_name.unique' => 'Tên Loại Bài tập bạn nhập vào đã được sử dụng',
         ]);
         $exercise_type = new ExerciseType;
-        $exercise->course_type_id = $request->course_type;
+        $exercise_type->course_type_id = $request->course_type;
         $exercise_type->exercise_type_name = $request->exercise_type_name;
         $exercise_type->save();
         return redirect()->route('admin-list-exercise-type')->with('message', 'Thêm loại bài tập thành công');

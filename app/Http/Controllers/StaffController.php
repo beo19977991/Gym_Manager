@@ -9,6 +9,10 @@ use App\CourseType;
 use App\Course;
 use App\User;
 use App\Trainer;
+use App\Lession;
+use App\Product;
+use App\ProductType;
+use DateTime;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
@@ -708,4 +712,186 @@ class StaffController extends Controller
         return redirect()->route('staff-list-post')->with('message', 'Xóa bài viết thành công');
     }
     // End Post ==========================================================================
+    // Manager Schedule ==================================================================
+    public function getAddSchedule()
+    {
+        $lessions = Lession::all();
+        $courses = Course::all();
+        return view('staff.schedule.add_schedule', ['courses' => $courses, 'lessions' => $lessions]);
+    }
+    public function postAddSchedule(Request $request)
+    {
+        $lession = new Lession;
+        $lession->course_id = $request->course_id;
+        $lession->start_time = new DateTime($request->start_time);
+        $lession->end_time = new DateTime($request->start_time);
+        $lession->save();
+        return 1;
+    }
+    public function postDeleteSchedule($id)
+    {
+        $lession = Lession::destroy($id);
+        return $lession;
+    }
+    public function checkDateClick($date, $time)
+    {
+        $courses = Course::where('start_time', '<=', $date)
+            ->where('end_time', '>=', $date)
+            ->get();
+        foreach ($courses as $course) {
+            echo "<option value = '" . $course->id . "'>" . $course->course_name . "</option>";
+        }
+    }
+    // End Schedule
+    public function getListProductType()
+    {
+        $product_types = ProductType::orderBy('created_at', 'DESC')->get();
+        return view('staff.product_type.list', ['product_types' => $product_types]);
+    }
+    public function getAddProductType()
+    {
+        return view('staff.product_type.add');
+    }
+    public function postAddProductType(Request $request)
+    {
+        $this->validate($request, [
+            'product_type_name' => 'required',
+            'discription' => 'required',
+        ], [
+            'product_type_name.required' => 'Bạn chưa nhập tên loại sản phẩm',
+            'discription.required' => 'Bạn chưa nhập mô tả loại sản phẩm',
+        ]);
+        $product_type = new ProductType;
+        $product_type->product_type_name = $request->product_type_name;
+        $product_type->discription = $request->discription;
+        $product_type->save();
+        return redirect()->route('staff-list-product-type')->with('message', 'Thêm Loại sản phẩm thành công');
+    }
+    public function getEditProductType($id)
+    {
+        $product_type = ProductType::find($id);
+        return view('staff.product_type.edit', ['product_type' => $product_type]);
+    }
+    public function postEditProductType($id, Request $request)
+    {
+        $this->validate($request, [
+            'product_type_name' => 'required',
+            'discription' => 'required',
+        ], [
+            'product_type_name.required' => 'Bạn chưa nhập tên loại sản phẩm',
+            'discription.required' => 'Bạn chưa nhập mô tả loại sản phẩm',
+        ]);
+        $product_type = ProductType::find($id);
+        $product_type->product_type_name = $request->product_type_name;
+        $product_type->discription = $request->discription;
+        $product_type->save();
+        return redirect()->route('staff-list-product-type')->with('message', 'Sửa loại sản phẩm thành công');
+    }
+    public function getDeleteProductType($id)
+    {
+        $product_type = ProductType::destroy($id);
+        return redirect()->route('staff-list-product-type')->with('message', 'Xóa loại sản phẩm thành công');
+    }
+    // End Product Type ======================================================================
+    // Manager Product
+    public function getListProduct()
+    {
+        $products = Product::orderBy('created_at','DESC')->get();
+        return view('staff.product.list',['products'=>$products]);
+    }
+    public function getAddProduct()
+    {
+        $product_types = ProductType::all();
+        return view('staff.product.add',['product_types'=>$product_types]);
+    }
+    public function postAddProduct(Request $request)
+    {
+        $this->validate($request, [
+            'product_name' => 'required',
+            'discription' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
+        ], [
+            'product_name.required' => 'Bạn chưa nhập tên loại sản phẩm',
+            'discription.required' => 'Bạn chưa nhập mô tả loại sản phẩm',
+            'price.required' => 'Bạn chưa nhập giá của sản phẩm',
+            'quantity.required' => 'Bạn chưa nhập số lượng sản phẩm',
+        ]);
+
+        $product = new Product;
+        $product->product_type_id = $request->product_type;
+        $product->product_name = $request->product_name;
+        $product->description = $request->discription;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-add-product')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/product/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/product/photo", $photo);
+            $product->photo = $photo;
+        } else {
+            $product->photo = "default.png";
+        }
+        $product->save();
+        return redirect()->route('staff-list-product')->with('message','Thêm sản phẩm thành công');
+    }
+    public function getEditProduct($id)
+    {
+        $product_types = ProductType::all();
+        $product = Product::find($id);
+        return view('staff.product.edit',['product'=>$product,'product_types'=>$product_types]);
+    }
+    public function postEditProduct($id, Request $request)
+    {
+        $this->validate($request, [
+            'product_name' => 'required',
+            'discription' => 'required',
+            'price' => 'required',
+            'quantity' => 'required',
+        ], [
+            'product_name.required' => 'Bạn chưa nhập tên sản phẩm',
+            'discription.required' => 'Bạn chưa nhập mô tả  sản phẩm',
+            'price.required' => 'Bạn chưa nhập giá của sản phẩm',
+            'quantity.required' => 'Bạn chưa nhập số lượng sản phẩm',
+        ]);
+
+        $product = Product::find($id);
+        $product->product_type_id = $request->product_type;
+        $product->product_name = $request->product_name;
+        $product->description = $request->discription;
+        $product->price = $request->price;
+        $product->quantity = $request->quantity;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-add-product')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/product/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/product/photo", $photo);
+            if($product->photo!="default.png"){
+                unlink("upload/product/photo/" . $post->photo);
+            }
+            $product->photo = $photo;
+        }
+        $product->save();
+        return redirect()->route('staff-list-product')->with('message','Sửa Sản phẩm thành công');
+    }
+    public function getDeleteProduct($id)
+    {
+        $product = Product::destroy($id);
+        return redirect()->route('staff-list-product')->with('message','Xóa sản phẩm thành công');
+    }
 }

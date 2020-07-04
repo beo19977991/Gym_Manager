@@ -133,7 +133,7 @@
     function deleteScheduleForm()
     {
         $.ajax({
-            url: "admin/schedules/delete-schedule-calendar/" + id,
+            url: "manager/staff/delete-schedule-calendar/" + id,
             method: "POST",
             data: {
             id : id,
@@ -252,7 +252,7 @@ function addScheduleForm() {
   let mycourse_id = $("#course_id").val();
         let start_time = $(".date-click").text();
         $.ajax({
-            url: "{{route('admin-post-add-schedule')}}",
+            url: "manager/staff/add-schedule-calendar",
             method: "POST",
             data: {
               course_id: mycourse_id,
@@ -270,10 +270,9 @@ function addScheduleForm() {
 
 function checDayClick(date,time)
 {
-  console.log(date + " " + time );
   $('#text-day-click').modal('show');
   $.ajax({
-            url: "admin/schedules/check-date-click/"+date+"/"+time,
+            url: "manager/staff/check-date-click/"+date+"/"+time,
             method: "POST",
             data: {
             _token: "{{ csrf_token() }}"

@@ -11,6 +11,7 @@ use App\Exercise;
 use App\TrainerPost;
 use App\CourseType;
 use App\Post;
+use App\ExerciseType;
 
 class TrainerController extends Controller
 {
@@ -181,5 +182,143 @@ class TrainerController extends Controller
         }
         $trainer->save();
         return redirect()->route('get-trainer-profile',['id'=>$id]);
+    }
+    public function getListExerciseType()
+    {
+        $exercise_types = ExerciseType::all();
+        return view('trainer.exercise_type.list', ['exercise_types' => $exercise_types]);
+    }
+    public function getAddExerciseType()
+    {
+        $course_types = CourseType::all();
+        return view('trainer.exercise_type.add', ['course_types' => $course_types]);
+    }
+    public function postAddExerciseType(Request $request)
+    {
+        $this->validate($request, [
+            'exercise_type_name' => 'required|unique:exercise_types,exercise_type_name',
+        ], [
+            'exercise_type_name.required' => 'Bạn chưa nhập tên loại bài tập',
+            'exercise_type_name.unique' => 'Tên Loại Bài tập bạn nhập vào đã được sử dụng',
+        ]);
+        $exercise_type = new ExerciseType;
+        $exercise_type->course_type_id = $request->course_type;
+        $exercise_type->exercise_type_name = $request->exercise_type_name;
+        $exercise_type->save();
+        return redirect()->route('trainer-list-exercise-type')->with('message', 'Thêm loại bài tập thành công');
+    }
+    public function getEditExerciseType($id)
+    {
+        $course_types = CourseType::all();
+        $exercise_type = ExerciseType::find($id);
+        return view('trainer.exercise_type.edit', ['exercise_type' => $exercise_type, 'course_types' => $course_types]);
+    }
+    public function postEditExerciseType($id, Request $request)
+    {
+        $this->validate($request, [
+            'exercise_type_name' => 'required',
+        ], [
+            'exercise_type_name.required' => 'Bạn chưa nhập tên loại bài tập',
+        ]);
+        $exercise_type = ExerciseType::find($id);
+        $exercise_type->course_type_id = $request->course_type;
+        $exercise_type->exercise_type_name = $request->exercise_type_name;
+        $exercise_type->save();
+        return redirect()->route('trainer-list-exercise-type')->with('message', 'Thay đổi loại bài tập thành công');
+    }
+    public function getDeleteExerciseType($id)
+    {
+        $exercise_type = ExerciseType::destroy($id);
+        return redirect()->route('admin-list-exercise-type')->with('message', 'Xóa loại bài tập thành công');
+    }
+    public function getListExercise()
+    {
+        $exercises = Exercise::all();
+        return view('trainer.exercise.list', ['exercises' => $exercises]);
+    }
+    public function getAddExercise()
+    {
+        $trainers = Trainer::all();
+        $exercise_types = ExerciseType::all();
+        return view('trainer.exercise.add', ['exercise_types' => $exercise_types, 'trainers' => $trainers]);
+    }
+    public function postAddExercise(Request $request)
+    {
+        $this->validate($request, [
+            'exercise_name' => 'required|unique:exercises,exercise_name',
+            'description' => 'required',
+        ], [
+            'exercise_name.required' => 'Bạn chưa nhập tên bài tập',
+            'exercise_name.unique' => 'Tên Bài tập bạn nhập vào đã được sử dụng',
+            'description.required' => 'Bạn chưa nhập vào mô tả bài tập',
+        ]);
+        $exercise = new Exercise;
+        $exercise->exercise_type_id = $request->exercise_type;
+        $exercise->exercise_name = $request->exercise_name;
+        $exercise->description = $request->description;
+        $exercise->trainer_id = $request->trainer;
+        if ($request->hasFile('video')) {
+            $file = $request->file('video');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'mp4' && $extension != 'wmv' && $extension != 'mov' && $extension != 'flv' && $extension != 'avi') {
+                return redirect()->redirect('trainer-add-exercise')->with('error', 'Chỉ hỗ trợ các loại file mp4, wmv, mov, flv, avi');
+            }
+            $name = $file->getClientOriginalName();
+            $video = Str::random(4) . "_" . $name;
+            while (file_exists("upload/exercise/video" . $video)) {
+                $video = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/exercise/video", $video);
+            $exercise->video = $video;
+        } else {
+            $exercise->video = "";
+        }
+        $exercise->save();
+        return redirect()->route('trainer-list-exercise')->with('message', 'Thêm bài tập thành công');
+    }
+    public function getEditExercise($id)
+    {
+        $trainers = Trainer::all();
+        $exercise_types = ExerciseType::all();
+        $exercise = Exercise::find($id);
+        return view('trainer.exercise.edit', ['exercise' => $exercise, 'exercise_types' => $exercise_types, 'trainers' => $trainers]);
+    }
+    public function postEditExercise($id, Request $request)
+    {
+        $this->validate($request, [
+            'exercise_name' => 'required',
+            'description' => 'required',
+        ], [
+            'exercise_name.required' => 'Bạn chưa nhập tên bài tập',
+            'description.required' => 'Bạn chưa nhập vào mô tả bài tập',
+        ]);
+        $exercise = Exercise::find($id);
+        $exercise->exercise_type_id = $request->exercise_type;
+        $exercise->exercise_name = $request->exercise_name;
+        $exercise->description = $request->description;
+        $exercise->trainer_id = $request->trainer;
+        if ($request->hasFile('video')) {
+            $file = $request->file('video');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'mp4' && $extension != 'wmv' && $extension != 'mov' && $extension != 'flv' && $extension != 'avi') {
+                return redirect()->redirect('trainer-add-exercise')->with('error', 'Chỉ hỗ trợ các loại file mp4, wmv, mov, flv, avi');
+            }
+            $name = $file->getClientOriginalName();
+            $video = Str::random(4) . "_" . $name;
+            while (file_exists("upload/exercise/video" . $video)) {
+                $video = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/exercise/video", $video);
+            unlink("upload/exercise/video/" . $exercise->video);
+            $exercise->video = $video;
+        }
+        $exercise->save();
+        return redirect()->route('trainer-list-exercise')->with('message', 'Sửa bài tập thành công');
+    }
+    public function getDeleteExercise($id)
+    {
+        $exercise = ExerciseType::find($id);
+        $exercise->delete();
+        return redirect()->route('trainer-list-exercise')->with('message', 'Xóa bài tập thành công');
     }
 }

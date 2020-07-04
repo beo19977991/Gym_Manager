@@ -238,6 +238,26 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('home','TrainerController@getHome')->name('trainer-get-home');
             Route::get('profile/{id}','TrainerController@getTrainerProfile')->name('get-trainer-profile');
             Route::post('profile/{id}','TrainerController@postTrainerProfile')->name('post-trainer-profile');
+        //  Manager Exercise type =====================================================================
+            Route::get('list_exercise_type','TrainerController@getListExerciseType')->name('trainer-list-exercise-type');
+
+            Route::get('add_exercise_type','TrainerController@getAddExerciseType')->name('trainer-add-exercise-type');
+            Route::post('add_exercise_type','TrainerController@postAddExerciseType');
+
+            Route::get('edit_exercise_type/{id}','TrainerController@getEditExerciseType')->name('trainer-edit-exercise-type');
+            Route::post('edit_exercise_type/{id}','TrainerController@postEditExerciseType');
+
+            Route::get('delete_exercise_type/{id}','TrainerController@getDeleteExerciseType')->name('trainer-delete-exercise-type');
+        // End Exercise Type ==================================================================
+        // Manager Exercise ==================================================================
+            Route::get('list_exercise','TrainerController@getListExercise')->name('trainer-list-exercise');
+            Route::get('add_exercise','TrainerController@getAddExercise')->name('trainer-add-exercise');
+            Route::post('add_exercise','TrainerController@postAddExercise');
+            Route::get('edit_exercise/{id}','TrainerController@getEditExercise')->name('trainer-edit-exercise');
+            Route::post('edit_exercise/{id}','TrainerController@postEditExercise');
+            Route::get('delete_exercise/{id}','TrainerController@getDeleteExercise')->name('trainer-delete-exercise');
+        // End Exercise =====================================================================
+
         });
         Route::group(['prefix' => 'staff'], function () {
             Route::get('home','StaffController@getHome')->name('staff-get-home');
@@ -296,6 +316,31 @@ Route::group(['prefix' => 'admin'], function () {
 
             Route::get('delete_post/{id}','StaffController@getDeletePost')->name('staff-delete-post');
         //  End Post ================================================================================
+        // Manager Schedule =========================================================================
+            Route::get('add-schedule','StaffController@getAddSchedule')->name('staff-add-schedule');
+            Route::post('add-schedule-calendar','StaffController@postAddSchedule')->name('staff-post-add-schedule');
+            Route::post('delete-schedule-calendar/{id}','StaffController@postDeleteSchedule')->name('staff-post-delete-schedule');
+            Route::post('check-date-click/{date}/{time}','StaffController@checkDateClick')->name('staff-check-date-click');
+        // End Schedule =============================================================================
+        // Manager Product Type =====================================================================
+            Route::get('list_product_type','StaffController@getListProductType')->name('staff-list-product-type');
+
+            Route::get('add_product_type','StaffController@getAddProductType')->name('staff-add-product-type');
+            Route::post('add_product_type','StaffController@postAddProductType');
+
+            Route::get('edit_product_type/{id}','StaffController@getEditProductType')->name('staff-edit-product-type');
+            Route::post('edit_product_type/{id}','StaffController@postEditProductType');
+
+            Route::get('delete_product_type/{id}','StaffController@getDeleteProductType')->name('staff-delete-product-type');
+        // End Product Type ==============================================================================
+        // Manager Product ===============================================================================
+            Route::get('list_product','StaffController@getListProduct')->name('staff-list-product');
+            Route::get('add_product','StaffController@getAddProduct')->name('staff-add-product');
+            Route::post('add_product','StaffController@postAddProduct');
+            Route::get('edit_product/{id}','StaffController@getEditProduct')->name('staff-edit-product');
+            Route::post('edit_product/{id}','StaffController@postEditProduct');
+            Route::get('delete_product/{id}','StaffController@getDeleteProduct')->name('staff-delete-product');
+        // End Product ====================================================================================
         });
         Route::group(['prefix' => 'ajax'], function () {
             Route::get('user/{user_id}','StaffController@getBlockUser');

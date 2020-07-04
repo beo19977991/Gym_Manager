@@ -149,7 +149,7 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{route('staff-add-schedule')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Lịch</p>
                 </a>
@@ -168,13 +168,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('staff-list-product-type') }}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Danh Sách Loại Sản phẩm</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('staff-add-product-type')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm Loại Sản Phẩm</p>
                 </a>
@@ -193,13 +193,13 @@
             </a>
             <ul class="nav nav-treeview">
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('staff-list-product')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Danh Sách Sản phẩm</p>
                 </a>
               </li>
               <li class="nav-item">
-                <a href="" class="nav-link">
+                <a href="{{ route('staff-add-product')}}" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
                   <p>Thêm Sản Phẩm</p>
                 </a>
