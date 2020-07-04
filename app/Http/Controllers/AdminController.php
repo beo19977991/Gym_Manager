@@ -164,7 +164,7 @@ class AdminController extends Controller
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
             if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
-                return redirect()->route('admin-add-user')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+                return redirect()->route('admin-edit-user')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
             }
             $name = $file->getClientOriginalName();
             $photo = Str::random(4) . "_" . $name;
@@ -172,7 +172,9 @@ class AdminController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/user/photo", $photo);
-            unlink("upload/user/photo" . $user->photo);
+            if($user->photo!="default.png"){
+                unlink("upload/user/photo/" . $user->photo);
+            }
             $user->photo = $photo;
         }
         $user->active = 1;
@@ -299,7 +301,9 @@ class AdminController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/trainer/photo", $photo);
-            unlink("upload/trainer/photo" . $trainer->photo);
+            if($trainer->photo!="default.png"){
+                unlink("upload/trainer/photo/" . $trainer->photo);
+            }
             $trainer->photo = $photo;
         }
         $trainer->description = $request->description;
@@ -478,7 +482,7 @@ class AdminController extends Controller
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
             if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
-                return redirect()->route('admin-add-course')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+                return redirect()->route('admin-edit-course')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
             }
             $name = $file->getClientOriginalName();
             $photo = Str::random(4) . "_" . $name;
@@ -486,7 +490,9 @@ class AdminController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/course/photo", $photo);
-            unlink("upload/course/photo" . $course->photo);
+            if($course->photo!="default.jpg"){
+                unlink("upload/course/photo/" . $course->photo);
+            }
             $course->photo = $photo;
         }
         $course->save();
@@ -643,7 +649,7 @@ class AdminController extends Controller
                 $video = Str::random(4) . "_" . $name;
             }
             $file->move("upload/exercise/video", $video);
-            unlink("upload/exercise/photo" . $exercise->photo);
+            unlink("upload/exercise/video/" . $exercise->video);
             $exercise->video = $video;
         }
         $exercise->save();
@@ -658,7 +664,8 @@ class AdminController extends Controller
     // End Exercise
     // Schedules=============================================================
     public function getAddSchedule()
-    {$lessions = Lession::all();
+    {   
+        $lessions = Lession::all();
         $courses = Course::all();
         return view('admin.schedules.add_schedule', ['courses' => $courses, 'lessions' => $lessions]);
     }
@@ -754,7 +761,7 @@ class AdminController extends Controller
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
             if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
-                return redirect()->route('admin-add-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+                return redirect()->route('admin-edit-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
             }
             $name = $file->getClientOriginalName();
             $photo = Str::random(4) . "_" . $name;
@@ -762,7 +769,9 @@ class AdminController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/post/photo", $photo);
-            unlink("upload/post/photo" . $post->photo);
+            if($post->photo!="default.jpg"){
+                unlink("upload/post/photo/" . $post->photo);
+            }
             $post->photo = $photo;
         }
         $post->save();
@@ -771,7 +780,7 @@ class AdminController extends Controller
     public function getDeletePost($id)
     {
         $post = Post::destroy($id);
-        return $post;
+        return redirect()->route('admin-list-post')->with('message', 'Xóa bài viết thành công');
     }
     // End Post =========================================================
     // Start Manager Trainer Post============================================
@@ -853,7 +862,9 @@ class AdminController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/trainerpost/photo", $photo);
-            unlink("upload/post/photo" . $trainer_post->photo);
+            if($trainer_post->photo!="default.jpg"){
+                unlink("upload/post/photo/" . $trainer_post->photo);
+            }
             $trainer_post->photo = $photo;
         }
         $trainer_post->save();
@@ -914,7 +925,7 @@ class AdminController extends Controller
     public function getDeleteProductType($id)
     {
         $product_type = ProductType::destroy($id);
-        return $product_type;
+        return redirect()->route('admin-list-product-type')->with('message', 'Xóa loại sản phẩm thành công');
     }
 
     // End Product Type
@@ -1008,7 +1019,9 @@ class AdminController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/product/photo", $photo);
-            unlink("upload/product/photo" . $post->photo);
+            if($product->photo!="default.png"){
+                unlink("upload/product/photo/" . $post->photo);
+            }
             $product->photo = $photo;
         }
         $product->save();

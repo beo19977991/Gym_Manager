@@ -13,7 +13,7 @@
           <a href="{{ route('get-staff-profile',['id'=>$staff_login->id]) }}" class="nav-link">Trang cá nhân</a>
         </li>
         <li class="nav-item d-none d-sm-inline-block">
-          <a href="{{ route('logout_admin') }}" class="nav-link">Đăng xuất</a>
+          <a href="{{ route('logout_staff') }}" class="nav-link">Đăng xuất</a>
         </li>
         @elseif(isset($user_login))
         <li class="nav-item d-none d-sm-inline-block">

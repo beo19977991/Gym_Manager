@@ -6,6 +6,9 @@ use Illuminate\Http\Request;
 use App\Staff;
 use App\Post;
 use App\CourseType;
+use App\Course;
+use App\User;
+use App\Trainer;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
 
@@ -144,7 +147,7 @@ class StaffController extends Controller
         $staff = Staff::find($id);
         $staff->full_name = $request->full_name;
         $staff->email = $request->email;
-        $staff->password = $request->password;
+        $staff->password = bcrypt($request->password);
         $staff->age = $request->age;
         $staff->address = $request->address;
         $staff->gender = $request->gender;
@@ -160,10 +163,549 @@ class StaffController extends Controller
                 $photo = Str::random(4) . "_" . $name;
             }
             $file->move("upload/staff/photo", $photo);
-            unlink("upload/staff/photo/" . $staff->photo);
+            if($staff->photo!="default.png"){
+                unlink("upload/staff/photo/" . $staff->photo);
+            }
             $staff->photo = $photo;
         }
         $staff->save();
         return redirect()->route('get-staff-profile',['id'=>$id]);
     }
+    public function getListUser()
+    {
+        $users = User::orderBy('created_at', 'DESC')->get();
+        return view('staff.user.list',['users'=>$users]);
+    }
+
+    public function getAddUser()
+    {
+        $courses = Course::all();
+        return view('staff.user.add', ['courses' => $courses]);
+    }
+    public function postAddUser(Request $request)
+    {
+        $this->validate($request, [
+            'full_name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:8|max:16',
+            'age' => 'required|integer',
+            'address' => 'required',
+        ], [
+            'full_name.required' => 'Bạn chưa nhập họ tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'email bạn nhập chưa đúng',
+            'email.unique' => 'email đã được sử dụng',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải nhiều hơn 8 ký tự',
+            'password.max' => 'Mật khẩu phải ít hơn 16 ký tự',
+            'age.required' => 'Bạn chưa nhập tuổi',
+            'age.integer' => 'Tuổi nhập vào phải là số',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+        ]);
+
+        $user = new User;
+        $user->course_id = $request->course;
+        $user->full_name = $request->full_name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->age = $request->age;
+        $user->address = $request->address;
+        $user->gender = $request->gender;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-get-add-user')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/user/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/user/photo", $photo);
+            $user->photo = $photo;
+        } else {
+            $user->photo = "default.png";
+        }
+        $user->active = 1;
+        $user->status = 0;
+        $user->save();
+        return redirect()->route('staff-get-list-user')->with('message', 'Thêm Khách Hàng thành công');
+    }
+    public function getEditUser($id)
+    {
+        $courses = Course::all();
+        $user = User::find($id);
+        return view('staff.user.edit',['user'=>$user,'courses'=>$courses]);
+    }
+    public function postEditUser($id, Request $request)
+    {
+        $this->validate($request, [
+            'full_name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'age' => 'required|integer',
+            'address' => 'required',
+        ], [
+            'full_name.required' => 'Bạn chưa nhập họ tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'email bạn nhập chưa đúng',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'age.required' => 'Bạn chưa nhập tuổi',
+            'age.integer' => 'Tuổi nhập vào phải là số',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+        ]);
+        $user = User::find($id);
+        $user->course_id = $request->course;
+        $user->full_name = $request->full_name;
+        $user->email = $request->email;
+        $user->password = bcrypt($request->password);
+        $user->age = $request->age;
+        $user->address = $request->address;
+        $user->gender = $request->gender;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-get-edit-user')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/user/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/user/photo", $photo);
+            if($user->photo!="default.png"){
+                unlink("upload/user/photo/" . $user->photo);
+            }
+            $user->photo = $photo;
+        }
+        $user->active = 1;
+        $user->status = $request->status;
+         $user->save();
+         return redirect()->route('staff-get-list-user')->with('message', 'Sửa Khách Hàng thành công');
+    }
+    public function getDeleteUser($id)
+    {
+        $user = User::destroy($id);
+        return redirect()->route('staff-get-list-user')->with('message','Xóa Khách Hàng Thành Công');
+    }
+    public function getBlockUser($user_id)
+    {
+        $user = User::find($user_id);
+        $user->active = !($user->active);
+        $user->save();
+    }
+    public function getAjaxEdit($course_id)
+    {
+        $course_edit = Course::find($course_id);
+        return $course_edit;
+    }
+    // Manager Trainer ===================================================================
+    public function getListTrainer()
+    {
+        $trainers = Trainer::orderBy('created_at', 'DESC')->get();
+        return view('staff.trainer.list', ['trainers' => $trainers]);
+    }
+    public function getAddTrainer()
+    {
+        $course_types = CourseType::all();
+        return view('staff.trainer.add', ['course_types' => $course_types]);
+    }
+    public function postAddTrainer(Request $request)
+    {
+        $this->validate($request, [
+            'full_name' => 'required',
+            'email' => 'required|email|unique:trainers,email',
+            'password' => 'required|min:8|max:16',
+            'age' => 'required|integer',
+            'address' => 'required',
+            'description' => 'required',
+        ], [
+            'full_name.required' => 'Bạn chưa nhập họ tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'email bạn nhập chưa đúng',
+            'email.unique' => 'email đã được sử dụng',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'password.min' => 'Mật khẩu phải nhiều hơn 8 ký tự',
+            'password.max' => 'Mật khẩu phải ít hơn 16 ký tự',
+            'age.required' => 'Bạn chưa nhập tuổi',
+            'age.integer' => 'Tuổi nhập vào phải là số',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+            'description.required' => 'Bạn chưa nhập mô tả',
+        ]);
+        $trainer = new Trainer;
+        $trainer->course_type_id = $request->course_type;
+        $trainer->full_name = $request->full_name;
+        $trainer->email = $request->email;
+        $trainer->password = bcrypt($request->password);
+        $trainer->age = $request->age;
+        $trainer->address = $request->address;
+        $trainer->gender = $request->gender;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-add-trainer')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/trainer/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/trainer/photo", $photo);
+            $trainer->photo = $photo;
+        } else {
+            $trainer->photo = "default.png";
+        }
+        $trainer->description = $request->description;
+        $trainer->save();
+        return redirect()->route('staff-list-trainer')->with('message', 'Thêm huấn luyện viên thành công');
+    }
+    public function getEditTrainer($id)
+    {
+        $course_types = CourseType::all();
+        $trainer = Trainer::find($id);
+        return view('staff.trainer.edit', ['trainer' => $trainer, 'course_types' => $course_types]);
+    }
+    public function postEditTrainer($id, Request $request)
+    {
+        $this->validate($request, [
+            'full_name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required',
+            'repeat_password' => 'required|same:password',
+            'age' => 'required|integer',
+            'address' => 'required',
+            'description' => 'required',
+        ], [
+            'full_name.required' => 'Bạn chưa nhập họ tên',
+            'email.required' => 'Bạn chưa nhập email',
+            'email.email' => 'email bạn nhập chưa đúng',
+            'password.required' => 'Bạn chưa nhập mật khẩu',
+            'repeat_password.required' => 'Bạn chưa nhập lại mật khẩu',
+            'repeat_password.same' => 'Nhập lại mật khẩu không đúng',
+            'age.required' => 'Bạn chưa nhập tuổi',
+            'age.integer' => 'Tuổi nhập vào phải là số',
+            'address.required' => 'Bạn chưa nhập địa chỉ',
+            'description.required' => 'Bạn chưa nhập mô tả', 
+        ]);
+        $trainer = Trainer::find($id);
+        $trainer->course_type_id = $request->course_type;
+        $trainer->full_name = $request->full_name;
+        $trainer->email = $request->email;
+        $trainer->password = bcrypt($request->password);
+        $trainer->age = $request->age;
+        $trainer->address = $request->address;
+        $trainer->gender = $request->gender;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-edit-trainer')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/trainer/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/trainer/photo", $photo);
+            if($trainer->photo!="default.png"){
+                unlink("upload/trainer/photo/" . $trainer->photo);
+            }
+            $trainer->photo = $photo;
+        }
+        $trainer->description = $request->description;
+        $trainer->save();
+        return redirect()->route('staff-list-trainer')->with('message', 'Sửa huấn luyện viên thành công');
+    }
+    public function getDeleteTrainer($id)
+    {
+        $trainer = Trainer::destroy($id);
+        return redirect()->route('staff-list-trainer')->with('message','Xóa Huấn Luyện Viên Thành Công');
+
+    }
+    // End Manager Trainer ===============================================================
+    // Manager Course Type ===============================================================
+    public function getListCourseType()
+    {
+        $course_types = CourseType::all();
+        return view('staff.course_type.list',['course_types'=>$course_types]);
+    }
+    public function getAddCourseType()
+    {
+        return view('staff.course_type.add');
+    }
+    public function postAddCourseType(Request $request)
+    {
+        $this->validate($request, [
+            'course_type_name' => 'required|unique:course_types,course_type_name',
+            'description' => 'required',
+        ], [
+            'course_type_name.required' => 'Bạn chưa nhập tên loại khóa tập',
+            'course_type_name.unique' => 'Tên Loại Khóa tập bạn nhập vào đã được sử dụng',
+            'description.required' => 'Bạn chưa nhập vào mô tả loại khóa tập',
+        ]);
+        $course_type = new CourseType;
+        $course_type->course_type_name = $request->course_type_name;
+        $course_type->description = $request->description;
+        $course_type->save();
+        return redirect()->route('staff-list-course-type')->with('message', 'Thêm lọai khóa tập thành công');
+    }
+
+    public function getEditCourseType($id)
+    {
+        $course_type = CourseType::find($id);
+        return view('staff.course_type.edit', ['course_type' => $course_type]);
+    }
+
+    public function postEditCourseType($id, Request $request)
+    {
+        $this->validate($request, [
+            'course_type_name' => 'required',
+            'description' => 'required',
+        ], [
+            'course_type_name.required' => 'Bạn chưa nhập tên loại khóa tập',
+            'description.required' => 'Bạn chưa nhập vào mô tả loại khóa tập',
+        ]);
+        $course_type = CourseType::find($id);
+        $course_type->course_type_name = $request->course_type_name;
+        $course_type->description = $request->description;
+        $course_type->save();
+        return redirect()->route('staff-list-course-type')->with('message', 'Thay đổi loại khóa tập thành công');
+    }
+
+    public function getDeleteCourseType($id)
+    {
+        $course_type = CourseType::destroy($id);
+        return redirect()->route('staff-list-course-type')->with('message','Xóa Loại Khóa Tập Thành Công');
+    }
+    // End Course Type ===================================================================
+    // Manager Course ====================================================================
+    public function getListCourse()
+    {
+        $courses = Course::orderBy('created_at', 'DESC')->get();
+        return view('staff.course.list', ['courses' => $courses]);
+    }
+    public function getAddCourse()
+    {
+        $course_types = CourseType::all();
+        $trainers = Trainer::all();
+        return view('staff.course.add', ['course_types' => $course_types, 'trainers' => $trainers]);
+    }
+    public function postAddCourse(Request $request)
+    {
+        $this->validate($request, [
+            'course_name' => 'required|unique:courses,course_name',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'discount' => 'required|numeric',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time',
+        ], [
+            'course_name.required' => 'Bạn chưa nhập tên khóa tập',
+            'course_name.unique' => 'Tên Khóa Tập đã được dùng',
+            'price.required' => 'Bạn chưa nhập giá khóa tập',
+            'price.numeric' => 'Giá Nhập vào phải là số',
+            'discount.required' => 'Bạn chưa nhập giảm giá',
+            'discount.numeric' => 'Giảm giá nhập vào phải là số',
+            'start_time.required' => 'Bạn chưa chọn ngày bắt đầu khóa tập',
+            'start_time.date' => 'Bạn nhập vào không phải ngày',
+            'end_time.required' => 'Bạn chưa nhập ngày kết thúc khóa tập',
+            'end_time.date' => 'Bạn nhập vào không phải ngày',
+            'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
+        ]);
+        $course = new Course;
+        $course->course_type_id = $request->course_type;
+        $course->trainer_id = $request->trainer;
+        $course->course_name = $request->course_name;
+        $course->description = $request->description;
+        $course->price = $request->price;
+        $course->discount = $request->discount;
+        $course->start_time = $request->start_time;
+        $course->end_time = $request->end_time;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-add-course')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/course/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/course/photo", $photo);
+            $course->photo = $photo;
+        } else {
+            $course->photo = "default.jpg";
+        }
+        $course->save();
+        return redirect()->route('staff-list-course')->with('message', 'Thêm Khóa Tập Thành Công');
+    }
+    public function getEditCourse($id)
+    {
+
+        $course_types = CourseType::all();
+        $course = Course::find($id);
+        $course_type_id = $course->course_type_id;
+        $trainers = Trainer::where('course_type_id','=',$course_type_id)->get();
+        return view('staff.course.edit', ['course' => $course, 'course_types' => $course_types, 'trainers' => $trainers]);
+    }
+    public function postEditCourse($id, Request $request)
+    {
+        $this->validate($request, [
+            'course_name' => 'required',
+            'description' => 'required',
+            'price' => 'required|numeric',
+            'discount' => 'required|numeric',
+            'start_time' => 'required|date',
+            'end_time' => 'required|date|after:start_time',
+        ], [
+            'course_name.required' => 'Bạn chưa nhập tên khóa tập',
+            'price.required' => 'Bạn chưa nhập giá khóa tập',
+            'price.numeric' => 'Giá Nhập vào phải là số',
+            'discount.required' => 'Bạn chưa nhập giảm giá',
+            'discount.numeric' => 'Giảm giá nhập vào phải là số',
+            'start_time.required' => 'Bạn chưa chọn ngày bắt đầu khóa tập',
+            'start_time.date' => 'Bạn nhập vào không phải ngày',
+            'end_time.required' => 'Bạn chưa nhập ngày kết thúc khóa tập',
+            'end_time.date' => 'Bạn nhập vào không phải ngày',
+            'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
+        ]);
+        $course = Course::find($id);
+        $course->course_type_id = $request->course_type;
+        $course->trainer_id = $request->trainer;
+        $course->course_name = $request->course_name;
+        $course->description = $request->description;
+        $course->price = $request->price;
+        $course->discount = $request->discount;
+        $course->start_time = $request->start_time;
+        $course->end_time = $request->end_time;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-edit-course')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/course/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/course/photo", $photo);
+            if($course->photo != "default.jpg"){
+                unlink("upload/course/photo/" . $course->photo);
+            }
+            $course->photo = $photo;
+        }
+        $course->save();
+        return redirect()->route('staff-list-course')->with('message', 'Sửa Khóa Tập Thành Công');
+    }
+    public function getDeleteCourse($id)
+    {
+        $course = Course::destroy($id);
+        return redirect()->route('staff-list-course')->with('message','Xóa Khóa Tập Thành Công');
+    }
+    public function getTrainerCourseType($course_type_id)
+    {
+        $trainers = Trainer::where('course_type_id', $course_type_id)->get();
+        foreach ($trainers as $trainer) {
+            echo "<option value = '" . $trainer->id . "'>" . $trainer->full_name . "</option>";
+        }
+    }
+    public function getTrainerEditCourse($course_type_id)
+    {
+        $trainers = Trainer::where('course_type_id', $course_type_id)->get();
+        foreach ($trainers as $trainer) {
+            echo "<option value = '" . $trainer->id . "'>" . $trainer->full_name . "</option>";
+        }
+    }
+    // End Course ========================================================================
+    // Start Post ========================================================================
+    public function getListPost()
+    {
+        $posts = Post::orderBy('created_at', 'DESC')->get();
+        return view('staff.post.list', ['posts' => $posts]);
+    }
+    public function getAddPost()
+    {
+        return view('staff.post.add');
+    }
+    public function postAddPost(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required',
+        ], [
+            'title.required' => 'Bạn chưa nhập tên bài viết',
+            'body.required' => 'Bạn chưa nhập nội dung bài viết',
+        ]);
+        $post = new Post;
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->staff_id = Auth::guard('staff')->user()->id;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-add-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/post/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/post/photo", $photo);
+            $post->photo = $photo;
+        } else {
+            $post->photo = "default.jpg";
+        }
+        $post->save();
+        return redirect()->route('staff-list-post')->with('message', 'Thêm bài viết thành công');
+    }
+    public function getEditPost($id)
+    {
+        $post = Post::find($id);
+        return view('staff.post.edit', ['post' => $post]);
+    }
+    public function postEditPost($id, Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required',
+        ], [
+            'title.required' => 'Bạn chưa nhập tên bài viết',
+            'body.required' => 'Bạn chưa nhập nội dung bài viết',
+        ]);
+        $post = Post::find($id);
+        $post->title = $request->title;
+        $post->body = $request->body;
+        $post->staff_id = Auth::guard('staff')->user()->id;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('staff-edit-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/post/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/post/photo", $photo);
+            if($post->photo!="default.jpg"){
+                unlink("upload/post/photo/" . $post->photo);
+            }
+            $post->photo = $photo;
+        }
+        $post->save();
+        return redirect()->route('staff-list-post')->with('message', 'Sửa bài viết thành công');
+    }
+    public function getDeletePost($id)
+    {
+        $post = Post::destroy($id);
+        return redirect()->route('staff-list-post')->with('message', 'Xóa bài viết thành công');
+    }
+    // End Post ==========================================================================
 }

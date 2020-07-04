@@ -243,5 +243,65 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('home','StaffController@getHome')->name('staff-get-home');
             Route::get('profile/{id}','StaffController@getStaffProfile')->name('get-staff-profile');
             Route::post('profile/{id}','StaffController@postStaffProfile')->name('post-staff-profile');
+        // Manager User====================================================
+            Route::get('list_user','StaffController@getListUser')->name('staff-get-list-user');
+
+            Route::get('add_user','StaffController@getAddUser')->name('staff-get-add-user');
+            Route::post('add_user','StaffController@postAddUser');
+
+            Route::get('edit_user/{id}','StaffController@getEditUser')->name('staff-get-edit-user');
+            Route::post('edit_user/{id}','StaffController@postEditUser');
+
+            Route::get('delete_user/{id}','StaffController@getDeleteUser')->name('staff-get-delete-user');
+        // Manager Trainer========================================================================
+            Route::get('list_trainer','StaffController@getListTrainer')->name('staff-list-trainer');
+
+            Route::get('add_trainer','StaffController@getAddTrainer')->name('staff-add-trainer');
+            Route::post('add_trainer','StaffController@postAddTrainer');
+
+            Route::get('edit_trainer/{id}','StaffController@getEditTrainer')->name('staff-edit-trainer');
+            Route::post('edit_trainer/{id}','StaffController@postEditTrainer');
+
+            Route::get('delete_trainer/{id}','StaffController@getDeleteTrainer')->name('staff-delete-trainer');
+        // Manager Course Type =====================================================================
+            Route::get('list_course_type','StaffController@getListCourseType')->name('staff-list-course-type');
+
+            Route::get('add_course_type','StaffController@getAddCourseType')->name('staff-add-course-type');
+            Route::post('add_course_type','StaffController@postAddCourseType');
+
+            Route::get('edit_course_type/{id}','StaffController@getEditCourseType')->name('staff-edit-course-type');
+            Route::post('edit_course_type/{id}','StaffController@postEditCourseType');
+
+
+            Route::get('delete_course_type/{id}','StaffController@getDeleteCourseType')->name('staff-delete-course-type');
+        // Manager Course ============================================================================
+            Route::get('list_course','StaffController@getListCourse')->name('staff-list-course');
+
+            Route::get('add_course','StaffController@getAddCourse')->name('staff-add-course');
+            Route::post('add_course','StaffController@postAddCourse');
+
+            Route::get('edit_course/{id}','StaffController@getEditCourse')->name('staff-edit-course');
+            Route::post('edit_course/{id}','StaffController@postEditCourse');
+
+            Route::get('delete_course/{id}','StaffController@getDeleteCourse')->name('staff-delete-course');
+        // End Course ================================================================================ 
+        // Manager Post =============================================================================
+            Route::get('list_post','StaffController@getListPost')->name('staff-list-post');
+
+            Route::get('add_post','StaffController@getAddPost')->name('staff-add-post');
+            Route::post('add_post','StaffController@postAddPost');
+
+            Route::get('edit_post/{id}','StaffController@getEditPost')->name('staff-edit-post');
+            Route::post('edit_post/{id}','StaffController@postEditPost');
+
+            Route::get('delete_post/{id}','StaffController@getDeletePost')->name('staff-delete-post');
+        //  End Post ================================================================================
         });
+        Route::group(['prefix' => 'ajax'], function () {
+            Route::get('user/{user_id}','StaffController@getBlockUser');
+            Route::get('edit_user/{course_id}','StaffController@getAjaxEdit');
+            Route::get('get_trainer_course_type/{course_type_id}','StaffController@getTrainerCourseType');
+            Route::get('get_trainer_edit_course/{course_type_id}','StaffController@getTrainerEditCourse');
+        });
+        
     });

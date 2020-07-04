@@ -38,12 +38,12 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-            <!-- customer start -->
-          <li class="nav-item has-treeview">
+        <!-- Exercise Type start -->
+        <li class="nav-item has-treeview">
             <a href="" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Khách Hàng
+                Loại Bài Tập
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -51,24 +51,24 @@
               <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Khách Hàng</p>
+                  <p>Danh Sách Loại Bài Tập</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Khách Hàng</p>
+                  <p>Thêm Loại Bài Tập</p>
                 </a>
               </li>
             </ul>
           </li>
-          <!-- customer end -->
-          <!-- trainer start -->
+        <!-- Exercise Type end -->
+        <!-- Exercise Type start -->
           <li class="nav-item has-treeview">
             <a href="" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Huấn Luyện Viên
+                 Bài Tập
                 <i class="right fas fa-angle-left"></i>
               </p>
             </a>
@@ -76,161 +76,18 @@
               <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Huấn Luyện Viên</p>
+                  <p>Danh Sách Bài Tập</p>
                 </a>
               </li>
               <li class="nav-item">
                 <a href="" class="nav-link">
                   <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Huấn Luyện Viên</p>
+                  <p>Thêm Bài Tập</p>
                 </a>
               </li>
             </ul>
           </li>
-          <!-- trainer end -->
-        <!-- Course Type start -->
-        <li class="nav-item has-treeview">
-            <a href="" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Loại Khóa Học
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Loại Khóa Học</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Loại Khóa Học</p>
-                </a>
-              </li>
-            </ul>
-        </li>
-        <!-- Course Type end -->
-        <!-- Course start -->
-        <li class="nav-item has-treeview">
-            <a href="" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Khóa Học
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Khóa Học</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Khóa Học</p>
-                </a>
-              </li>
-            </ul>
-        </li>
-          <!-- Course end -->
-        <!-- Exercise start -->
-        <li class="nav-item has-treeview">
-            <a href="" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Tin tức
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Tin Tức</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Tin Tức</p>
-                </a>
-              </li>
-            </ul>
-        </li>
-            <!-- Schedule start -->
-            <li class="nav-item has-treeview">
-            <a href="" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Lịch tập
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Lịch</p>
-                </a>
-              </li>
-            </ul>
-        </li>
-    <!-- Schedule end -->
-          <!-- Product Type start -->
-          <li class="nav-item has-treeview">
-            <a href="" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Loại Sản Phẩm
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Loại Sản phẩm</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Loại Sản Phẩm</p>
-                </a>
-              </li>
-            </ul>
-        </li>
-    <!-- Product type end -->
-          <!-- Product start -->
-          <li class="nav-item has-treeview">
-            <a href="" class="nav-link active">
-              <i class="nav-icon fas fa-tachometer-alt"></i>
-              <p>
-                Sản Phẩm
-                <i class="right fas fa-angle-left"></i>
-              </p>
-            </a>
-            <ul class="nav nav-treeview">
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Danh Sách Sản phẩm</p>
-                </a>
-              </li>
-              <li class="nav-item">
-                <a href="" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Thêm Sản Phẩm</p>
-                </a>
-              </li>
-            </ul>
-        </li>
-    <!-- Product end -->
+        <!-- Exercise Type end -->
     </ul>
     </nav>
       <!-- /.sidebar-menu -->
@@ -261,16 +118,16 @@
               <div class="card-body box-profile">
                 <div class="text-center">
                   <img class="profile-user-img img-fluid img-circle"
-                       src="upload/staff/photo/{{$staff->photo}}"
+                       src="upload/trainer/photo/{{$trainer->photo}}"
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center">{{$staff->full_name}}</h3>
-                <p class="text-muted text-center">Mã Nhân Viên: {{$staff->id}}</p>
+                <h3 class="profile-username text-center">{{$trainer->full_name}}</h3>
+                <p class="text-muted text-center">Mã Huấn Luyện Viên: {{$trainer->id}}</p>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
-                    <b>Ngày Tham gia</b> <a class="float-right">{{\Carbon\Carbon::parse($staff->created_at)->format('d-m-Y')}}</a>
+                    <b>Ngày Tham gia</b> <a class="float-right">{{\Carbon\Carbon::parse($trainer->created_at)->format('d-m-Y')}}</a>
                   </li>
                 </ul>
               </div>
@@ -287,19 +144,19 @@
                 <strong><i class="fas fa-mail-bulk mr-1"></i> Email</strong>
 
                 <p class="text-muted">
-                  {{$staff->email}}
+                  {{$trainer->email}}
                 </p>
 
                 <hr>
 
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Địa Chỉ</strong>
 
-                <p class="text-muted">{{$staff->address}}</p>
+                <p class="text-muted">{{$trainer->address}}</p>
 
                 <hr>
 
                 <strong><i class="fas fa-transgender mr-1"></i> Giới Tính</strong>
-                    @if($staff->gender == 1)
+                    @if($trainer->gender == 1)
                     <p class="text-muted">Nam</p>
                     @else
                     <p class="text-muted">Nữ</p>
@@ -308,7 +165,7 @@
 
                 <strong><i class="far fa-question-circle mr-1"></i> Tuổi</strong>
 
-                <p class="text-muted">{{$staff->age}}</p>
+                <p class="text-muted">{{$trainer->age}}</p>
               </div>
               <!-- /.card-body -->
             </div>
@@ -330,52 +187,52 @@
                   </div>
                   <!-- /.tab-pane -->
                   <div class="tab-pane" id="settings">
-                    <form action="{{route('post-staff-profile',['id'=>$staff->id])}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
+                    <form action="{{route('post-trainer-profile',['id'=>$trainer->id])}}" method="POST" enctype="multipart/form-data" class="form-horizontal">
                     <input type="hidden" name="_token" value="{{csrf_token()}}">
                       <div class="form-group row">
                         <label for="inputName" class="col-sm-2 col-form-label">Họ Tên</label>
                         <div class="col-sm-10">
-                          <input type="text" name="full_name" class="form-control" id="inputName" placeholder="Họ Tên" value="{{$staff->full_name}}">
+                          <input type="text" name="full_name" class="form-control" id="inputName" placeholder="Họ Tên" value="{{$trainer->full_name}}">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
                         <div class="col-sm-10">
-                          <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="{{$staff->email}}">
+                          <input type="email" name="email" class="form-control" id="inputEmail" placeholder="Email" value="{{$trainer->email}}">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputName2" class="col-sm-2 col-form-label">Mật Khẩu</label>
                         <div class="col-sm-10">
-                          <input type="password" name="password" class="form-control" id="inputName2" placeholder="Name" value="{{$staff->password}}">
+                          <input type="password" name="password" class="form-control" id="inputName2" placeholder="Name" value="{{$trainer->password}}">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Tuổi</label>
                         <div class="col-sm-10">
-                          <input type="text" name="age" class="form-control" placeholder="Tuổi" value="{{$staff->age}}">
+                          <input type="text" name="age" class="form-control" placeholder="Tuổi" value="{{$trainer->age}}">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Địa Chỉ</label>
                         <div class="col-sm-10">
-                          <input type="text" name="address" class="form-control" placeholder="Địa Chỉ" value="{{$staff->address}}">
+                          <input type="text" name="address" class="form-control" placeholder="Địa Chỉ" value="{{$trainer->address}}">
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Giới Tính</label>
                         <div class="custom-control custom-radio">
-                        <input class="form-check-input" type="radio" name="gender" @if($staff->gender == 1){{"checked"}}@endif value="1" id="male">
+                        <input class="form-check-input" type="radio" name="gender" @if($trainer->gender == 1){{"checked"}}@endif value="1" id="male">
                             <label class="form-check-label">Nam</label>
                             &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input class="form-check-input" type="radio" name="gender" @if($staff->gender == 2){{"checked"}}@endif value="2" id="female">
+                        <input class="form-check-input" type="radio" name="gender" @if($trainer->gender == 2){{"checked"}}@endif value="2" id="female">
                             <label class="form-check-label">Nữ</label>
                         </div>
                       </div>
                       <div class="form-group row">
                         <label for="inputSkills" class="col-sm-2 col-form-label">Hình Đại Diện</label>
                         <div class="col-sm-10">
-                        <p><img  src="upload/staff/photo/{{$staff->photo}}" > &nbsp;<img id="thumbnil" style="width:38%; margin-top:10px;"  src="" alt="image"/></p>
+                        <p><img  src="upload/trainer/photo/{{$trainer->photo}}" > &nbsp;<img id="thumbnil" style="width:38%; margin-top:10px;"  src="" alt="image"/></p>
                         <input class="form-control" type="file" name="photo" accept="image/*"  onchange="showMyImage(this)">
                         </div>
                       </div>
