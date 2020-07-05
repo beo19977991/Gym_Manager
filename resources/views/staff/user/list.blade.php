@@ -43,16 +43,16 @@
                     <th>Địa Chỉ</th>
                     <th>Giới Tính</th>
                     <th>Khóa Học</th>
+                    <th>Thời Hạn Thẻ</th>
                     <th>Hình Đại Diện</th>
                     <th>Thanh Toán</th>
-                    <th>Hoạt Động</th>
                     <th>Thao tác</th>
                   </tr>
                   </thead>
                   <tbody>
                 @foreach($users as $user)
                   <tr>
-                    <td><a target="_blank" href="#">{{$user->full_name}}</a></td>
+                    <td><a target="_blank" href="{{ route('staff-user-detatil',['id'=>$user->id]) }}">{{$user->full_name}}</a></td>
                     <td>{{$user->age}}</td>
                     <td>{{$user->address}}</td>
                     <td>
@@ -69,6 +69,19 @@
                         {{$user->course->course_name}}
                         @endif
                     </td>
+                    <td>
+                      @if($user->course_id == 0)
+                        <span>Chưa tham gia</span>
+                        @else
+                          @if(floor(((strtotime($user->course->end_time) - strtotime($current)))/(60*60*24)) <= 0)
+                          <span class="badge badge-danger"> Khóa tập đã kết thúc {{floor((abs(strtotime($user->course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
+                          @elseif(floor(((strtotime($user->course->end_time) - strtotime($current)))/(60*60*24)) <= 5 && floor(((strtotime($user->course->end_time) - strtotime($current)))/(60*60*24)) > 0)
+                          <span class="badge badge-warning"> Còn {{floor((abs(strtotime($user->course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
+                          @else
+                          <span class="badge badge-primary"> Còn {{floor((abs(strtotime($user->course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
+                          @endif
+                      @endif
+                    </td>
                     <td class="text-center"><img class="direct-chat-img " width="50" height="50" src="upload/user/photo/{{$user->photo}}"></td>
                     <td>
                         @if($user->status == 0)
@@ -76,17 +89,6 @@
                         @else
                         <span class="badge badge-success">Đã thanh toán</span>
                         @endif
-                    </td>
-                    <td>
-                        <label class = "switch">
-                            <div class ="card-body">
-                                <input type="checkbox" class="switchblock" id="switchblock" name="my-checkbox" data-bootstrap-switch user_id ="{{$user->id}}"
-                                    @if($user->active == 1 )
-                                    {{"checked"}}
-                                    @endif
-                                    />
-                            </div>
-                        </label>
                     </td>
                     <td class="text-center"><a class="ml-2" href="{{ route('staff-get-edit-user',['id'=>$user->id])}}"><i class="ion-paintbrush" ></i></a></br>
                      <a href="{{ route('staff-get-delete-user',['id'=>$user->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa người dùng  {{$user->full_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a></td>
@@ -125,14 +127,6 @@
       $('tbody tr').filter(function() {
          $(this).toggle($(this).text().toLowerCase().indexOf(tukhoa)>-1);
       });
-    });
-    $('.switchblock').on('change',function(){
-      alert("oke");
-      var user_id = $(this).attr("user_id");
-      $.ajax({url:"manager/ajax/user/"+user_id, success:function(data){
-          $('.switchblock').html(data);
-          console.log("manager/ajax/user/"+user_id);
-      }});
     });
     var deleteLinks = document.querySelectorAll('.delete');
     for (var i = 0; i < deleteLinks.length; i++) {

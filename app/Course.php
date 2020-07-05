@@ -15,6 +15,8 @@ class Course extends Model
         'description',
         'price',
         'discount',
+        'number_member',
+        'number',
         'start_time',
         'end_time'
     ];
@@ -34,5 +36,9 @@ class Course extends Model
     public function trainer()
     {
         return $this->belongsTo('App\Trainer','trainer_id','id');
+    }
+    public function history_user()
+    {
+        return $this->hasMany('App\HistoryUser','course_id','id');
     }
 }

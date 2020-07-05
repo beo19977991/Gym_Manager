@@ -102,12 +102,16 @@
                     <input type="text" name="discount" class="form-control" id="address" placeholder="Nhập Giảm Giá Khóa Tập" value="{{$course->discount}}">
                   </div>
                   <div class="form-group">
-                    <label>Start Time</label>
+                    <label>Thời Gian Bắt Đầu</label>
                       <input type="text" class="form-control" id="start_time" name="start_time" value="{{ Carbon\Carbon::parse($course->start_time)->format('Y-m-d') }}"/>
                   </div>
                   <div class="form-group">
-                    <label>End Time</label>
+                    <label>Thời Gian Kết Thúc</label>
                       <input type="text" class="form-control" id="end_time" name="end_time" value="{{ Carbon\Carbon::parse($course->end_time)->format('Y-m-d') }}" />
+                  </div>
+                  <div class="form-group">
+                    <label>Số Lượng Khách Hàng</label>
+                    <input type="text" name="number" class="form-control" id="address" placeholder="Nhập Số Lượng Khách Hàng" vlaue="{{$course->number}}">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputFile">Ảnh</label>                  

@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\User;
+use App\Course;
+use App\HistoryUser;
 
 class UserController extends Controller
 {
@@ -14,6 +16,15 @@ class UserController extends Controller
         $user = User::find($user_login_id);
         $user->course_id = $id;
         $user->save();
+        $course = Course::find($id);
+        $number_member = $course->number_member;
+        $course->number_member = $number_member + 1;
+        $course->save();
+        $history_user = new HistoryUser;
+        $history_user->user_id = $user_login_id;
+        $history_user->course_id = $id;
+        $history_user->status = 1;
+        $history_user->save();
         return redirect('page/course/detail/'.$id);
     }
     public function getCancelRegisterCourse($id)
@@ -22,9 +33,17 @@ class UserController extends Controller
         $user = User::find($user_login_id);
         $user->course_id = 0;
         $user->save();
+        $course = Course::find($id);
+        $number_member = $course->number_member;
+        $course->number_member = $number_member - 1;
+        $course->save();
+        $history_user = new HistoryUser;
+        $history_user->user_id = $user_login_id;
+        $history_user->course_id = $id;
+        $history_user->status = 0;
+        $history_user->save();
         return redirect('page/course/detail/'.$id);
     }
-
 
     public function getUserProfile($id)
     {

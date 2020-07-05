@@ -12,7 +12,9 @@ use App\Exercise;
 use App\Lession;
 use App\User;
 use App\TrainerPost;
+use App\ExerciseType;
 use DateTime;
+use Carbon\Carbon;
 
 class PageController extends Controller
 {
@@ -37,26 +39,41 @@ class PageController extends Controller
     }
     public function getCourse()
     {
-        $course_max_discount = Course::orderBy('discount','DESC')->first();
-        $courses = Course::orderBy('created_at','DESC')->get();
+        $today = new DateTime();
+        $current = $today->format('Y-m-d H:i:s');
+        $course_max_discount = Course::where('end_time','>=',$current)
+                            ->orderBy('discount','DESC')->first();
+        $courses = Course::where('end_time','>=',$current)
+                            ->orderBy('created_at','DESC')->get();
         return view('pages.course',['courses'=>$courses,'course_max_discount'=>$course_max_discount]);
     }
+    // Search Course ==================================================================
     public function getSearchCourse(Request $request)
     {
         $term = $request->term['term'];
         $courses = Course::where('course_name','LIKE', '%' . $term . '%')
                         ->get();
                         $response = array();
-      foreach($courses as $course){
-         $response[] = array(
+        foreach($courses as $course){
+        $response[] = array(
               "id"=>$course->id,
               "text"=>$course->course_name
-         );
+        );
       }
 
       echo json_encode($response);
       exit;
     }
+    public function getResultSearchCourse($id) {
+        $course = Course::find($id);
+        if ($course == null) {
+            abort(404);
+        }
+        $course_type_id = $course->course_type_id;
+        $course_type = CourseType::find($course_type_id);
+        return array($course,$course_type); 
+    }
+    //================================================================================ 
     public function getSchedule()
     {
         $lessions = Lession::all();
@@ -75,15 +92,62 @@ class PageController extends Controller
         $trainers = Trainer::orderBy('created_at','DESC')->get();
         return view('pages.trainer',['trainers'=>$trainers,'course_max_discount'=>$course_max_discount,'courses'=>$courses]);
     }
+    // Search Trainer
     public function getSearchTrainer(Request $request)
     {
-        $term = $request->term;
-        $trainers = Trainer::where('course_name','LIKE', '%'.$term.'%')
-                            ->get();
-        
-        return $trainers;
-    }
+        $term = $request->term['term'];
+        $trainers = Trainer::where('full_name','LIKE', '%' . $term . '%')
+                        ->get();
+                        $response = array();
+        foreach($trainers as $trainer){
+        $response[] = array(
+              "id"=>$trainer->id,
+              "text"=>$trainer->full_name
+        );
+      }
 
+      echo json_encode($response);
+      exit;
+    }
+    public function getResultSearchTrainer($id)
+    {
+        $trainer = Trainer::find($id);
+        if ($trainer == null) {
+            abort(404);
+        }
+        $course_type_id = $trainer->course_type_id;
+        $course_type = CourseType::find($course_type_id);
+        $course_type_name = $course_type->course_type_name;
+        return array($trainer, $course_type_name); 
+    }
+    // ===============================================================================
+    // Search Exercise
+    public function getSearchExercise(Request $request)
+    {
+        $term = $request->term['term'];
+        $exercises = Exercise::where('exercise_name','LIKE', '%' . $term . '%')
+                        ->get();
+                        $response = array();
+        foreach($exercises as $exercise){
+        $response[] = array(
+              "id"=>$exercise->id,
+              "text"=>$exercise->exercise_name
+        );
+      }
+      echo json_encode($response);
+      exit;
+    }
+    public function getResultSearchExercise($id)
+    {
+        $exercise = Exercise::find($id);
+        if ($exercise == null) {
+            abort(404);
+        }
+        $exercise_type_id = $exercise->exercise_type_id;
+        $exercise_type = ExerciseType::find($exercise_type_id);
+        return array($exercise, $exercise_type); 
+    }
+    // =================================================================================
     public function getNews()
     {
         $today = new DateTime;
@@ -114,16 +178,9 @@ class PageController extends Controller
     {
         $lessions = Lession::where('course_id','=',$id)->get();
         $customers = User::where('course_id','=',$id)->get();
+        $member= count($customers);
         $course = Course::find($id);
-        return view('courses.course_detail',['course'=>$course,'customers'=>$customers,'lessions'=>$lessions]);
-    }
-
-    public function getResultSearchCourse($id) {
-        $course = Course::find($id);
-        if ($course == null) {
-            abort(404);
-        }
-        return $course; 
+        return view('courses.course_detail',['course'=>$course,'customers'=>$customers,'lessions'=>$lessions,'member'=>$member]);
     }
 
     public function getProduct()

@@ -44,6 +44,8 @@
                     <th>Mô Tả</th>
                     <th>Giá</th>
                     <th>Giảm Giá</th>
+                    <th>Thời Hạn</th>
+                    <th>Số Lượng Khách Hàng Đăng Ký</th>
                     <th>Ảnh</th>
                     <th>Thao tác</th>
                   </tr>
@@ -57,6 +59,18 @@
                     <td>{!!$course->description!!}</td>
                     <td><span>{{$course->price *1}}</span></td>
                     <td><span>{{$course->discount * 100}} %</span></td>
+                    <td>
+                      @if(floor(((strtotime($course->end_time) - strtotime($current)))/(60*60*24)) <= 0)
+                        <span class="badge badge-danger"> Khóa tập đã kết thúc {{floor((abs(strtotime($course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
+                      @elseif(floor(((strtotime($course->end_time) - strtotime($current)))/(60*60*24)) <= 5 && floor(((strtotime($course->end_time) - strtotime($current)))/(60*60*24)) > 0)
+                        <span class="badge badge-warning"> Còn {{floor((abs(strtotime($course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
+                      @else
+                        <span class="badge badge-primary"> Còn {{floor((abs(strtotime($course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
+                      @endif
+                    </td>
+                    <td>
+                      {{$course->number_member}}/{{$course->number}}
+                    </td>
                     <td><img style="width:150px;height:100px" src="upload/course/photo/{{$course->photo}}"></td>
                     <td>
                     <a class="ml-2" href="{{ route('staff-edit-course',['id'=>$course->id])}}"><i class="ion-paintbrush" ></i></a>

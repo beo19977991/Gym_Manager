@@ -49,4 +49,8 @@ class User extends Authenticatable
     {
         return $this->belongsTo('App\Course','course_id','id');
     }
+    public function history_user()
+    {
+        return $this->hasMany('App\HistoryUser','user_id','id');
+    }
 }

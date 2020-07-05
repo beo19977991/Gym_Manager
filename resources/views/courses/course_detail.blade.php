@@ -40,7 +40,7 @@
                                         <img  src="upload/course/photo/{{$course->photo}}" >
                                     </div>
                                     <div class="class-heading">
-                                        <h3>{{$course->course_name}}</h3>
+                                        <h3 id="course_id" value="{{$course->course_id}}">{{$course->course_name}}</h3>
                                         <ul>
                                             <li><i class="fa fa-clock-o" aria-hidden="true"></i>Thời gian bắt đầu: {{\Carbon\Carbon::parse($course->start_time)->format('d-m-Y')}}&nbsp;&nbsp;<i class="fa fa-clock-o" aria-hidden="true"></i>Thời gian kết thúc: {{\Carbon\Carbon::parse($course->end_time)->format('d-m-Y')}}</li>
                                             <li><i class="fa fa-user" aria-hidden="true"></i>Huấn luyện viên : <a href="">{{$course->trainer->full_name}}</a></li>
@@ -73,12 +73,16 @@
                                             <li><a href="">{{$customer->full_name}}</a></li>
                                             @endforeach
                                         </ul>
-                                        @if(isset($user_login) && $user_login->course_id == 0 && $user_login->active == 1)
+                                        @if(isset($user_login) && $user_login->course_id == 0 && $user_login->active == 1 &&  $course->number_member < $course->number)
                                         <a href="{{route('page-course-register',['id'=>$course->id])}}" class="custom-button" data-title="Đăng Ký Ngay">Đăng Ký Ngay</a>
                                         @elseif(isset($user_login) && $user_login->course_id == $course->id && $user_login ->status == 0)
                                         <a href="{{route('page-course-cancel-register',['id'=>$course->id])}}" class="custom-button" data-title="Hủy Đăng Ký">Hủy Đăng Ký</a>
+                                        @elseif(isset($user_login) && $user_login->course_id == 0 && $user_login->active == 1 && $course->number_member >= $course->number )
+                                        <a class="custom-button" data-title="Khóa Tập {{$course->course_name}} Đã Đủ Số Lượng">Khóa Tập {{$course->course_name}} Đã Đủ Số Lượng}</a>
+                                        @elseif(isset($user_login))
+                                        <a class="custom-button" data-title="Bạn Đã Đăng Ký Khóa Tập {{$user_login->course->course_name}}">Bạn Đã Đăng Ký Khóa Tập {{$user_login->course->course_name}}</a>
                                         @else
-                                        <a class="custom-button" data-title="Bạn Chưa Hoàn Thành Khóa Tập">Bạn Chưa Hoàn Thành Khóa Tập</a>
+                                        <a class="custom-button" data-title="...">...</a>
                                         @endif
                                     </div>
                                 </div>

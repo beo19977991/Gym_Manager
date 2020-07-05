@@ -76,7 +76,6 @@ select:focus {
                                     <div class="classes-title">
                                         <h3>{{$course->course_type->course_type_name}}</h3>
                                         <h3><a href="{{route('page-course-detail',['id'=>$course->id])}}">{{$course->course_name}}</a></h3>
-                                        <p class="date">{{\Carbon\Carbon::parse($course->start_time)->format('d-m-Y')}}{{" đến "}}{{\Carbon\Carbon::parse($course->end_time)->format('d-m-Y')}}</p>
                                     </div>
                                 </div>
                             </div>
@@ -128,11 +127,11 @@ $(document).ready(function () {
                 };
             },
             processResults: function (data) {
-      // Transforms the top-level key of the response object from 'items' to 'results'
-      return {
-        results: data
-      };
-    }
+                // Transforms the top-level key of the response object from 'items' to 'results'
+                return {
+                    results: data
+                };
+            }
         }
     });
 
@@ -142,14 +141,10 @@ $(document).ready(function () {
             url : "/page/ajax/course/" + course_id,
             method: "GET",
             success: function(result) {
-                let photo = result.photo;
-                let type_name = result.course_type_name;
-                let id = result.id;
-                let name = result.course_name;
-                let start_time = result.start_time;
-                start_time = new Date(start_time);
-                let end_time = result.end_time;
-                end_time = new Date(end_time);
+                let photo = result[0].photo;
+                let type_name = result[1].course_type_name;
+                let id = result[0].id;
+                let name = result[0].course_name;
                 html = '<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">'+
                                 '<div class="single-classes-area">' +
                                     '<div class="classes-img">' +
@@ -160,7 +155,6 @@ $(document).ready(function () {
                                     '<div class="classes-title">' +
                                         '<h3>'+type_name+'</h3>' +
                                         '<h3><a href="page/course/detail/'+id+'">'+name+'</a></h3>' +
-                                        '<p class="date">'+start_time.getDay() + "/" +(start_time.getMonth() + 1) +"/"+start_time.getYear() +' đến '+end_time.getDay() + "/" +(end_time.getMonth() + 1) +"/"+end_time.getYear() +'</p>'+
                                     '</div>'+
                                 '</div>'+
                             '</div>';

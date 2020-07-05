@@ -150,17 +150,39 @@ $(document).ready(function () {
                     term: term
                 };
             },
-            results: function (data) {
+            processResults: function (data) {
+                // Transforms the top-level key of the response object from 'items' to 'results'
                 return {
-                    results: $.map(data, function (item) {
-                        return {
-                            text: item.completeName,
-                            id: item.id
-                        }
-                    })
+                    results: data
                 };
             }
         }
+    });
+    $(".exercise-search").change(function(){
+        let exercise_id = $(this).val();
+        $.ajax({
+            url : "/page/ajax/exercise/" + exercise_id,
+            method: "GET",
+            success: function(result) {
+                let video = result[0].video;
+                let exercise_type_name = result[1].exercise_type_name;
+                let exercise_name = result[0].exercise_name;
+                html =      '<div class="col-lg-4 col-md-4 col-sm-6 col-xs-6 ">'+
+                                '<div class="single-classes-area">'+
+                                    '<div class="classes-img">'+
+                                        '<video class="img-responsive" controls>'+
+                                            '<source src="upload/exercise/video/'+video+'">'+
+                                        '</video>'+
+                                    '</div>'+
+                                '</div>'+
+                                '<div class="classes-title">'+
+                                    '<h3>'+exercise_type_name+'</h3>'+
+                                    '<h3><a href="">'+exercise_name+'</a></h3>'+
+                                '</div>'+
+                            '</div>';
+                $('.zoom-gallery').html(html);
+            }
+        });
     });
 });
 </script>

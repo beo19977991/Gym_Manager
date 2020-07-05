@@ -93,12 +93,16 @@
                     <input type="text" name="discount" class="form-control" id="address" placeholder="Nhập Giảm Giá Khóa Tập">
                   </div>
                   <div class="form-group">
-                    <label>Start Time</label>
+                    <label>Thời gian bắt đầu</label>
                       <input type="text" class="form-control" id="start_time" name="start_time" />
                   </div>
                   <div class="form-group">
-                    <label>End Time</label>
+                    <label>Thời gian kết thúc</label>
                       <input type="text" class="form-control" id="end_time" name="end_time" />
+                  </div>
+                  <div class="form-group">
+                    <label>Số Lượng Khách Hàng</label>
+                    <input type="text" name="number_member" class="form-control" id="address" placeholder="Nhập Số Lượng Khách Hàng">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputFile">Ảnh</label>

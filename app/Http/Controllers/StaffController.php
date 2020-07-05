@@ -12,6 +12,7 @@ use App\Trainer;
 use App\Lession;
 use App\Product;
 use App\ProductType;
+use App\HistoryUser;
 use DateTime;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Auth;
@@ -177,13 +178,15 @@ class StaffController extends Controller
     }
     public function getListUser()
     {
+        $today = new DateTime;
+        $current = $today->format('Y-m-d H:i:s');
         $users = User::orderBy('created_at', 'DESC')->get();
-        return view('staff.user.list',['users'=>$users]);
+        return view('staff.user.list',['users'=>$users,'current'=>$current]);
     }
 
     public function getAddUser()
     {
-        $courses = Course::all();
+        $courses = Course::where('number_member','<','number')->get();
         return view('staff.user.add', ['courses' => $courses]);
     }
     public function postAddUser(Request $request)
@@ -488,8 +491,11 @@ class StaffController extends Controller
     // Manager Course ====================================================================
     public function getListCourse()
     {
+        $today = new DateTime;
+        $current = $today->format('Y-m-d H:i:s');
         $courses = Course::orderBy('created_at', 'DESC')->get();
-        return view('staff.course.list', ['courses' => $courses]);
+        $users = User::all();
+        return view('staff.course.list', ['courses' => $courses,'current'=>$current,'users'=>$users]);
     }
     public function getAddCourse()
     {
@@ -506,6 +512,7 @@ class StaffController extends Controller
             'discount' => 'required|numeric',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
+            'number' => 'required|numeric|max:20',
         ], [
             'course_name.required' => 'Bạn chưa nhập tên khóa tập',
             'course_name.unique' => 'Tên Khóa Tập đã được dùng',
@@ -518,6 +525,9 @@ class StaffController extends Controller
             'end_time.required' => 'Bạn chưa nhập ngày kết thúc khóa tập',
             'end_time.date' => 'Bạn nhập vào không phải ngày',
             'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
+            'number.required' => 'Bạn chưa nhập vào số lượng khách hàng',
+            'number.numeric' => 'Giá trị nhập vào phải là số',
+            'number.max' => 'Số lượng khách hàng tối đa 20 người'
         ]);
         $course = new Course;
         $course->course_type_id = $request->course_type;
@@ -528,6 +538,8 @@ class StaffController extends Controller
         $course->discount = $request->discount;
         $course->start_time = $request->start_time;
         $course->end_time = $request->end_time;
+        $course->number_member = 0;
+        $course->number = $request->number;
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
@@ -565,6 +577,7 @@ class StaffController extends Controller
             'discount' => 'required|numeric',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
+            'number' => 'required|numeric|max:20',
         ], [
             'course_name.required' => 'Bạn chưa nhập tên khóa tập',
             'price.required' => 'Bạn chưa nhập giá khóa tập',
@@ -576,6 +589,9 @@ class StaffController extends Controller
             'end_time.required' => 'Bạn chưa nhập ngày kết thúc khóa tập',
             'end_time.date' => 'Bạn nhập vào không phải ngày',
             'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
+            'number.required' => 'Bạn chưa nhập vào số lượng khách hàng',
+            'number.numeric' => 'Giá trị nhập vào phải là số',
+            'number.max' => 'Số lượng khách hàng tối đa 20 người'
         ]);
         $course = Course::find($id);
         $course->course_type_id = $request->course_type;
@@ -586,6 +602,7 @@ class StaffController extends Controller
         $course->discount = $request->discount;
         $course->start_time = $request->start_time;
         $course->end_time = $request->end_time;
+        $course->number = $request->number;
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
@@ -893,5 +910,15 @@ class StaffController extends Controller
     {
         $product = Product::destroy($id);
         return redirect()->route('staff-list-product')->with('message','Xóa sản phẩm thành công');
+    }
+    // ============================================================================
+    // User Detail ================================================================
+    public function getUserDetail($id)
+    {
+        $histories = HistoryUser::where('user_id','=',$id)
+                                ->orderBy('created_at','DESC')
+                                ->get();
+        $user = User::find($id);
+        return view('staff.user.user_detail',['user'=>$user,'histories'=>$histories]);
     }
 }

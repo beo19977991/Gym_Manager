@@ -53,19 +53,21 @@
                                 </select>
                             </div>
                         </div>
-                        @foreach($trainers as $trainer)
-                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
-                            <div class="our-trainer-item">
-                                <div class="trainer-image">
-                                    <img src="upload/trainer/photo/{{$trainer->photo}}" alt="">
-                                    <div class="trainer-overly">
-                                        <h3><a href="{{route('page-trainer-detail',['id'=>$trainer->id])}}">{{$trainer->full_name}}</a></h3>
-                                        <span class="builder">{{$trainer->course_type->course_type_name}}</span>
+                        <div class="result-trainer">
+                            @foreach($trainers as $trainer)
+                            <div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">
+                                <div class="our-trainer-item">
+                                    <div class="trainer-image">
+                                        <img src="upload/trainer/photo/{{$trainer->photo}}" alt="">
+                                        <div class="trainer-overly">
+                                            <h3><a href="{{route('page-trainer-detail',['id'=>$trainer->id])}}">{{$trainer->full_name}}</a></h3>
+                                            <span class="builder">{{$trainer->course_type->course_type_name}}</span>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            @endforeach 
                         </div>
-                        @endforeach
                     </div>
                 </div>
             </div>
@@ -133,17 +135,39 @@ $(document).ready(function () {
                     term: term
                 };
             },
-            results: function (data) {
+            processResults: function (data) {
+                // Transforms the top-level key of the response object from 'items' to 'results'
                 return {
-                    results: $.map(data, function (item) {
-                        return {
-                            text: item.completeName,
-                            id: item.id
-                        }
-                    })
+                    results: data
                 };
             }
         }
+    });
+    $(".trainer-search").change(function(){
+        let trainer_id = $(this).val();
+        $.ajax({
+            url : "/page/ajax/trainer/" + trainer_id,
+            method: "GET",
+            success: function(result) {
+                console.log(result);
+                let full_name = result[0].full_name;
+                let id = result[0].id;
+                let photo = result[0].photo;
+                let course_type_name = result[1];
+                html =  '<div class="col-lg-4 col-md-4 col-sm-4 col-xs-6">'+
+                            '<div class="our-trainer-item">'+
+                                '<div class="trainer-image">'+
+                                    '<img src="upload/trainer/photo/'+photo+'" >'+
+                                    '<div class="trainer-overly">'+
+                                        '<h3><a href="page/trainer/detail/'+id+'">'+full_name+'</a></h3>'+
+                                        '<span class="builder">'+course_type_name+'</span>'+
+                                    '</div>'+
+                                '</div>'+
+                            '</div>'+
+                        '</div>';
+                $('.result-trainer').html(html);
+            }
+        });
     });
 });
 </script>

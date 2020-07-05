@@ -67,7 +67,7 @@ class AdminController extends Controller
     }
     public function getAddUser()
     {
-        $courses = Course::all();
+        $courses = Course::where('number_member','<','number')->get();
         return view('admin.users.add', ['courses' => $courses]);
     }
     public function postAddUser(Request $request)
@@ -400,6 +400,7 @@ class AdminController extends Controller
             'discount' => 'required|numeric',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
+            'number' => 'required|numeric|max:20',
         ], [
             'course_name.required' => 'Bạn chưa nhập tên khóa tập',
             'course_name.unique' => 'Tên Khóa Tập đã được dùng',
@@ -412,6 +413,9 @@ class AdminController extends Controller
             'end_time.required' => 'Bạn chưa nhập ngày kết thúc khóa tập',
             'end_time.date' => 'Bạn nhập vào không phải ngày',
             'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
+            'number.required' => 'Bạn chưa nhập vào số lượng khách hàng',
+            'number.numeric' => 'Giá trị nhập vào phải là số',
+            'number.max' => 'Số lượng khách hàng tối đa 20 người'
         ]);
         $course = new Course;
         $course->course_type_id = $request->course_type;
@@ -422,6 +426,8 @@ class AdminController extends Controller
         $course->discount = $request->discount;
         $course->start_time = $request->start_time;
         $course->end_time = $request->end_time;
+        $course->number_member = 0;
+        $course->number = $request->number;
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
@@ -457,6 +463,7 @@ class AdminController extends Controller
             'discount' => 'required|numeric',
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
+            'number' => 'required|numeric|max:20',
         ], [
             'course_name.required' => 'Bạn chưa nhập tên khóa tập',
             'price.required' => 'Bạn chưa nhập giá khóa tập',
@@ -468,6 +475,9 @@ class AdminController extends Controller
             'end_time.required' => 'Bạn chưa nhập ngày kết thúc khóa tập',
             'end_time.date' => 'Bạn nhập vào không phải ngày',
             'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
+            'number.required' => 'Bạn chưa nhập vào số lượng khách hàng',
+            'number.numeric' => 'Giá trị nhập vào phải là số',
+            'number.max' => 'Số lượng khách hàng tối đa 20 người'
         ]);
         $course = Course::find($id);
         $course->course_type_id = $request->course_type;
@@ -478,6 +488,7 @@ class AdminController extends Controller
         $course->discount = $request->discount;
         $course->start_time = $request->start_time;
         $course->end_time = $request->end_time;
+        $course->number = $request->number;
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
