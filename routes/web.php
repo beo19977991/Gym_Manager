@@ -262,7 +262,9 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('delete_exercise/{id}','TrainerController@getDeleteExercise')->name('trainer-delete-exercise');
         // End Exercise =====================================================================
         // Manager Course =====================================================================
-
+            Route::get('list_course','TrainerController@getListCourse')->name('trainer-list-course');
+            Route::get('course_detail/{id}','TrainerController@getCourseDetail')->name('trainer-course-detail');
+            Route::get('user_detail/{id}','TrainerController@getUserDetail')->name('trainer-user-detail');
         // End =================================================================================
         });
         Route::group(['prefix' => 'staff'], function () {

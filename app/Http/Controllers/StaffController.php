@@ -124,7 +124,11 @@ class StaffController extends Controller
     // Manager==============================================
     public function getHome()
     {
-        return view('staff.index');
+        $number_user = count(User::all());
+        $number_course = count(Course::all());
+        $number_trainer = count(Trainer::all());
+        $number_course_type =count(CourseType::all());
+        return view('staff.index',['number_user'=>$number_user,'number_course'=>$number_course,'number_trainer'=>$number_trainer,'number_course_type'=>$number_course_type]);
     }
     
     public function getStaffProfile($id)

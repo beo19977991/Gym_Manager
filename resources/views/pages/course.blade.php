@@ -70,12 +70,12 @@ select:focus {
                                 <div class="single-classes-area">
                                     <div class="classes-img">
                                         <a href="#">
-                                            <img src="img/classes/yoga.jpg" alt="yoga">
+                                            <img src="upload/course/photo/{{$course->photo}}">
                                         </a>
                                     </div>
                                     <div class="classes-title">
                                         <h3>{{$course->course_type->course_type_name}}</h3>
-                                        <h3><a href="{{route('page-course-detail',['id'=>$course->id])}}">{{$course->course_name}}</a></h3>
+                                        <h3><a target="_blank" href="{{route('page-course-detail',['id'=>$course->id])}}">{{$course->course_name}}</a></h3>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +149,7 @@ $(document).ready(function () {
                                 '<div class="single-classes-area">' +
                                     '<div class="classes-img">' +
                                         '<a href="#">' +
-                                            '<img src="upload/course/photo/'+photo+'" alt="yoga">' +
+                                            '<img src="upload/course/photo/'+photo+'">' +
                                         '</a>' +
                                     '</div>' +
                                     '<div class="classes-title">' +

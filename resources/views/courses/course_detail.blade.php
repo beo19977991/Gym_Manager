@@ -37,7 +37,7 @@
                             <div class="single-class-detail">
                                 <div class="class-content">
                                     <div class="detail-img">
-                                        <img  src="upload/course/photo/{{$course->photo}}" >
+                                        <img width=867 height=400  src="upload/course/photo/{{$course->photo}}" >
                                     </div>
                                     <div class="class-heading">
                                         <h3 id="course_id" value="{{$course->course_id}}">{{$course->course_name}}</h3>

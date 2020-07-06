@@ -12,6 +12,10 @@ use App\TrainerPost;
 use App\CourseType;
 use App\Post;
 use App\ExerciseType;
+use App\User;
+use App\HistoryUser;
+use App\Lession;
+use DateTime;
 
 class TrainerController extends Controller
 {
@@ -320,5 +324,33 @@ class TrainerController extends Controller
         $exercise = ExerciseType::find($id);
         $exercise->delete();
         return redirect()->route('trainer-list-exercise')->with('message', 'Xóa bài tập thành công');
+    }
+    // Manager Course
+    public function getListCourse()
+    {
+        $today = new DateTime;
+        $current = $today->format('Y-m-d H:i:s');
+        $trainer_id = Auth::guard('trainer')->user()->id;
+        $courses = Course::where('trainer_id','=',$trainer_id)
+                        ->where('end_time','>=',$current)
+                        ->orderby('created_at','DESC')
+                        ->get();
+        return view('trainer.course.list',['courses'=>$courses]);
+    }
+    public function getCourseDetail($id)
+    {
+        $course = Course::find($id);
+        $users = User::where('course_id','=',$id)->orderBy('created_at','DESC')->get();
+        return view('trainer.course.course_detail',['course'=>$course,'users'=>$users]);
+    }
+    public function getUserDetail($id)
+    {
+        $histories = HistoryUser::where('user_id','=',$id)
+                                ->orderBy('created_at','DESC')
+                                ->get();
+        $user = User::find($id);
+        $course_id = $user->course_id;
+        $lessions = Lession::where('course_id','=',$course_id)->get();
+        return view('trainer.users.user_detail',['user'=>$user,'histories'=>$histories,'lessions'=>$lessions]);
     }
 }
