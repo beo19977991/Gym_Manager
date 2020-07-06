@@ -992,10 +992,20 @@ class StaffController extends Controller
                         ->where('end_time','>=',$current)
                         ->orderBy('created_at','DESC')
                         ->get();
+
+        $lessions = [];
         foreach($courses as $course)
         {
-            $lessions = Lession::where('course_id','=',$course->id)->get();
+            $array = Lession::where('course_id','=',$course->id)->get();
+            array_push($lessions,$array);
         }
         return view('staff.trainer.trainer_detail',['trainer'=>$trainer,'courses'=>$courses,'lessions'=>$lessions]);
+    }
+    public function getCourseDetail($id)
+    {
+        $course = Course::find($id);
+        $users = User::where('course_id','=',$id)->get();
+        $lessions = Lession::where('course_id','=',$id)->get();
+        return view('staff.course.course_detail',['course'=>$course,'users'=>$users,'lessions'=>$lessions]);
     }
 }

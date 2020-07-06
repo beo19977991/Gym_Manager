@@ -1,4 +1,4 @@
-@extends('staff.layouts.app', ['title' => 'Lịch tập'])
+@extends('staff.layouts.app', ['title' => 'Course Detail'])
 @section('styles')
   <!-- fullCalendar -->
   <link rel="stylesheet" href="{{ asset('css/plugins/fullcalendar/main.min.css') }}">
@@ -7,24 +7,18 @@
   <link rel="stylesheet" href="{{ asset('css/plugins/fullcalendar-bootstrap/main.min.css') }}">
 @endsection
 @section('content')
-  <!-- Content Wrapper. Contains page content -->
-  <div class="content-wrapper">
+<!-- Content Here -->
+<div class="content-wrapper">
     <!-- Content Header (Page header) -->
-    <section class="content-header">
+    <div class="content-header">
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>Calendar</h1>
-          </div>
-          <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">Calendar</li>
-            </ol>
-          </div>
-        </div>
+            <h1 class="m-0 text-dark">Thông tin Khóa Tập</h1>
+          </div><!-- /.col -->
+        </div><!-- /.row -->
       </div><!-- /.container-fluid -->
-    </section>
+    </div>
     <!-- modal xác nhập thêm lịch cho khóa tập -->
     <div class="modal" id="text-day-click" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
@@ -70,53 +64,64 @@
       </div>
     </div>
     <!-- end modal -->
+    <!-- /.content-header -->
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
         <div class="row">
-          <div class="col-md-3">
-            <div class="sticky-top mb-3">
-              <div class="card" style="display:none">
-                <div class="card-header">
-                  <h4 class="card-title">Danh sách khóa tập</h4>
-                </div>
-                <div class="card-body">
-                  <!-- the events -->
-                  <div id="external-events" >
-                    @foreach($courses as $course)
-                        <div class="external-event bg-primary" onclick="getCourseId({{$course->id}})" course_id="{{$course->id}}">{{$course->course_name}}
-                        </div>
-                    @endforeach
-                      <label for="drop-remove" style="display:none">
-                        <input type="checkbox" id="drop-remove">
-                        remove after drop
-                      </label>
-                    </div>
-                  </div>
-                </div>
-                <!-- /.card-body -->
-              </div>
-            </div>
-                    <!-- /.col -->
-          <div class="col-md-9 ml-5">
-            <div class="card card-primary">
-              <div class="card-body p-0">
-                <!-- THE CALENDAR -->
-                <div id="calendar"></div>
-              </div>
-              <!-- /.card-body -->
-            </div>
-            <!-- /.card -->
-          </div>
-        <!-- /.col -->
-          </div>
-        </div>
+          <div class="col-md-9">
+            <div class="card">
+              <div class="card-header p-2">
+                <ul class="nav nav-pills">
+                  <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Hoạt động</a></li>
+                </ul>
+              </div><!-- /.card-header -->
 
+              <div class="card-body">
+                <div class="tab-content">
+                <div class="active tab-pane" id="activity">
+                <div class="post">
+                    <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="upload/course/photo/{{$course->photo}}" alt="user image">
+                        <span class="username">
+                            <a href="#">{{$course->course_name}}</a>
+                        </span>
+                        <span class="description">{{$course->course_type->course_type_name}}</a></span>
+                        <span class="description">Bắt đầu - {{ \Carbon\Carbon::parse($course->start_time)->format('d-m-Y') }} Kết Thúc - {{ \Carbon\Carbon::parse($course->end_time)->format('d-m-Y') }}</span> 
+                    </div>
+                        <!-- /.user-block -->
+                    <strong><p>Danh sách khách hàng tham gia khóa tập</p></strong>
+                        @foreach($users as $user)
+                            <p> <a href="{{ route('staff-user-detail',['id'=>$user->id])}}" target="_blank" rel="noopener noreferrer">{{$users->full_name}}</a></p>
+                        @endforeach
+                    <p>
+                        <div class="content">
+                            <h3>Lịch Tập</h3>
+                            <!-- schedule here -->
+                            <div class="card card-primary">
+                                <div class="card-body p-0">
+                                  <!-- THE CALENDAR -->
+                                  <div id="calendar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </p>
+                </div>
+                    <!-- /.post -->
+                </div>
+                  <!-- /.tab-pane -->
+                <!-- /.tab-content -->
+              </div><!-- /.card-body -->
+            </div>
+            <!-- /.nav-tabs-custom -->
+          </div>
+          <!-- /.col -->
+        </div>
         <!-- /.row -->
       </div><!-- /.container-fluid -->
     </section>
-  <!-- /.content-wrapper -->
-  </div>
+    <!-- /.content -->
+</div>
 @endsection
 @section('scripts')
 <!-- fullCalendar 2.2.5 -->
@@ -129,7 +134,43 @@
 <!-- jQuery UI -->
 <script src="{{ asset('css/plugins/jquery-ui/jquery-ui.min.js') }}"></script>
 <script>
-    var id;
+    function addScheduleForm() {
+    let mycourse_id = $("#course_id").val();
+            let start_time = $(".date-click").text();
+            $.ajax({
+                url: "manager/staff/add-schedule-calendar",
+                method: "POST",
+                data: {
+                course_id: mycourse_id,
+                start_time: start_time,
+                _token: "{{ csrf_token() }}"
+                },
+                success: function(result) {
+                    $("#text-day-click").modal('hide');
+                    location.reload();
+                },
+                error: function (err) {
+                }
+            })
+        }
+    function checDayClick(date,time)
+    {
+    $('#text-day-click').modal('show');
+    $.ajax({
+            url: "manager/staff/check-date-click/"+date+"/"+time,
+            method: "POST",
+            data: {
+                _token: "{{ csrf_token() }}"
+                },
+            success: function(result) {
+                console.log(result);
+                $('#course_id').html(result);
+                $('#text-day-click').modal('show');
+            },
+            error: function (err) {
+            }
+        })
+    }
     function deleteScheduleForm()
     {
         $.ajax({
@@ -150,7 +191,7 @@
             }
         })
     }
-    $(function () {
+    $(document).ready(function() {
     /* initialize the external events
      -----------------------------------------------------------------*/
     function ini_events(ele) {
@@ -175,7 +216,7 @@
       })
     }
 
-    ini_events($('#external-events div.external-event'))
+    ini_events($('#calendar'))
 
     /* initialize the calendar
      -----------------------------------------------------------------*/
@@ -188,7 +229,7 @@
     var Calendar = FullCalendar.Calendar;
     var Draggable = FullCalendarInteraction.Draggable;
 
-    var containerEl = document.getElementById('external-events');
+    var containerEl = document.getElementById('calendar');
     var checkbox = document.getElementById('drop-remove');
     var calendarEl = document.getElementById('calendar');
 
@@ -218,16 +259,16 @@
       'themeSystem': 'bootstrap',
       //Random default events
       events    : [
-        @foreach($lessions as $lession)
-        {
-          id    : '{{$lession->id}}',
-          title : '{{$lession->course->course_name}}',
-          start : new Date('{{$lession->start_time}}'),
-          end   : new Date('{{$lession->end_time}}'),
-          backgroundColor: '{{$lession->course->color}}', //yellow
-          borderColor    : '{{$lession->course->color}}' //yellow
-        },
-        @endforeach
+          @foreach($lessions as $lession)
+            {
+              id    : '{{$lession->id}}',
+              title : '{{$lession->course->course_name}}',
+              start : new Date('{{$lession->start_time}}'),
+              end   : new Date('{{$lession->end_time}}'),
+              backgroundColor: '{{$lession->course->color}}', 
+              borderColor    : '{{$lession->course->color}}',
+            },
+          @endforeach
       ],
       editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!
@@ -248,43 +289,5 @@
     });
     calendar.render();
 });
-function addScheduleForm() {
-  let mycourse_id = $("#course_id").val();
-        let start_time = $(".date-click").text();
-        $.ajax({
-            url: "manager/staff/add-schedule-calendar",
-            method: "POST",
-            data: {
-              course_id: mycourse_id,
-              start_time: start_time,
-              _token: "{{ csrf_token() }}"
-            },
-            success: function(result) {
-                $("#text-day-click").modal('hide');
-                location.reload();
-            },
-            error: function (err) {
-            }
-        })
-    }
-
-function checDayClick(date,time)
-{
-  $('#text-day-click').modal('show');
-  $.ajax({
-            url: "manager/staff/check-date-click/"+date+"/"+time,
-            method: "POST",
-            data: {
-            _token: "{{ csrf_token() }}"
-            },
-            success: function(result) {
-              console.log(result);
-              $('#course_id').html(result);
-              $('#text-day-click').modal('show');
-            },
-            error: function (err) {
-            }
-        })
-}
 </script>
 @endsection

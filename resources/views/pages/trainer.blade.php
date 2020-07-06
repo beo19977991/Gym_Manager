@@ -31,7 +31,7 @@
                 </div>
                 <div class="breadcrum-area">
                     <ul class="breadcrumb">
-                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="{{route('page-home')}}">Trang chủ</a></li>
                         <li class="active">Huấn Luyện Viên</li>
                     </ul>
                 </div>
@@ -60,7 +60,7 @@
                                     <div class="trainer-image">
                                         <img src="upload/trainer/photo/{{$trainer->photo}}" alt="">
                                         <div class="trainer-overly">
-                                            <h3><a href="{{route('page-trainer-detail',['id'=>$trainer->id])}}">{{$trainer->full_name}}</a></h3>
+                                            <h3><a target="_blank" href="{{route('page-trainer-detail',['id'=>$trainer->id])}}">{{$trainer->full_name}}</a></h3>
                                             <span class="builder">{{$trainer->course_type->course_type_name}}</span>
                                         </div>
                                     </div>
@@ -83,7 +83,7 @@
                                 <p>Trong mùa hè này
                                     <br> Với ưu đãi lớn nhất <span>{{$course_max_discount->discount * 100}} %</span> Giảm giá
                                 </p>
-                                <a class="custom-button" data-title="Become A Member" href="#">Đăng ký thành viên</a>
+                                <a class="custom-button" data-title="Đăng ký thành viên" href="{{route('page-course-detail',['id'=>$course_max_discount->id])}}">Đăng ký thành viên</a>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@
                                 <li>{{$course->course_type->course_type_name}}</li>
                                 <li><span>Discount: </span>{{$course->discount *100}} <span>%</span></li>
                             </ul>
-                            <a class="custom-button" data-title="Become A Member" href="#">Xem Ngay</a>
+                            <a class="custom-button" data-title="Xem Ngay" href="{{route('page-course-detail',['id'=>$course->id])}}">Xem Ngay</a>
                         </div>
                     </div>                    
                     @endforeach

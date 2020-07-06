@@ -11,20 +11,20 @@
                             <div class="top-bar-right">
                                 <ul>
                                     @if(isset($user_login))                                  
-                                    <li><a href="#">{{$user_login->full_name}}</a></li>
+                                    <li><a>{{$user_login->full_name}}</a></li>
                                     <li><a href="{{ route('logout')}}"><span> Đăng xuất</span></a></li>
                                     <li><a href="{{ route('get-user-profile',['id'=>$user_login->id]) }}">Trang Cá Nhân</a></li>                                 
                                     @elseif(isset($trainer_login))
-                                    <li><a href="#">{{$trainer_login->full_name}}</a></li>
+                                    <li><a>{{$trainer_login->full_name}}</a></li>
                                     <li><a href="{{ route('logout_trainer')}}"><span> Đăng xuất</span></a></li>
                                     <li><a href="{{ route('trainer-get-home')}}">Trang Quản Lý</a></li>
                                     @elseif(isset($staff_login))
                                         @if($staff_login->role == 0)
-                                            <li><a href="#">{{$staff_login->full_name}}</a></li>
+                                            <li><a>{{$staff_login->full_name}}</a></li>
                                             <li><a href="{{ route('logout_staff')}}"><span> Đăng xuất</span></a></li>
                                             <li><a href="{{ route('admin-home')}}">Trang Quản Trị</a></li>
                                         @else
-                                            <li><a href="#">{{$staff_login->full_name}}</a></li>
+                                            <li><a>{{$staff_login->full_name}}</a></li>
                                             <li><a href="{{ route('logout_staff')}}"><span> Đăng xuất</span></a></li>
                                             <li><a href="{{ route('staff-get-home')}}">Trang Quản Lý</a></li>
                                         @endif
@@ -55,7 +55,6 @@
                                         <li><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
                                         <li><a href="{{route('page-news')}}">Tin Tức</a></li>
                                         <li><a href="{{route('page-exercise')}}">Bài Tập</a></li>
-                                        <li><a href="{{route('page-product')}}">Cửa Hàng</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -94,7 +93,6 @@
                                         <li><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
                                         <li><a href="{{route('page-news')}}">Tin Tức</a></li>
                                         <li><a href="{{route('page-exercise')}}">Bài Tập</a></li>
-                                        <li><a href="{{route('page-product')}}">Cửa Hàng</a></li>
                                     </ul>
                                 </nav>
                             </div>

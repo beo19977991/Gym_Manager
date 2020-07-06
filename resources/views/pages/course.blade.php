@@ -35,7 +35,7 @@ select:focus {
                 </div>
                 <div class="breadcrum-area">
                     <ul class="breadcrumb">
-                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="{{ route('page-home') }}">Trang chủ</a></li>
                         <li class="active">Khóa Tập</li>
                     </ul>
                 </div>
@@ -98,7 +98,7 @@ select:focus {
                                 <p>Trong mùa hè này
                                     <br> Với ưu đãi lớn nhất <span>{{$course_max_discount->discount * 100}} %</span> Giảm giá
                                 </p>
-                                <a class="custom-button" data-title="Become A Member" href="#">Đăng ký thành viên</a>
+                                <a class="custom-button" data-title="Đăng ký thành viên" href="{{route('page-course-detail',['id'=>$course_max_discount->id])}}">Đăng ký thành viên</a>
                             </div>
                         </div>
                     </div>

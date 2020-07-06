@@ -19,7 +19,7 @@
                 </div>
                 <div class="breadcrum-area">
                     <ul class="breadcrumb">
-                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="{{route('page-home')}}">Trang chủ</a></li>
                         <li class="active">Lịch Tập</li>
                     </ul>
                 </div>
@@ -46,13 +46,6 @@
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3">
                             <div class="right-sidebar">
-                                <div class="single-sidebar">
-                                    <h3>Tìm Kiếm</h3>
-                                    <div class="sidebar-search">
-                                        <input type="text" placeholder="Search here...">
-                                        <span><button type="submit"><i class="fa fa-search"></i></button></span>
-                                    </div>
-                                </div>
                                 <div class="single-sidebar">
                                     <h3>Các Môn Học Hiện Có</h3>
                                     <div class="categories">

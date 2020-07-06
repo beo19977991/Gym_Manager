@@ -83,6 +83,31 @@
             </ul>
           </li>
           <!-- exercise end -->
+          <!-- trainer post start -->
+          <li class="nav-item has-treeview">
+            <a href="" class="nav-link active">
+              <i class="nav-icon fas fa-tachometer-alt"></i>
+              <p>
+                Bài Viết
+                <i class="right fas fa-angle-left"></i>
+              </p>
+            </a>
+            <ul class="nav nav-treeview">
+              <li class="nav-item">
+                <a href="{{route('trainer-list-post')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Danh Sách Bài Viết</p>
+                </a>
+              </li>
+              <li class="nav-item">
+                <a href="{{route('trainer-add-post')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thêm Bài Viết</p>
+                </a>
+              </li>
+            </ul>
+          </li>
+          <!-- trainer post end -->
     </ul>
     </nav>
       <!-- /.sidebar-menu -->

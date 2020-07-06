@@ -164,7 +164,7 @@
         </li>
     <!-- Schedule end -->
           <!-- Product Type start -->
-          <li class="nav-item has-treeview">
+          <!-- <li class="nav-item has-treeview">
             <a href="" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -186,10 +186,10 @@
                 </a>
               </li>
             </ul>
-        </li>
+        </li> -->
     <!-- Product type end -->
           <!-- Product start -->
-          <li class="nav-item has-treeview">
+          <!-- <li class="nav-item has-treeview">
             <a href="" class="nav-link active">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
@@ -211,7 +211,7 @@
                 </a>
               </li>
             </ul>
-        </li>
+        </li> -->
     <!-- Product end -->
     </ul>
     </nav>

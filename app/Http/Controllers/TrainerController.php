@@ -353,4 +353,97 @@ class TrainerController extends Controller
         $lessions = Lession::where('course_id','=',$course_id)->get();
         return view('trainer.users.user_detail',['user'=>$user,'histories'=>$histories,'lessions'=>$lessions]);
     }
+    // ==============================================================================================
+
+    public function getListPost()
+    {
+        $trainer_posts = TrainerPost::orderBy('created_at', 'DESC')->get();
+        return view('trainer.trainer_post.list', ['trainer_posts' => $trainer_posts]);
+    }
+    public function getAddPost()
+    {
+        return view('trainer.trainer_post.add');
+    }
+    public function postAddPost(Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'preview' => 'required',
+            'body' => 'required',
+        ], [
+            'title.required' => 'Bạn chưa nhập tên bài viết',
+            'preview.required' => 'Bạn chưa nhập tóm tắt bài viết',
+            'body.required' => 'Bạn chưa nhập nội dung bài viết',
+        ]);
+        $trainer_post = new TrainerPost;
+        $trainer_post->title = $request->title;
+        $trainer_post->preview = $request->preview;
+        $trainer_post->body = $request->body;
+        $trainer_post->trainer_id = Auth::guard('trainer')->user()->id;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('trainer-add-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/trainerpost/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/trainerpost/photo", $photo);
+            $trainer_post->photo = $photo;
+        } else {
+            $trainer_post->photo = "default.jpg";
+        }
+        $trainer_post->save();
+        return redirect()->route('trainer-list-post')->with('message', 'Thêm bài viết thành công');
+    }
+    public function getEditPost($id)
+    {
+        $trainer_post = TrainerPost::find($id);
+        return view('trainer.trainer_post.edit', ['trainer_post' => $trainer_post]);
+    }
+    public function postEditPost($id, Request $request)
+    {
+        $this->validate($request, [
+            'title' => 'required',
+            'preview' => 'required',
+            'body' => 'required',
+        ], [
+            'title.required' => 'Bạn chưa nhập tên bài viết',
+            'preview.required' => 'Bạn chưa nhập tóm tắt bài viết',
+            'body.required' => 'Bạn chưa nhập nội dung bài viết',
+        ]);
+        $trainer_post = TrainerPost::find($id);
+        $trainer_post->title = $request->title;
+        $trainer_post->preview = $request->preview;
+        $trainer_post->body = $request->body;
+        $trainer_post->trainer_id = Auth::guard('trainer')->user()->id;
+        if ($request->hasFile('photo')) {
+            $file = $request->file('photo');
+            $extension = $file->getClientOriginalExtension();
+            if ($extension != 'jpg' && $extension != 'png' && $extension != 'jepg') {
+                return redirect()->route('trainer-edit-post')->with('error', 'Bạn phải chọn file có dạng jpg, png, jepg');
+            }
+            $name = $file->getClientOriginalName();
+            $photo = Str::random(4) . "_" . $name;
+            while (file_exists("upload/trainerpost/photo" . $photo)) {
+                $photo = Str::random(4) . "_" . $name;
+            }
+            $file->move("upload/trainerpost/photo", $photo);
+            if($trainer_post->photo!="default.jpg"){
+                unlink("upload/post/photo/" . $trainer_post->photo);
+            }
+            $trainer_post->photo = $photo;
+        }
+        $trainer_post->save();
+        return redirect()->route('trainer-list-post')->with('message', 'Sửa bài viết thành công');
+    }
+    public function getDeletePost($id)
+    {
+        $trainer_post = TrainerPost::destroy($id);
+        return redirect()->route('trainer-list-post')->with('message', 'Xóa bài viết thành công');
+    }
+    // End Post ==========================================================================
 }

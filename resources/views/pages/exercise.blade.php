@@ -35,7 +35,7 @@ select:focus {
                 </div>
                 <div class="breadcrum-area">
                     <ul class="breadcrumb">
-                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="{{route('page-home')}}">Trang chủ</a></li>
                         <li class="active">Bài Tập</li>
                     </ul>
                 </div>
@@ -76,7 +76,7 @@ select:focus {
                                 </div>
                                 <div class="classes-title">
                                     <h3>{{$exercise->exercise_type->exercise_type_name}}</h3>
-                                    <h3><a href="">{{$exercise->exercise_name}}</a></h3>
+                                    <h3>{{$exercise->exercise_name}}</h3>
                                 </div>
                             </div>
                             @endforeach                                    
@@ -98,7 +98,7 @@ select:focus {
                                 <p>Trong mùa hè này
                                     <br> Với ưu đãi lớn nhất <span>{{$course_max_discount->discount * 100}} %</span> Giảm giá
                                 </p>
-                                <a class="custom-button" data-title="Become A Member" href="#">Đăng ký thành viên</a>
+                                <a class="custom-button" data-title="Đăng ký thành viên" href="{{route('page-course-detail',['id'=>$course_max_discount->id])}}">Đăng ký thành viên</a>
                             </div>
                         </div>
                     </div>
@@ -123,7 +123,7 @@ select:focus {
                                 <li>{{$course->course_type->course_type_name}}</li>
                                 <li><span>Discount: </span>{{$course->discount *100}} <span>%</span></li>
                             </ul>
-                            <a class="custom-button" data-title="Become A Member" href="#">Xem Ngay</a>
+                            <a class="custom-button" data-title="Xem Ngay" href="{{route('page-course-detail',['id'=>$course->id])}}">Xem Ngay</a>
                         </div>
                     </div>                    
                     @endforeach

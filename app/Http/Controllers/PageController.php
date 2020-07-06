@@ -35,7 +35,10 @@ class PageController extends Controller
         $trainers = Trainer::all();
         $course_max_discount = Course::orderBy('discount','DESC')->first();
         $products = Product::orderBy('created_at','DESC')->take(5)->get();
-        return view('pages.index',['course_types'=>$course_types,'new_courses'=>$new_courses,'trainers'=>$trainers,'course_max_discount'=>$course_max_discount,'products'=>$products,'courses'=>$courses,'lessions'=>$lessions]);
+        $posts = Post::orderBy('created_at','DESC')->take(3)->get();
+        $trainer_posts = TrainerPost::orderBy('created_at','DESC')->take(3)->get();
+        $exercises = Exercise::orderBy('created_at','DESC')->take(3)->get();
+        return view('pages.index',['course_types'=>$course_types,'new_courses'=>$new_courses,'trainers'=>$trainers,'course_max_discount'=>$course_max_discount,'products'=>$products,'courses'=>$courses,'lessions'=>$lessions,'posts'=>$posts,'trainer_posts'=>$trainer_posts,'exercises'=>$exercises]);
     }
     public function getCourse()
     {

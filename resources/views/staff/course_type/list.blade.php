@@ -34,7 +34,7 @@
                         </div>
                 @endif
               <div class="card-body">
-              <input type="text" id="myInput" placeholder="Tìm theo tên">
+              <input type="text" id="myInput" placeholder="Tìm kiếm ...">
                 <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>

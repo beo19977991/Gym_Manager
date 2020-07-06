@@ -1,4 +1,4 @@
-@extends('staff.layouts.app', ['title' => 'Danh sách khóa tập'])
+@extends('trainer.layouts.app', ['title' => 'Danh sách Bài viết'])
 @section('content')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
@@ -7,12 +7,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Staff</h1>
+            <h1 class="m-0 text-dark">Huấn Luyện Viên</h1>
           </div><!-- /.col -->
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Trang chủ</a></li>
-              <li class="breadcrumb-item active">{{$staff_login->full_name}}</li>
+              <li class="breadcrumb-item"><a>Trang chủ</a></li>
+              <li class="breadcrumb-item active">{{$trainer_login->full_name}}</li>
             </ol>
           </div><!-- /.col -->
         </div><!-- /.row -->
@@ -38,43 +38,25 @@
                 <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
-                    <th>Tên Khóa Tập</th>
-                    <th>Tên Loại Khóa Tập</th>
-                    <th>Huấn Luyện Viên</th>
-                    <th>Mô Tả</th>
-                    <th>Giá</th>
-                    <th>Giảm Giá</th>
-                    <th>Thời Hạn</th>
-                    <th>Số Lượng Khách Hàng Đăng Ký</th>
+                    <th>Tên Bài Viết</th>
+                    <th>Tóm Tắt</th>
+                    <th>Tên Người Viết</th>
+                    <th>Nội dung</th>
                     <th>Ảnh</th>
                     <th>Thao tác</th>
                   </tr>
                   </thead>
                   <tbody>
-                @foreach($courses as $course)
+                @foreach($trainer_posts as $trainer_post)
                   <tr>
-                    <td><a target="_blank" href="{{ route('staff-course-detail',['id'=>$course->id])}}">{{$course->course_name}}</a></td>
-                    <td><a>{{$course->course_type->course_type_name}}</a></td>
-                    <td><a target="_blank" href="{{route('staff-trainer-detail',['id'=>$course->trainer->id])}}">{{$course->trainer->full_name}}</a></td>
-                    <td>{!!$course->description!!}</td>
-                    <td><span>{{$course->price *1}}</span></td>
-                    <td><span>{{$course->discount * 100}} %</span></td>
+                    <td><a target="_blank" href="{{route('page-trainer-post-detail',['id'=>$trainer_post->id])}}">{{$trainer_post->title}}</a></td>
+                    <td>{{$trainer_post->preview}}</td>
+                    <td>{{$trainer_post->trainer->full_name}}</td>
+                    <td>{!!$trainer_post->body!!}</td>
+                    <td><img style="width:150px;height:100px" src="upload/trainerpost/photo/{{$trainer_post->photo}}"></td>
                     <td>
-                      @if(floor(((strtotime($course->end_time) - strtotime($current)))/(60*60*24)) <= 0)
-                        <span class="badge badge-danger"> Khóa tập đã kết thúc {{floor((abs(strtotime($course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
-                      @elseif(floor(((strtotime($course->end_time) - strtotime($current)))/(60*60*24)) <= 5 && floor(((strtotime($course->end_time) - strtotime($current)))/(60*60*24)) > 0)
-                        <span class="badge badge-warning"> Còn {{floor((abs(strtotime($course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
-                      @else
-                        <span class="badge badge-primary"> Còn {{floor((abs(strtotime($course->end_time) - strtotime($current)))/(60*60*24))}} ngày</span>
-                      @endif
-                    </td>
-                    <td>
-                      {{$course->number_member}}/{{$course->number}}
-                    </td>
-                    <td><img style="width:150px;height:100px" src="upload/course/photo/{{$course->photo}}"></td>
-                    <td>
-                    <a class="ml-2" href="{{ route('staff-edit-course',['id'=>$course->id])}}"><i class="ion-paintbrush" ></i></a>
-                    <a href="{{ route('staff-delete-course',['id'=>$course->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$course->course_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>
+                    <a class="ml-2" href="{{ route('trainer-edit-post',['id'=>$trainer_post->id])}}"><i class="ion-paintbrush" ></i></a>
+                    <a href="{{ route('trainer-delete-post',['id'=>$trainer_post->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$trainer_post->title}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>
                      </td>
                   </tr>
                 @endforeach

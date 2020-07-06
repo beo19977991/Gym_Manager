@@ -8,6 +8,8 @@ use App\User;
 use App\Course;
 use App\HistoryUser;
 use App\Lession;
+use App\Report;
+use DateTime;
 
 class UserController extends Controller
 {
@@ -97,5 +99,27 @@ class UserController extends Controller
         }
         $user->save();
         return redirect()->route('get-user-profile',['id'=>$id]);
+    }
+    // public function updateCourseUser($id)
+    // {
+    //     $user = User::find($id);
+    //     $course_id = $user->course_id;
+    //     $course = Course::find($course_id);
+    //     $today = new DateTime;
+    //     $current = $today->format('Y-m-d');
+    //     if($course->end_time < $current && $user->status == 1 && $user->course_id != 0)
+    //     {
+    //         $user->course_id = 0;
+    //         $user->save();
+    //     }
+    //     return 1;
+    // }
+    public function sendReport(Request $request)
+    {
+        $user = Auth::user();
+        $report = new Report;
+        $report->user_id = $user->id;
+        $report->message =$request->message;
+        $report->save();
     }
 }

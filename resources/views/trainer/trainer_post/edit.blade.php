@@ -1,14 +1,33 @@
-@extends('staff.layouts.app', ['title' => 'Edit Trainer'])
+@extends('trainer.layouts.app', ['title' => 'Sửa Bài viết'])
 @section('styles')
   <base href="{{asset(' ')}}">
   <!-- summernote -->
   <link rel="stylesheet" href="{{ asset('css/plugins/summernote/summernote-bs4.css')}}">
-  <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- daterange picker -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/daterangepicker/daterangepicker.css')}}">
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 @endsection
 @section('content')
   <!-- Content Wrapper. Contains page content -->
   <div class="content-wrapper">
+    <!-- Content Header (Page header) -->
+    <section class="content-header">
+      <div class="container-fluid">
+        <div class="row mb-2">
+          <div class="col-sm-6">
+            <h1>Sửa bài viết</h1>
+          </div>
+          <div class="col-sm-6">
+            <ol class="breadcrumb float-sm-right">
+              <li class="breadcrumb-item"><a href="#">Trang Chủ</a></li>
+              <li class="breadcrumb-item active">{{$trainer->full_name}}</li>
+            </ol>
+          </div>
+        </div>
+      </div><!-- /.container-fluid -->
+    </section>
+
     <!-- Main content -->
     <section class="content">
       <div class="container-fluid">
@@ -18,7 +37,7 @@
             <!-- jquery validation -->
             <div class="card card-primary">
               <div class="card-header">
-                <h3 class="card-title">Sửa Thông Tin Huấn Luyện Viên</h3>
+                <h3 class="card-title">Sửa Bài viết</h3>
               </div>
               <!-- /.card-header -->
               <!-- form start -->
@@ -34,75 +53,38 @@
                             {{session('message')}}
                         </div>
                 @endif
-              <form action="{{route('staff-edit-trainer',['id'=>$trainer->id])}}" method="POST" enctype="multipart/form-data">
+              <form action="{{route('trainer-edit-post',['id'=>$trainer_post->id])}}" method="POST" enctype="multipart/form-data">
                 <input type="hidden" name="_token" value="{{csrf_token()}}">
                 <div class="card-body">
                   <div class="form-group">
-                    <label>Họ và Tên</label>
-                    <input type="text" name="full_name" class="form-control" id="full_name" value="{{$trainer->full_name}}">
+                    <label>Bài viết</label>
+                    <input type="text" name="title" class="form-control" id="address" placeholder="Nhập Tên bài viết" value="{{$trainer_post->title}}">
                   </div>
                   <div class="form-group">
-                    <label>Môn Dạy</label>
-                      <select class="form-control" name="course_type" id="course_type">
-                        @foreach($course_types as $course_type)
-                          <option
-                          @if($trainer->course_type->id == $course_type->id)
-                          {{"selected"}}
-                          @endif
-                          value = "{{$course_type->id}}">{{$course_type->course_type_name}}</option>
-                        @endforeach
-                      </select>
-                    </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Email</label>
-                    <input type="email" name="email" class="form-control" id="exampleInputEmail1" value="{{$trainer->email}}">
+                    <label>Tóm tắt</label>
+                    <input type="text" name="preview" class="form-control" id="address" placeholder="Nhập tóm tắt bài viết" value="{{$trainer_post->preview}}">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputPassword1">Mật khẩu</label>
-                    <input type="password" name="password" class="form-control" id="exampleInputPassword1" value = "{{$trainer->password}}">
-                  </div>
-                  <div class="form-group">
-                    <label for="exampleInputPassword1">Nhập lại mật khẩu</label>
-                    <input type="password" name="repeat_password" class="form-control" id="exampleInputPassword1" value = "{{$trainer->password}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Tuổi</label>
-                    <input type="text" name="age" class="form-control" id="age" value ="{{$trainer->age}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Địa chỉ</label>
-                    <input type="text" name="address" class="form-control" id="address" value ="{{$trainer->address}}">
-                  </div>
-                  <div class="form-group">
-                    <label>Mô tả</Label>
+                    <label>Nội dung bài viết</Label>
                     <div class="mb-3">
-                      <textarea class="textarea" name ="description"
+                      <textarea class="textarea" name ="body"
                         style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
-                      {!!$trainer->description!!}
+                        {!!$trainer_post->body!!}
                       </textarea>
                     </div>
                   </div>
                   <div class="form-group">
-                    <label>Hình đại diện</label>
-                    <p><img style ="width:400px; height:200px" src="upload/trainer/photo/{{$trainer->photo}}" ></p>
+                    <label for="exampleInputFile">Ảnh</label>
                     <input class="form-control" type="file" name="photo" accept="image/*"  onchange="showMyImage(this)">
+                    <img class="mt-2" style="width:150px;height:100px" src="upload/trainerpost/photo/{{$trainer_post->photo}}">
                   </div>
                   <div class="form-group">
                     <img id="thumbnil" style="width:20%; margin-top:10px;"  src="" alt="image"/>
                   </div>
-                    <div class="form-group">
-                        <div class="custom-control custom-radio">
-                        <input class="form-check-input" type="radio" name="gender" @if($trainer->gender == 1){{"checked"}}@endif value="1" id="male">
-                            <label class="form-check-label">Nam</label>
-                            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                        <input class="form-check-input" type="radio" name="gender" @if($trainer->gender == 2){{"checked"}}@endif value="2" id="female">
-                            <label class="form-check-label">Nữ</label>
-                        </div>
-                    </div>
                 </div>
                 <!-- /.card-body -->
                 <div class="card-footer">
-                  <button type="submit" class="btn btn-primary">Submit</button>
+                  <button type="submit" class="btn btn-primary">Thêm</button>
                 </div>
               </form>
             </div>
@@ -128,9 +110,18 @@
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
 <script>
   $(function () {
+    // Summernote
     $('.textarea').summernote();
+    $('#course_type').change(function(){
+      var course_type_id = $(this).val();
+      $.get("admin/ajax/add-trainer/"+course_type_id,function(data){
+        $('#trainer').html(data);
+      });
+    });
+    $( "#start_time" ).datepicker({ dateFormat: 'yy-mm-dd' });
+    $( "#end_time" ).datepicker({ dateFormat: 'yy-mm-dd' });
   })
-        function showMyImage(fileInput) {
+  function showMyImage(fileInput) {
         var files = fileInput.files;
         for (var i = 0; i < files.length; i++) {           
             var file = files[i];

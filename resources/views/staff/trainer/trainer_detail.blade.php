@@ -210,16 +210,18 @@
       'themeSystem': 'bootstrap',
       //Random default events
       events    : [
-        @foreach($lessions as $lession)
-        {
-          id    : '{{$lession->id}}',
-          title : '{{$lession->course->course_name}}',
-          start : new Date('{{$lession->start_time}}'),
-          end   : new Date('{{$lession->end_time}}'),
-          backgroundColor: '{{$lession->course->color}}', 
-          borderColor    : '{{$lession->course->color}}' 
-        },
-        @endforeach
+          @foreach($lessions as $lession)
+            @foreach($lession as $l)
+            {
+              id    : '{{$l->id}}',
+              title : '{{$l->course->course_name}}',
+              start : new Date('{{$l->start_time}}'),
+              end   : new Date('{{$l->end_time}}'),
+              backgroundColor: '{{$l->course->color}}', 
+              borderColor    : '{{$l->course->color}}',
+            },
+            @endforeach
+          @endforeach
       ],
       editable  : true,
       droppable : true, // this allows things to be dropped onto the calendar !!!

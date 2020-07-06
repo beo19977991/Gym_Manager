@@ -228,6 +228,9 @@ Route::group(['prefix' => 'admin'], function () {
         Route::get('trainer_post/detail/{id}','TrainerController@getTrainerPostDetail')->name('page-trainer-post-detail');
     // ======================================Post Detail=========================================
         Route::get('post_detail/{id}','StaffController@getPostDetail')->name('page-post-detail');
+    // =================================Send Report ================================================
+        Route::post('send_report','UserController@sendReport')->name('send_report');
+    // ==============================================================================================
 
     });
 // =====================================================================================
@@ -266,6 +269,17 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('course_detail/{id}','TrainerController@getCourseDetail')->name('trainer-course-detail');
             Route::get('user_detail/{id}','TrainerController@getUserDetail')->name('trainer-user-detail');
         // End =================================================================================
+        // Manager Trainer Post ===============================================================
+            Route::get('list_trainer_post','TrainerController@getListPost')->name('trainer-list-post');
+
+            Route::get('add_trainer_post','TrainerController@getAddPost')->name('trainer-add-post');
+            Route::post('add_trainer_post','TrainerController@postAddPost');
+
+            Route::get('edit_trainer_post/{id}','TrainerController@getEditPost')->name('trainer-edit-post');
+            Route::post('edit_trainer_post/{id}','TrainerController@postEditPost');
+
+            Route::get('delete_trainer_post/{id}','TrainerController@getDeletePost')->name('trainer-delete-post');
+        // End ================================================================================
         });
         Route::group(['prefix' => 'staff'], function () {
             Route::get('home','StaffController@getHome')->name('staff-get-home');
@@ -312,6 +326,8 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('edit_course/{id}','StaffController@postEditCourse');
 
             Route::get('delete_course/{id}','StaffController@getDeleteCourse')->name('staff-delete-course');
+
+            Route::get('course_detail/{id}','StaffController@getCourseDetail')->name('staff-course-detail');
         // End Course ================================================================================ 
         // Manager Post =============================================================================
             Route::get('list_post','StaffController@getListPost')->name('staff-list-post');
