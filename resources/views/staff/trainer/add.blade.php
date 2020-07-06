@@ -66,16 +66,16 @@
                     <input type="text" name="address" class="form-control" id="address" placeholder="Nhập địa chỉ">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputFile">Hình đại diện</label>
-                    <input class="form-control" type="file" name="photo" accept="image/*"  onchange="showMyImage(this)">
-                  </div>
-                  <div class="form-group">
                     <label>Mô tả</Label>
                     <div class="mb-3">
                       <textarea class="textarea" name ="description"
                         style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">
                       </textarea>
                     </div>
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">Hình đại diện</label>
+                    <input class="form-control" type="file" name="photo" accept="image/*"  onchange="showMyImage(this)">
                   </div>
                   <div class="form-group">
                     <img id="thumbnil" style="width:20%; margin-top:10px;"  src="" alt="image"/>

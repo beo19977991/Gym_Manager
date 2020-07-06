@@ -513,6 +513,7 @@ class StaffController extends Controller
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
             'number' => 'required|numeric|max:20',
+            'color' =>'required',
         ], [
             'course_name.required' => 'Bạn chưa nhập tên khóa tập',
             'course_name.unique' => 'Tên Khóa Tập đã được dùng',
@@ -527,7 +528,8 @@ class StaffController extends Controller
             'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
             'number.required' => 'Bạn chưa nhập vào số lượng khách hàng',
             'number.numeric' => 'Giá trị nhập vào phải là số',
-            'number.max' => 'Số lượng khách hàng tối đa 20 người'
+            'number.max' => 'Số lượng khách hàng tối đa 20 người',
+            'color.required' =>'Bạn chưa chọn màu cho khóa tập',
         ]);
         $course = new Course;
         $course->course_type_id = $request->course_type;
@@ -540,6 +542,7 @@ class StaffController extends Controller
         $course->end_time = $request->end_time;
         $course->number_member = 0;
         $course->number = $request->number;
+        $course->color = $request->color;
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
@@ -578,6 +581,7 @@ class StaffController extends Controller
             'start_time' => 'required|date',
             'end_time' => 'required|date|after:start_time',
             'number' => 'required|numeric|max:20',
+            'color' => 'required',
         ], [
             'course_name.required' => 'Bạn chưa nhập tên khóa tập',
             'price.required' => 'Bạn chưa nhập giá khóa tập',
@@ -591,7 +595,8 @@ class StaffController extends Controller
             'end_time.after' => 'Ngày kết thúc phải sau ngày bắt đầu',
             'number.required' => 'Bạn chưa nhập vào số lượng khách hàng',
             'number.numeric' => 'Giá trị nhập vào phải là số',
-            'number.max' => 'Số lượng khách hàng tối đa 20 người'
+            'number.max' => 'Số lượng khách hàng tối đa 20 người',
+            'color.required' =>'Bạn chưa chọn màu cho khó tập'
         ]);
         $course = Course::find($id);
         $course->course_type_id = $request->course_type;
@@ -603,6 +608,7 @@ class StaffController extends Controller
         $course->start_time = $request->start_time;
         $course->end_time = $request->end_time;
         $course->number = $request->number;
+        $course->color =$request->color;
         if ($request->hasFile('photo')) {
             $file = $request->file('photo');
             $extension = $file->getClientOriginalExtension();
@@ -919,6 +925,73 @@ class StaffController extends Controller
                                 ->orderBy('created_at','DESC')
                                 ->get();
         $user = User::find($id);
-        return view('staff.user.user_detail',['user'=>$user,'histories'=>$histories]);
+        $course_id = $user->course_id;
+        $lessions = Lession::where('course_id','=',$course_id)->get();
+        return view('staff.user.user_detail',['user'=>$user,'histories'=>$histories,'lessions'=>$lessions]);
+    }
+    public function getListUserRegister()
+    {
+        $today = new DateTime;
+        $current = $today->format('Y-m-d');
+        $month = $today->format('Y-m');
+        $year = $today->format('Y');
+        $histories_day = HistoryUser::where('created_at','like',$current.'%')
+                                    ->where('status','=',1)
+                                    ->orderBy('created_at','DESC')
+                                    ->get();
+        $histories_month = HistoryUser::where('created_at','like','%'.$month.'%')
+                                    ->where('status','=',1)
+                                    ->orderBy('created_at','DESC')
+                                    ->get();
+        $histories_year = HistoryUser::where('created_at','like','%'.$year.'%')
+                                    ->where('status','=',1)
+                                    ->orderBy('created_at','DESC')
+                                    ->get();
+        $price_year = 0;
+        $collected_year = 0;
+        foreach($histories_year as $history_year)
+        {
+            $price_year += $history_year->user->course->price;
+            if($history_year->user->status == 1)
+            {
+                $collected_year += $history_year->user->course->price;
+            }
+        }
+        $price_month = 0;
+        $collected_month = 0;
+        foreach($histories_month as $history_month)
+        {
+            $price_month += $history_month->user->course->price;
+            if($history_month->user->status == 1)
+            {
+                $collected_month += $history_month->user->course->price;
+            }
+        }
+        $price_day= 0;
+        $collected_day = 0;
+        foreach($histories_day as $history_day)
+        {
+            $price_day += $history_day->user->course->price;
+            if($history_day->user->status == 1)
+            {
+                $collected_day += $history_day->user->course->price;
+            }
+        }
+        return view('staff.user.list_user_register',['current'=>$current,'histories_day'=>$histories_day,'histories_month'=>$histories_month,'price_month'=>$price_month,'collected_month'=>$collected_month,'price_day'=>$price_day,'collected_day'=>$collected_day,'histories_year'=>$histories_year,'price_year'=>$price_year,'collected_year'=>$collected_year]);
+    }
+    public function getTrainerDetail($id)
+    {
+        $today = new DateTime;
+        $current = $today->format('Y-m-d H:i:s');
+        $trainer = Trainer::find($id);
+        $courses = Course::where('trainer_id','=',$id)
+                        ->where('end_time','>=',$current)
+                        ->orderBy('created_at','DESC')
+                        ->get();
+        foreach($courses as $course)
+        {
+            $lessions = Lession::where('course_id','=',$course->id)->get();
+        }
+        return view('staff.trainer.trainer_detail',['trainer'=>$trainer,'courses'=>$courses,'lessions'=>$lessions]);
     }
 }

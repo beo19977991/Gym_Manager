@@ -17,6 +17,7 @@ class Course extends Model
         'discount',
         'number_member',
         'number',
+        'color',
         'start_time',
         'end_time'
     ];

@@ -1,4 +1,4 @@
-@extends('staff.layouts.app', ['title' => 'User Detail'])
+@extends('staff.layouts.app', ['title' => 'Trainer Detail'])
 @section('styles')
   <!-- fullCalendar -->
   <link rel="stylesheet" href="{{ asset('css/plugins/fullcalendar/main.min.css') }}">
@@ -14,7 +14,7 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1 class="m-0 text-dark">Thông tin khách hàng</h1>
+            <h1 class="m-0 text-dark">Thông tin Huấn Luyện Viên</h1>
           </div><!-- /.col -->
         </div><!-- /.row -->
       </div><!-- /.container-fluid -->
@@ -31,16 +31,16 @@
               <div class="card-body box-profile">
                 <div class="text-center">
                   <img class="profile-user-img img-fluid img-circle"
-                       src="upload/user/photo/{{$user->photo}}"
+                       src="upload/trainer/photo/{{$trainer->photo}}"
                        alt="User profile picture">
                 </div>
 
-                <h3 class="profile-username text-center">{{$user->full_name}}</h3>
-                <p class="text-muted text-center">Mã khách Hàng: {{$user->id}}</p>
+                <h3 class="profile-username text-center">{{$trainer->full_name}}</h3>
+                <p class="text-muted text-center">Mã Huấn Luyện Viên: {{$trainer->id}}</p>
 
                 <ul class="list-group list-group-unbordered mb-3">
                   <li class="list-group-item">
-                    <b>Ngày Tham gia</b> <a class="float-right">{{\Carbon\Carbon::parse($user->created_at)->format('d-m-Y')}}</a>
+                    <b>Ngày Tham gia</b> <a class="float-right">{{\Carbon\Carbon::parse($trainer->created_at)->format('d-m-Y')}}</a>
                   </li>
                 </ul>
               </div>
@@ -56,21 +56,21 @@
               <div class="card-body">
                 <strong><i class="fas fa-mail-bulk mr-1"></i> Email</strong>
                 <p class="text-muted">
-                  {{$user->email}}
+                  {{$trainer->email}}
                 </p>
                 <hr>
                 <strong><i class="fas fa-map-marker-alt mr-1"></i> Địa Chỉ</strong>
-                <p class="text-muted">{{$user->address}}</p>
+                <p class="text-muted">{{$trainer->address}}</p>
                 <hr>
                 <strong><i class="fas fa-transgender mr-1"></i> Giới Tính</strong>
-                    @if($user->gender == 1)
+                    @if($trainer->gender == 1)
                     <p class="text-muted">Nam</p>
                     @else
                     <p class="text-muted">Nữ</p>
                     @endif
                 <hr>
                 <strong><i class="far fa-question-circle mr-1"></i> Tuổi</strong>
-                <p class="text-muted">{{$user->age}}</p>
+                <p class="text-muted">{{$trainer->age}}</p>
               </div>
               <!-- /.card-body -->
             </div>
@@ -82,82 +82,42 @@
               <div class="card-header p-2">
                 <ul class="nav nav-pills">
                   <li class="nav-item"><a class="nav-link active" href="#activity" data-toggle="tab">Hoạt động</a></li>
-                  <li class="nav-item"><a class="nav-link" href="#timeline" data-toggle="tab">Thông tin</a></li>
                 </ul>
               </div><!-- /.card-header -->
 
               <div class="card-body">
                 <div class="tab-content">
                 <div class="active tab-pane" id="activity">
-                    <!-- Post -->
-                      <div class="post">
-                        <div class="user-block">
-                          <img class="img-circle img-bordered-sm" src="upload/user/photo/{{$user->photo}}" alt="user image">
-                          <span class="username">
-                            <a href="#">{{$user->full_name}}</a>
-                          </span>
-                          <span class="description">Khóa Tập đang tham gia - <a href="{{route('page-course-detail',['id'=>$user->course_id])}}" target="_blank" rel="noopener noreferrer">{{$user->course->course_name}}</a></span>
-                          <span class="description">Bắt đầu - {{ \Carbon\Carbon::parse($user->course->start_time)->format('d-m-Y') }} Kết thúc - {{ \Carbon\Carbon::parse($user->course->end_time)->format('d-m-Y') }}</span>
-                        </div>
+                <div class="post">
+                    <div class="user-block">
+                        <img class="img-circle img-bordered-sm" src="upload/trainer/photo/{{$trainer->photo}}" alt="user image">
+                        <span class="username">
+                            <a href="#">{{$trainer->full_name}}</a>
+                        </span>
+                        <span class="description">Chuyên Môn - {{$trainer->course_type->course_type_name}}</a></span>
+                    </div>
                         <!-- /.user-block -->
-                        <p>Huấn Luyện Viên - <a href="{{route('page-trainer-detail',['id'=>$user->course->trainer->id])}}" target="_blank" rel="noopener noreferrer">{{$user->course->trainer->full_name}}</a></p>
-                        <p>
-                          <div class="content">
+                    <strong><p>Khóa tập đang tham gia huấn luyện</p></strong>
+                    @foreach($courses as $course)
+                        <p> <a href="{{route('page-course-detail',['id'=>$course->id])}}" target="_blank" rel="noopener noreferrer">{{$course->course_name}}</a></p>
+                        <span class="description">Bắt đầu - {{ \Carbon\Carbon::parse($course->start_time)->format('d-m-Y') }} Kết Thúc - {{ \Carbon\Carbon::parse($course->end_time)->format('d-m-Y') }}</span> 
+                    @endforeach
+                    <p>
+                        <div class="content">
                             <h3>Lịch Tập</h3>
-                              <!-- schedule here -->
-                              <div class="card card-primary">
+                            <!-- schedule here -->
+                            <div class="card card-primary">
                                 <div class="card-body p-0">
                                   <!-- THE CALENDAR -->
                                   <div id="calendar"></div>
                                 </div>
-                              </div>
-                          </div>
-                        </p>
-                      </div>
-                    <!-- /.post -->
-                  </div>
-                  <!-- /.tab-pane -->
-                  <div class="tab-pane" id="timeline">
-                    <!-- The timeline -->
-                    <div class="timeline timeline-inverse">
-                      @foreach($histories as $history)
-                        @if($history->status == 1)
-                        <div class="time-label">
-                            <span class="bg-primary">
-                            {{ \Carbon\Carbon::parse($history->created_at)->format('d-m-Y') }}
-                            </span>
+                            </div>
                         </div>
-                        <div>
-                          <i class="fas fa-user bg-info"></i>
-                          <div class="timeline-item">
-                            <span class="time"><i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($history->created_at)->format('H:i:s') }}</span>
-                            <h3 class="timeline-header border-0"><a href="#">{{$user->full_name}}</a> Đã Đăng ký khóa tập {{$history->course->course_name}}
-                            </h3>
-                          </div>
-                        </div>
-                        @else
-                        <div class="time-label">
-                            <span class="bg-danger">
-                            {{ \Carbon\Carbon::parse($history->created_at)->format('d-m-Y') }}
-                            </span>
-                        </div>
-                        <div>
-                          <i class="fas fa-user bg-info"></i>
-                          <div class="timeline-item">
-                            <span class="time"><i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($history->created_at)->format('H:i:s') }}</span>
-                            <h3 class="timeline-header border-0"><a href="#">{{$user->full_name}}</a> Đã Hủy Đăng ký khóa tập {{$history->course->course_name}}
-                            </h3>
-                          </div>
-                        </div>
-                        @endif
-                      @endforeach
-                      <div>
-                        <i class="far fa-clock bg-gray"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <!-- /.tab-pane -->
+                    </p>
                 </div>
+                    <!-- /.post -->
+                </div>
+                  <!-- /.tab-pane -->
                 <!-- /.tab-content -->
               </div><!-- /.card-body -->
             </div>
@@ -269,24 +229,5 @@
     });
     calendar.render();
 });
-  function showMyImage(fileInput) {
-    var files = fileInput.files;
-    for (var i = 0; i < files.length; i++) {           
-      var file = files[i];
-      var imageType = /image.*/;     
-      if (!file.type.match(imageType)) {
-          continue;
-      }           
-      var img=document.getElementById("thumbnil");            
-          img.file = file;    
-      var reader = new FileReader();
-          reader.onload = (function(aImg) { 
-            return function(e) { 
-              aImg.src = e.target.result; 
-            }; 
-          })(img);
-          reader.readAsDataURL(file);
-    }    
-  }
 </script>
 @endsection

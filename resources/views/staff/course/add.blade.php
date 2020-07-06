@@ -1,11 +1,13 @@
 @extends('staff.layouts.app', ['title' => 'Thêm khóa tập'])
 @section('styles')
   <base href="{{asset(' ')}}">
-  <!-- summernote -->
-  <link rel="stylesheet" href="{{ asset('css/plugins/summernote/summernote-bs4.css')}}">
+    <!-- summernote -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/summernote/summernote-bs4.css')}}">
     <!-- daterange picker -->
     <link rel="stylesheet" href="{{ asset('css/plugins/daterangepicker/daterangepicker.css')}}">
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <!-- Bootstrap Color Picker -->
+    <link rel="stylesheet" href="{{ asset('css/plugins/bootstrap-colorpicker/css/bootstrap-colorpicker.min.css')}}">
 
 @endsection
 @section('content')
@@ -101,6 +103,16 @@
                       <input type="text" class="form-control" id="end_time" name="end_time" />
                   </div>
                   <div class="form-group">
+                  <label>Chọn thẻ màu cho khóa tập</label>
+                  <div class="input-group my-colorpicker2">
+                    <input type="text" name ="color" class="form-control">
+                    <div class="input-group-append">
+                      <span class="input-group-text"><i class="fas fa-square"></i></span>
+                    </div>
+                  </div>
+                  <!-- /.input group -->
+                </div>
+                  <div class="form-group">
                     <label>Số Lượng Khách Hàng</label>
                     <input type="text" name="number" class="form-control" id="address" placeholder="Nhập Số Lượng Khách Hàng">
                   </div>
@@ -138,6 +150,8 @@
 <!-- Summernote -->
 <script src="css/plugins/summernote/summernote-bs4.min.js"></script>
 <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+<!-- bootstrap color picker -->
+<script src="{{ asset('css/plugins/bootstrap-colorpicker/js/bootstrap-colorpicker.min.js')}}"></script>
 <script>
   $(function () {
     // Summernote
@@ -150,6 +164,12 @@
     });
     $( "#start_time" ).datepicker({ dateFormat: 'yy-mm-dd' });
     $( "#end_time" ).datepicker({ dateFormat: 'yy-mm-dd' });
+
+    //color picker with addon
+    $('.my-colorpicker2').colorpicker()
+    $('.my-colorpicker2').on('colorpickerChange', function(event) {
+      $('.my-colorpicker2 .fa-square').css('color', event.color.toString());
+    });
   })
   function showMyImage(fileInput) {
         var files = fileInput.files;

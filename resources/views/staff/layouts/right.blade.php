@@ -36,6 +36,12 @@
                   <p>Thêm Khách Hàng</p>
                 </a>
               </li>
+              <li class="nav-item">
+                <a href="{{route('staff-list-user-register')}}" class="nav-link">
+                  <i class="far fa-circle nav-icon"></i>
+                  <p>Thống Kê</p>
+                </a>
+              </li>
             </ul>
           </li>
           <!-- customer end -->

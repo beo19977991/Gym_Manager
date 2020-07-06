@@ -50,7 +50,7 @@
                                         <h3>Giới thiệu về khóa tập</h3>
                                         <p>{!!$course->description!!}</p>
                                         <h3>Giá</h3>
-                                        <p>{{$course->price}}vnđ</p>
+                                        <p>{{$course->price * 1}} vnđ</p>
                                         <h3>Ưu đãi</h3>
                                         <p>Giảm giá: {{$course->discount *100}}%</p>
                                     </div>
@@ -66,7 +66,7 @@
                                     </div>
                                     <div class="choose-body">
                                         <h3>Mô tả Huấn luyện viên</h3>
-                                        <p>Thêm sau</p>
+                                        <p>{!!$course->trainer->description!!}</p>
                                         <h3>Danh Sách Khách Hàng Đã Đăng Ký</h3>
                                         <ul class="choose-list">
                                             @foreach($customers as $customer)
@@ -329,8 +329,8 @@
           title : '{{$lession->course->course_name}}',
           start : new Date('{{$lession->start_time}}'),
           end   : new Date('{{$lession->end_time}}'),
-          backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12' //yellow
+          backgroundColor: '{{$lession->course->color}}', //yellow
+          borderColor    : '{{$lession->course->color}}' //yellow
         },
         @endforeach
       ],

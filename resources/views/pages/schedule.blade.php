@@ -171,8 +171,8 @@
           title : '{{$lession->course->course_name}}',
           start : new Date('{{$lession->start_time}}'),
           end   : new Date('{{$lession->end_time}}'),
-          backgroundColor: '#f39c12', //yellow
-          borderColor    : '#f39c12' //yellow
+          backgroundColor: '{{$lession->course->color}}', 
+          borderColor    : '{{$lession->course->color}}' 
         },
         @endforeach
       ],

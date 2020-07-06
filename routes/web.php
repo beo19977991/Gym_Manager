@@ -261,7 +261,9 @@ Route::group(['prefix' => 'admin'], function () {
             Route::post('edit_exercise/{id}','TrainerController@postEditExercise');
             Route::get('delete_exercise/{id}','TrainerController@getDeleteExercise')->name('trainer-delete-exercise');
         // End Exercise =====================================================================
+        // Manager Course =====================================================================
 
+        // End =================================================================================
         });
         Route::group(['prefix' => 'staff'], function () {
             Route::get('home','StaffController@getHome')->name('staff-get-home');
@@ -346,7 +348,11 @@ Route::group(['prefix' => 'admin'], function () {
             Route::get('delete_product/{id}','StaffController@getDeleteProduct')->name('staff-delete-product');
         // End Product ====================================================================================
         // User Detail ===================================================================================
-            Route::get('user_detail/{id}','StaffController@getUserDetail')->name('staff-user-detatil');
+            Route::get('user_detail/{id}','StaffController@getUserDetail')->name('staff-user-detail');
+        // List User Register ============================================================================
+            Route::get('list_user_register','StaffController@getListUserRegister')->name('staff-list-user-register');
+        // Trainer Detail
+            Route::get('trainer_detail/{id}','StaffController@getTrainerDetail')->name('staff-trainer-detail');
         // ================================================================================================
         });
         Route::group(['prefix' => 'ajax'], function () {

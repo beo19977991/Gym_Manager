@@ -35,7 +35,7 @@
                 @endif
               <div class="card-body">
               <input type="text" id="myInput" placeholder="Tìm theo tên">
-                <table id="example2" class="table table-bordered table-hover myTable mt-3">
+            <table id="example2" class="table table-bordered table-hover myTable mt-3">
                   <thead>
                   <tr>
                     <th>Họ Tên</th>
@@ -52,7 +52,7 @@
                   <tbody>
                 @foreach($users as $user)
                   <tr>
-                    <td><a target="_blank" href="{{ route('staff-user-detatil',['id'=>$user->id]) }}">{{$user->full_name}}</a></td>
+                    <td><a target="_blank" href="{{ route('staff-user-detail',['id'=>$user->id]) }}">{{$user->full_name}}</a></td>
                     <td>{{$user->age}}</td>
                     <td>{{$user->address}}</td>
                     <td>
@@ -95,7 +95,7 @@
                   </tr>
                 @endforeach
                   </tbody>
-                </table>
+            </table>
               </div>
           </div>
 </div>

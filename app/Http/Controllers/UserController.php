@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\User;
 use App\Course;
 use App\HistoryUser;
+use App\Lession;
 
 class UserController extends Controller
 {
@@ -47,8 +48,13 @@ class UserController extends Controller
 
     public function getUserProfile($id)
     {
+        $histories = HistoryUser::where('user_id','=',$id)
+                                ->orderBy('created_at','DESC')
+                                ->get();
         $user = User::find($id);
-        return view('users.profile',['user'=>$user]);
+        $course_id = $user->course_id;
+        $lessions = Lession::where('course_id','=',$course_id)->get();
+        return view('users.profile',['user'=>$user,'lessions'=>$lessions,'histories'=>$histories]);
     }
     public function postUserProfile($id,Request $request)
     {

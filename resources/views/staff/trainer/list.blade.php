@@ -51,7 +51,7 @@
                   <tbody>
                 @foreach($trainers as $trainer)
                   <tr>
-                    <td><a target="_blank" href="#">{{$trainer->full_name}}</a></td>
+                    <td><a target="_blank" href="{{route('staff-trainer-detail',['id'=>$trainer->id])}}">{{$trainer->full_name}}</a></td>
                     <td>{{$trainer->age}}</td>
                     <td>{{$trainer->address}}</td>
                     <td>
