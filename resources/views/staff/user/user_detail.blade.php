@@ -145,7 +145,7 @@
                           <i class="fas fa-user bg-info"></i>
                           <div class="timeline-item">
                             <span class="time"><i class="far fa-clock"></i> {{ \Carbon\Carbon::parse($history->created_at)->format('H:i:s') }}</span>
-                            <h3 class="timeline-header border-0"><a href="#">{{$user->full_name}}</a> Đã Hủy Đăng ký khóa tập {{$history->course->course_name}}
+                            <h3 class="timeline-header border-0"><a>{{$user->full_name}}</a> Đã Hủy Đăng ký khóa tập {{$history->course->course_name}}
                             </h3>
                           </div>
                         </div>

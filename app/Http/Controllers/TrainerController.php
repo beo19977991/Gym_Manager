@@ -142,8 +142,20 @@ class TrainerController extends Controller
     }
     public function getTrainerProfile($id)
     {
+        $today = new DateTime;
+        $current = $today->format('Y-m-d H:i:s');
         $trainer = Trainer::find($id);
-        return view('trainer.profile',['trainer'=>$trainer]);
+        $courses = Course::where('trainer_id','=',$id)
+                        ->where('end_time','>=',$current)
+                        ->orderBy('created_at','DESC')
+                        ->get();
+        $lessions = [];
+        foreach($courses as $course)
+        {
+            $array = Lession::where('course_id','=',$course->id)->get();
+            array_push($lessions,$array);
+        }
+        return view('trainer.profile',['trainer'=>$trainer,'courses'=>$courses,'lessions'=>$lessions]);
     }
     public function postTrainerProfile($id, Request $request)
     {
@@ -194,8 +206,10 @@ class TrainerController extends Controller
     }
     public function getAddExerciseType()
     {
-        $course_types = CourseType::all();
-        return view('trainer.exercise_type.add', ['course_types' => $course_types]);
+        $trainer = Auth::guard('trainer')->user();
+        $course_type_id = $trainer->course_type_id;
+        $course_type = CourseType::find($course_type_id);
+        return view('trainer.exercise_type.add', ['course_type' => $course_type]);
     }
     public function postAddExerciseType(Request $request)
     {
@@ -213,9 +227,11 @@ class TrainerController extends Controller
     }
     public function getEditExerciseType($id)
     {
-        $course_types = CourseType::all();
+        $trainer = Auth::guard('trainer')->user();
+        $course_type_id = $trainer->course_type_id;
+        $course_type = CourseType::find($course_type_id);
         $exercise_type = ExerciseType::find($id);
-        return view('trainer.exercise_type.edit', ['exercise_type' => $exercise_type, 'course_types' => $course_types]);
+        return view('trainer.exercise_type.edit', ['exercise_type' => $exercise_type, 'course_type' => $course_type]);
     }
     public function postEditExerciseType($id, Request $request)
     {
@@ -242,9 +258,10 @@ class TrainerController extends Controller
     }
     public function getAddExercise()
     {
-        $trainers = Trainer::all();
-        $exercise_types = ExerciseType::all();
-        return view('trainer.exercise.add', ['exercise_types' => $exercise_types, 'trainers' => $trainers]);
+        $trainer = Auth::guard('trainer')->user();
+        $course_type_id = $trainer->course_type_id;
+        $exercise_types = ExerciseType::where('course_type_id','=',$course_type_id)->get();
+        return view('trainer.exercise.add', ['exercise_types' => $exercise_types, 'trainer' => $trainer]);
     }
     public function postAddExercise(Request $request)
     {
@@ -282,10 +299,11 @@ class TrainerController extends Controller
     }
     public function getEditExercise($id)
     {
-        $trainers = Trainer::all();
-        $exercise_types = ExerciseType::all();
+        $trainer = Auth::guard('trainer')->user();
+        $course_type_id = $trainer->course_type_id;
+        $exercise_types = ExerciseType::where('course_type_id','=',$course_type_id)->get();
         $exercise = Exercise::find($id);
-        return view('trainer.exercise.edit', ['exercise' => $exercise, 'exercise_types' => $exercise_types, 'trainers' => $trainers]);
+        return view('trainer.exercise.edit', ['exercise' => $exercise, 'exercise_types' => $exercise_types, 'trainer' => $trainer]);
     }
     public function postEditExercise($id, Request $request)
     {
@@ -357,7 +375,9 @@ class TrainerController extends Controller
 
     public function getListPost()
     {
-        $trainer_posts = TrainerPost::orderBy('created_at', 'DESC')->get();
+        $trainer_id = Auth::guard('trainer')->user()->id;
+        $trainer_posts = TrainerPost::where('trainer_id','=',$trainer_id)
+                        ->orderBy('created_at', 'DESC')->get();
         return view('trainer.trainer_post.list', ['trainer_posts' => $trainer_posts]);
     }
     public function getAddPost()

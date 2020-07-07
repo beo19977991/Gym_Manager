@@ -43,6 +43,7 @@
                     <th>Địa Chỉ</th>
                     <th>Giới Tính</th>
                     <th>Môn Dạy</th>
+                    <th>Khóa Tập</th>
                     <th>Giới Thiệu</th>
                     <th>Hình Đại Diện</th>
                     <th>Thao tác</th>
@@ -62,6 +63,13 @@
                       @endif
                     </td>
                     <td>{{$trainer->course_type->course_type_name}}</td>
+                    <td>
+                      @foreach($courses as $course)
+                        @if($course->trainer_id == $trainer->id)
+                        <p><a href="{{ route('staff-course-detail',['id'=>$course->id])}}" target="_blank" rel="noopener noreferrer">{{$course->course_name}}</a></p>
+                        @endif
+                      @endforeach
+                    </td>
                     <td>{!!$trainer->description!!}</td>
                     <td class="text-center"><img class="direct-chat-img " width="50" height="50" src="upload/trainer/photo/{{$trainer->photo}}"></td>
                     <td class="text-center"><a class="ml-2" href="{{ route('staff-edit-trainer',['id'=>$trainer->id])}}"><i class="ion-paintbrush" ></i></a>

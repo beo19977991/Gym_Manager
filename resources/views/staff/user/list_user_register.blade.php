@@ -40,7 +40,7 @@
                             <tbody>
                             @foreach($histories_year as $history_year)
                             <tr>
-                                <td><a target="_blank" href="{{ route('staff-user-detatil',['id'=>$history_year->user->id]) }}">{{$history_year->user->full_name}}</a></td>
+                                <td><a target="_blank" href="{{ route('staff-user-detail',['id'=>$history_year->user->id]) }}">{{$history_year->user->full_name}}</a></td>
                                 <td>{{$history_year->user->age}}</td>
                                 <td>{{$history_year->user->address}}</td>
                                 <td>
@@ -100,7 +100,7 @@
                         <tbody>
                         @foreach($histories_month as $history_month)
                         <tr>
-                            <td><a target="_blank" href="{{ route('staff-user-detatil',['id'=>$history_month->user->id]) }}">{{$history_month->user->full_name}}</a></td>
+                            <td><a target="_blank" href="{{ route('staff-user-detail',['id'=>$history_month->user->id]) }}">{{$history_month->user->full_name}}</a></td>
                             <td>{{$history_month->user->age}}</td>
                             <td>{{$history_month->user->address}}</td>
                             <td>
@@ -176,7 +176,7 @@
                         <tbody>
                         @foreach($histories_day as $history_day)
                         <tr>
-                            <td><a target="_blank" href="{{ route('staff-user-detatil',['id'=>$history_day->user->id]) }}">{{$history_day->user->full_name}}</a></td>
+                            <td><a target="_blank" href="{{ route('staff-user-detail',['id'=>$history_day->user->id]) }}">{{$history_day->user->full_name}}</a></td>
                             <td>{{$history_day->user->age}}</td>
                             <td>{{$history_day->user->address}}</td>
                             <td>

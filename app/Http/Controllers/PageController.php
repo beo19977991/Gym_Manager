@@ -179,11 +179,19 @@ class PageController extends Controller
     }
     public function getCourseDetail($id)
     {
+        $today = new DateTime();
+        $current = $today->format('Y-m-d H:i:s');
+        $course_types = CourseType::all();
+        $new_posts = Post::orderBy('created_at','DESC')->take(4)->get();
         $lessions = Lession::where('course_id','=',$id)->get();
         $customers = User::where('course_id','=',$id)->get();
         $member= count($customers);
         $course = Course::find($id);
-        return view('courses.course_detail',['course'=>$course,'customers'=>$customers,'lessions'=>$lessions,'member'=>$member]);
+        $course_type_id =$course->course_type_id;
+        $related_courses = Course::where('course_type_id','=',$course_type_id)
+                                    ->where('end_time','>=',$current)
+                                    ->get();
+        return view('courses.course_detail',['course'=>$course,'customers'=>$customers,'lessions'=>$lessions,'member'=>$member,'course_types'=>$course_types,'new_posts'=>$new_posts,'related_courses'=>$related_courses]);
     }
 
     public function getProduct()

@@ -12,7 +12,7 @@
                 </div>
                 <div class="breadcrum-area">
                     <ul class="breadcrumb">
-                        <li><a href="#">Trang chủ</a></li>
+                        <li><a href="{{route('page-home')}}">Trang chủ</a></li>
                         <li class="active"></li>
                     </ul>
                 </div>
@@ -40,7 +40,7 @@
                                         </ul>
                                     </div>
                                     <div class="content">
-                                        <p>{{$trainer_post->body}}</p>
+                                        <p>{!!$trainer_post->body!!}</p>
                                     </div>
                                 </div>
                             </div>

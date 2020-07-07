@@ -39,7 +39,9 @@
                   <thead>
                   <tr>
                     <th>Tên Loại Khóa Tập</th>
-                    <th>Mô Tả</th>
+                    <th style="width:50%;">Mô Tả</th>
+                    <th>Huấn luyện viên</th>
+                    <th>Khóa Tập</th>
                     <th>Sửa|Xóa</th>
                   </tr>
                   </thead>
@@ -48,6 +50,20 @@
                   <tr>
                     <td><a target="_blank" href="#">{{$course_type->course_type_name}}</a></td>
                     <td>{!!$course_type->description!!}</td>
+                    <td>
+                      @foreach($trainers as $trainer)
+                        @if($trainer->course_type_id == $course_type->id)
+                        <p><a href="{{route('staff-trainer-detail',['id'=>$trainer->id])}}" target="_blank" rel="noopener noreferrer">{{$trainer->full_name}}</a></p> </br>
+                        @endif
+                      @endforeach
+                    </td>
+                    <td>
+                      @foreach($courses as $course)
+                      @if($course->course_type_id == $course_type->id)
+                      <p><a href="{{route('staff-course-detail',['id'=>$course->id])}}" target="_blank" rel="noopener noreferrer">{{$course->course_name}}</a></p>
+                      @endif
+                      @endforeach
+                    </td>
                     <td class="text-center">
                       <a href="{{ route('staff-edit-course-type',['id'=>$course_type->id])}}"><i class="ion-paintbrush" ></i></a>
                      <a href="{{ route('staff-delete-course-type',['id'=>$course_type->id])}}" data-method="DELETE" data-confirm="Bạn chắc chắn muốn xóa {{$course_type->course_type_name}}" class="delete ml-2"><i class="ion-ios-trash"></i></a>

@@ -45,34 +45,34 @@
                         <!-- /.card -->
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-3">
-                            <div class="right-sidebar">
-                                <div class="single-sidebar">
-                                    <h3>Các Môn Học Hiện Có</h3>
-                                    <div class="categories">
-                                        <ul>
-                                            @foreach($course_types as $course_type)
-                                            <li><a href="">{{$course_type->course_type_name}}</a></li>
-                                            @endforeach
-                                        </ul>
-                                    </div>
-                                </div>
-                                <div class="single-sidebar sidebar-last">
-                                    <h3>Archives</h3>
-                                    <div class="archives-list">
-                                        <table style="width:100%; border:0;">
-                                            <tbody>
-                                                @foreach($new_posts as $new_post)
-                                                <tr>
-                                                    <td><a href="">{{$new_post->title}}</a></td>
-                                                    <td>{{\Carbon\Carbon::parse($new_post->created_at)->format('d')}}<span>{{\Carbon\Carbon::parse($new_post->created_at)->format('M')}}</span></td>
-                                                </tr>
-                                                @endforeach
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
+                    <div class="right-sidebar">
+                        <div class="single-sidebar">
+                            <h3>Các Môn Học Hiện Có</h3>
+                            <div class="categories">
+                                <ul>
+                                    @foreach($course_types as $course_type)
+                                    <li><a href="">{{$course_type->course_type_name}}</a></li>
+                                    @endforeach
+                                </ul>
                             </div>
                         </div>
+                        <div class="single-sidebar sidebar-last">
+                            <h3>Thong báo mới</h3>
+                             <div class="archives-list">
+                                <table style="width:100%; border:0;">
+                                    <tbody>
+                                        @foreach($new_posts as $new_post)
+                                        <tr>
+                                            <td><a href="">{{$new_post->title}}</a></td>
+                                            <td>{{\Carbon\Carbon::parse($new_post->created_at)->format('d')}}<span>{{\Carbon\Carbon::parse($new_post->created_at)->format('M')}}</span></td>
+                                        </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

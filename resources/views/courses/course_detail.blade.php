@@ -90,7 +90,7 @@
                             <!-- Start Related classes -->
                             <div class="related-classes-area nav-on-hover padding-space">
                                 <div class="section-title">
-                                    <h2>Related Classes</h2>
+                                    <h2>Các Khóa Tập Liên Quan</h2>
                                 </div>
                                 <div class="gym-carousel nav-control-top zoom-gallery"
                                     data-loop="true"
@@ -117,62 +117,18 @@
                                     data-r-large="3"
                                     data-r-large-nav="true"
                                     data-r-large-dots="false">
+                                    @foreach($related_courses as $related_course)
                                     <div class="single-related-classes">
                                         <div class="classes-img">
                                             <a href="#">
-                                                <img src="img/classes/yoga.jpg" alt="">
+                                                <img src="upload/course/photo/{{$related_course->photo}}">
                                             </a>
-                                            <div class="classes-overlay">
-                                                <a class="elv-zoom" href="img/classes/yoga.jpg" title="Classic Yoga"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                            </div>
                                         </div>
                                         <div class="classes-title">
-                                            <h3><a href="single-classes.html">Classic Yoga</a></h3>
-                                            <p class="date">09.00 am - 10.00 Am</p>
+                                            <h3><a href="{{route('page-course-detail',['id'=>$related_course->id])}}">{{$related_course->course_name}}</a></h3>
                                         </div>
                                     </div>
-                                    <div class="single-related-classes">
-                                        <div class="classes-img">
-                                            <a href="#">
-                                                <img src="img/classes/running.jpg" alt="">
-                                            </a>
-                                            <div class="classes-overlay">
-                                                <a class="elv-zoom" href="img/classes/running.jpg" title="Running"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="classes-title">
-                                            <h3><a href="single-classes.html">Running</a></h3>
-                                            <p class="date">09.00 am - 10.00 Am</p>
-                                        </div>
-                                    </div>
-                                    <div class="single-related-classes">
-                                        <div class="classes-img">
-                                            <a href="#">
-                                                <img src="img/classes/meditation.jpg" alt="">
-                                            </a>
-                                            <div class="classes-overlay">
-                                                <a class="elv-zoom" href="img/classes/meditation.jpg" title="Meditation"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="classes-title">
-                                            <h3><a href="single-classes.html">Meditation</a></h3>
-                                            <p class="date">09.00 am - 10.00 Am</p>
-                                        </div>
-                                    </div>
-                                    <div class="single-related-classes">
-                                        <div class="classes-img">
-                                            <a href="#">
-                                                <img src="img/classes/karate.jpg" alt="">
-                                            </a>
-                                            <div class="classes-overlay">
-                                                <a class="elv-zoom" href="img/classes/karate.jpg" title="Classic Yoga"><i class="fa fa-search" aria-hidden="true"></i></a>
-                                            </div>
-                                        </div>
-                                        <div class="classes-title">
-                                            <h3><a href="single-classes.html">Classic Yoga</a></h3>
-                                            <p class="date">09.00 am - 10.00 Am</p>
-                                        </div>
-                                    </div>
+                                    @endforeach
                                 </div>
                             </div>
                             <!-- End Related classes -->
@@ -180,61 +136,28 @@
                         <div class="col-lg-3 col-md-3 col-sm-3">
                             <div class="right-sidebar">
                                 <div class="single-sidebar">
-                                    <h3>Search</h3>
-                                    <div class="sidebar-search">
-                                        <input type="text" placeholder="Search here...">
-                                        <span><button type="submit"><i class="fa fa-search"></i></button></span>
-                                    </div>
-                                </div>
-                                <div class="single-sidebar">
-                                    <h3>Categories</h3>
+                                    <h3>Các Môn Học Hiện Có</h3>
                                     <div class="categories">
                                         <ul>
-                                            <li><a href="classes.html">Fitness Classes</a></li>
-                                            <li><a href="classes.html">Body Building</a></li>
-                                            <li><a href="classes.html">Trainer</a></li>
-                                            <li><a href="classes.html">Running</a></li>
-                                            <li><a href="classes.html">Yoga</a></li>
+                                            @foreach($course_types as $course_type)
+                                            <li><a>{{$course_type->course_type_name}}</a></li>
+                                            @endforeach
                                         </ul>
                                     </div>
                                 </div>
-                                <div class="single-sidebar">
-                                    <h3>Happy Client’s</h3>
-                                    <div class="happy-clients">
-                                        <div class="single-clients">
-                                            <p><i class="fa fa-quote-left" aria-hidden="true"></i></p>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntua.</p>
-                                            <div class="client-heading">
-                                                <h4><a href="#">Kazi Fahim</a></h4>
-                                                <p>CEO PsdBoss</p>
-                                            </div>
-                                        </div>
-                                        <div class="single-clients">
-                                            <p><i class="fa fa-quote-left" aria-hidden="true"></i></p>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntua.</p>
-                                            <div class="client-heading">
-                                                <h4><a href="#">Devid Manik</a></h4>
-                                                <p>CEO PsdBoss</p>
-                                            </div>
-                                        </div>
-                                        <div class="single-clients">
-                                            <p><i class="fa fa-quote-left" aria-hidden="true"></i></p>
-                                            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididuntua.</p>
-                                            <div class="client-heading">
-                                                <h4><a href="#">Devid Hogg</a></h4>
-                                                <p>CEO PsdBoss</p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
                                 <div class="single-sidebar sidebar-last">
-                                    <div class="join-us">
-                                        <img src="img/join-us.jpg" alt="">
-                                        <div class="join-content">
-                                            <div class="percent"><span>25%</span> off</div>
-                                            <p>Dsed do eiusmod tempor incididunt.</p>
-                                            <a class="custom-button" href="#" data-title="Join Us Now!">Join Us Now!</a>
-                                        </div>
+                                    <h3>Thông báo mới</h3>
+                                    <div class="archives-list">
+                                        <table style="width:100%; border:0;">
+                                            <tbody>
+                                                @foreach($new_posts as $new_post)
+                                                <tr>
+                                                    <td><a href="">{{$new_post->title}}</a></td>
+                                                    <td><span></span>{{\Carbon\Carbon::parse($new_post->created_at)->format('d')}}<span>{{\Carbon\Carbon::parse($new_post->created_at)->format('m')}}</span></td>
+                                                </tr>
+                                                @endforeach
+                                            </tbody>
+                                        </table>
                                     </div>
                                 </div>
                             </div>

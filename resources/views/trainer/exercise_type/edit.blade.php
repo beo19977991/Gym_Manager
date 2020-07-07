@@ -56,13 +56,9 @@
                 <div class="form-group">
                     <label>Tên Loại Khóa Tập</label>
                     <select class="form-control" name="course_type" id="course_type">
-                      @foreach($course_types as $course_type)
                         <option 
-                        @if($course_type->id == $exercise_type->course_type_id)
-                          {{"selected"}}
-                        @endif
-                        value = "{{$course_type->id}}">{{$course_type->course_type_name}}</option>
-                      @endforeach
+                        value = "{{$course_type->id}}">{{$course_type->course_type_name}}
+                        </option>
                     </select>
                   </div>
                   <div class="form-group">

@@ -68,9 +68,7 @@
                   <div class="form-group">
                     <label>Tên Huấn Luyện Viên</label>
                     <select class="form-control" name="trainer" id="trainer">
-                      @foreach($trainers as $trainer)
                         <option value = "{{$trainer->id}}">{{$trainer->full_name}}</option>
-                      @endforeach
                     </select>
                   </div>
                   <div class="form-group">

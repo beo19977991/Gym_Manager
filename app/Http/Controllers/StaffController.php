@@ -190,7 +190,9 @@ class StaffController extends Controller
 
     public function getAddUser()
     {
-        $courses = Course::where('number_member','<','number')->get();
+        $today = new DateTime;
+        $current = $today->format('Y-m-d H:i:s');
+        $courses = Course::where('start_time','>',$current)->get();
         return view('staff.user.add', ['courses' => $courses]);
     }
     public function postAddUser(Request $request)
@@ -293,8 +295,13 @@ class StaffController extends Controller
         }
         $user->active = 1;
         $user->status = $request->status;
-         $user->save();
-         return redirect()->route('staff-get-list-user')->with('message', 'Sửa Khách Hàng thành công');
+        $user->save();
+        $history_user = new HistoryUser;
+        $history_user->user_id = $id;
+        $history_user->course_id = $request->course;
+        $history_user->status = 1;
+        $history_user->save();
+        return redirect()->route('staff-get-list-user')->with('message', 'Sửa Khách Hàng thành công');
     }
     public function getDeleteUser($id)
     {
@@ -316,7 +323,8 @@ class StaffController extends Controller
     public function getListTrainer()
     {
         $trainers = Trainer::orderBy('created_at', 'DESC')->get();
-        return view('staff.trainer.list', ['trainers' => $trainers]);
+        $courses = Course::all();
+        return view('staff.trainer.list', ['trainers' => $trainers,'courses'=>$courses]);
     }
     public function getAddTrainer()
     {
@@ -440,8 +448,10 @@ class StaffController extends Controller
     // Manager Course Type ===============================================================
     public function getListCourseType()
     {
+        $courses = Course::all();
+        $trainers = Trainer::all();
         $course_types = CourseType::all();
-        return view('staff.course_type.list',['course_types'=>$course_types]);
+        return view('staff.course_type.list',['course_types'=>$course_types,'trainers'=>$trainers,'courses'=>$courses]);
     }
     public function getAddCourseType()
     {
@@ -943,11 +953,11 @@ class StaffController extends Controller
                                     ->where('status','=',1)
                                     ->orderBy('created_at','DESC')
                                     ->get();
-        $histories_month = HistoryUser::where('created_at','like','%'.$month.'%')
+        $histories_month = HistoryUser::where('created_at','like',$month.'%')
                                     ->where('status','=',1)
                                     ->orderBy('created_at','DESC')
                                     ->get();
-        $histories_year = HistoryUser::where('created_at','like','%'.$year.'%')
+        $histories_year = HistoryUser::where('created_at','like',$year.'%')
                                     ->where('status','=',1)
                                     ->orderBy('created_at','DESC')
                                     ->get();

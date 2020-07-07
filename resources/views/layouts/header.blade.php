@@ -42,19 +42,19 @@
                     <div class="row">
                         <div class="col-lg-2 col-md-2 col-sm-2">
                             <div class="logo-area">
-                                <a href="index.html"><img src="img/logo-white.png" alt="logo"></a>
+                                <a href="{{route('page-home')}}"><img src="img/logo-white.png" alt="logo"></a>
                             </div>
                         </div>
                         <div class="col-lg-9 col-md-9 col-sm-10">
                             <div class="main-menu">
                                 <nav>
                                     <ul>
-                                        <li class="active"><a href="{{route('page-home')}}">Trang Chủ</a></li>
-                                        <li><a href="{{route('page-course')}}">Khóa Tập</a></li>
-                                        <li><a href="{{route('page-schedule')}}">Lịch Tập</a></li>
-                                        <li><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
-                                        <li><a href="{{route('page-news')}}">Tin Tức</a></li>
-                                        <li><a href="{{route('page-exercise')}}">Bài Tập</a></li>
+                                        <li class="{{Request::is('page/home*') ? 'active' : ''}}"><a href="{{route('page-home')}}">Trang Chủ</a></li>
+                                        <li class="{{Request::is('page/course*') ? 'active' : ''}}"><a href="{{route('page-course')}}">Khóa Tập</a></li>
+                                        <li class="{{Request::is('page/schedule*') ? 'active' : ''}}"><a href="{{route('page-schedule')}}">Lịch Tập</a></li>
+                                        <li class="{{Request::is('page/trainer*') ? 'active' : ''}}"><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
+                                        <li class="{{Request::is('page/news*') ? 'active' : ''}}"><a href="{{route('page-news')}}">Tin Tức</a></li>
+                                        <li class="{{Request::is('page/exercise*') ? 'active' : ''}}"><a href="{{route('page-exercise')}}">Bài Tập</a></li>
                                     </ul>
                                 </nav>
                             </div>
@@ -87,12 +87,12 @@
                             <div class="mobile-menu">
                                 <nav id="dropdown">
                                     <ul>
-                                        <li class="active"><a href="{{route('page-home')}}">Trang Chủ</a></li>
-                                        <li><a href="{{route('page-course')}}">Khóa Tập</a></li>
-                                        <li><a href="{{route('page-schedule')}}">Lịch Tập</a></li>
-                                        <li><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
-                                        <li><a href="{{route('page-news')}}">Tin Tức</a></li>
-                                        <li><a href="{{route('page-exercise')}}">Bài Tập</a></li>
+                                        <li class="{{Request::is('page/home*') ? 'active' : ''}}"><a href="{{route('page-home')}}">Trang Chủ</a></li>
+                                        <li class="{{Request::is('page/course*') ? 'active' : ''}}"><a href="{{route('page-course')}}">Khóa Tập</a></li>
+                                        <li class="{{Request::is('page/schedule*') ? 'active' : ''}}"><a href="{{route('page-schedule')}}">Lịch Tập</a></li>
+                                        <li class="{{Request::is('page/trainer*') ? 'active' : ''}}"><a href="{{route('page-trainer')}}">Huấn Luyện Viên</a></li>
+                                        <li class="{{Request::is('page/news*') ? 'active' : ''}}"><a href="{{route('page-news')}}">Tin Tức</a></li>
+                                        <li class="{{Request::is('page/exercise*') ? 'active' : ''}}"><a href="{{route('page-exercise')}}">Bài Tập</a></li>
                                     </ul>
                                 </nav>
                             </div>

@@ -74,8 +74,8 @@ select:focus {
                                         </video>
                                     </div>
                                 </div>
-                                <div class="classes-title">
-                                    <h3>{{$exercise->exercise_type->exercise_type_name}}</h3>
+                                <div class="classes-title mt-0">
+                                    <h3>{{$exercise->exercise_type->course_type->course_type_name}} - {{$exercise->exercise_type->exercise_type_name}}</h3>
                                     <h3>{{$exercise->exercise_name}}</h3>
                                 </div>
                             </div>
